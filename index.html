@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trello copy</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <section class="tasks">
+        <h1 class="tasks__title">Trello copy</h1>
+
+
+        <div class="list">
+
+            <ul class="tasks__list">
+            </ul>
+
+            <div class="add_item">
+                <span>Add item</span>
+
+                <form style="display: none;">
+                    <input type="text" id="add_item_value">
+                    <button id="submit" type="submit">Добавить</button>
+                </form>
+            </div>
+
+        </div>
+
+    </section>
+
+    <script src="./scripts/dragAndDrop.js"></script>
+    <script src="./scripts/addTask.js"></script>
+</body>
+
+</html>
