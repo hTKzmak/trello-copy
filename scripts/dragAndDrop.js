@@ -20,6 +20,7 @@ tasksListElement.addEventListener(`dragover`, (evt) => {
 
     // Находим перемещаемый элемент
     const activeElement = tasksListElement.querySelector(`.selected`);
+
     // Находим элемент, над которым в данный момент находится курсор
     const currentElement = evt.target;
 

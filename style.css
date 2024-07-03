@@ -67,7 +67,8 @@ body {
     user-select: none
 }
 
-.selected {
+.selected,
+.choosen {
     opacity: 0.6;
 }
 

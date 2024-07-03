@@ -8,24 +8,6 @@ const form = document.querySelector(`form`)
 // здесь будут храниться задачи (item_data)
 let tasksData = [];
 
-// let tasksData = [
-//     {
-//         id: 1,
-//         value: 'Example',
-//         goals: [
-//             { id: 1, value: 'example goal' },
-//             { id: 2, value: 'example second goal' },
-//         ]
-//     },
-//     {
-//         id: 2,
-//         value: 'Example 2',
-//         goals: [
-//             { id: 2, value: 'example goal 2' }
-//         ]
-//     }
-// ];
-
 
 // событие по отображению формы заполнения
 add_item_button.addEventListener('click', () => {
@@ -143,7 +125,7 @@ function addingGoal(goalListId, goalDataId, value, data) {
     goal_item.className = 'goals__item'
     goal_item.id = goalDataId
     goal_item.innerHTML = value
-    // goal_item.draggable = true
+    goal_item.draggable = true
 
     // удаление подзадачи по клику
     goal_item.addEventListener('click', () => {
@@ -165,5 +147,53 @@ function addingGoal(goalListId, goalDataId, value, data) {
 
     })
 
-    goals_list.appendChild(goal_item)
+    if(value){
+        goals_list.appendChild(goal_item)
+    }
+
+
+
+
+
+    const goalsListsElements = document.querySelectorAll('.goals__list')
+
+    for (const goalsList of goalsListsElements) {
+        goalsList.addEventListener('dragstart', (evt) => {
+            evt.target.classList.add('choosen');
+        });
+        
+        goalsList.addEventListener(`dragover`, (evt) => {
+            // Разрешаем сбрасывать элементы в эту область
+            evt.preventDefault();
+        
+            // Находим перемещаемый элемент
+            const activeElement = document.querySelector(`.choosen`);
+
+            // Находим элемент, над которым в данный момент находится курсор
+            const currentElement = evt.target;
+
+            // Проверяем, что событие сработало:
+            // 1. не на том элементе, который мы перемещаем,
+            // 2. именно на элементе списка
+            const isMoveable = activeElement !== currentElement &&
+                currentElement.classList.contains(`goals__item`);
+
+            // Если нет, прерываем выполнение функции
+            if (!isMoveable) {
+                return;
+            }
+
+            // Находим элемент, перед которым будем вставлять
+            const nextElement = (currentElement === activeElement.nextElementSibling) ?
+                currentElement.nextElementSibling :
+                currentElement;
+
+            // Вставляем activeElement перед nextElement
+            goalsList.insertBefore(activeElement, nextElement);
+        })
+
+        goalsList.addEventListener('dragend', (evt) => {
+            evt.target.classList.remove('choosen');
+        });
+    }
 }
