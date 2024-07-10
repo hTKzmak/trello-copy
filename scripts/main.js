@@ -12,7 +12,7 @@ let tasksData = [];
 // событие по отображению формы заполнения
 add_item_button.addEventListener('click', () => {
     // делаем форму зыполнения видимым
-    form.style.display = 'block'
+    form.style.display = 'grid'
 
     // убираем текст тега span
     add_item_button.querySelector('span').style.display = 'none'
@@ -49,10 +49,14 @@ form.addEventListener('submit', (e) => {
         // создаём task_item
         const task_item = document.createElement('li')
 
+        const task_item_value = document.createElement('span')
+
+        task_item_value.innerHTML = task_item_data.value
+
         // доп. параметры task_item
         task_item.className = 'tasks__item'
         task_item.id = task_item_data.id
-        task_item.innerHTML = task_item_data.value
+        // task_item.innerHTML = task_item_data.value
         task_item.draggable = true
 
         // удаление task_item
@@ -62,6 +66,8 @@ form.addEventListener('submit', (e) => {
             // удаляем задачу со страницы
             document.getElementById(task_item_data.id).remove();
         })
+
+        task_item.appendChild(task_item_value)
 
 
 
@@ -75,7 +81,7 @@ form.addEventListener('submit', (e) => {
         // создаём кнопку для добавления задач, делаем для него функционал и добавляем в task_item 
         const goals_button = document.createElement('button')
         goals_button.className = 'goals__button'
-        goals_button.innerHTML = 'Add task'
+        goals_button.innerHTML = 'Добавить заголовок'
 
         goals_button.addEventListener('click', () => {
 

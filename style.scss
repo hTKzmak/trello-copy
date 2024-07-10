@@ -1,0 +1,158 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+$background: #fff;
+$main-color: #36a4a4;
+$font-color: #fff;
+$goal-font-color: #6C757D;
+$grey-font-color: #6a6a6a;
+
+@mixin itemStyle {
+    transition: background-color 0.5s;
+    margin-bottom: 10px;
+    padding: 5px;
+
+    border-radius: 4px;
+
+    // padding: 8px 16px;
+    padding: 10px;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    width: 250px;
+    max-width: 250px;
+    height: fit-content;
+
+    transition: background-color 0.5s;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    line-height: 25px;
+
+    color: $font-color;
+
+    background: $background;
+
+    .content__list {
+        display: flex;
+        overflow-x: auto;
+        gap: 10px;
+        height: 70vh;
+        margin-top: 50px;
+
+        .tasks__list {
+            margin: 0;
+            padding: 0;
+
+            display: flex;
+            justify-content: left;
+            gap: 10px;
+
+            list-style: none;
+
+            .tasks__item {
+                @include itemStyle();
+
+                cursor: move;
+                background-color: transparent;
+                color: whitesmoke;
+                text-align: left;
+
+                border: 1px solid #36a4a4;
+                
+                border-radius: 4px 4px 0 0;
+
+                .goals__list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    padding: 5px 0;
+
+                    .goals__item {
+                        list-style-type: none;
+                        
+                        background-color: transparent;
+                        color: $goal-font-color;
+
+                        font-weight: 600;
+                        
+                        border: 1px solid #36a4a4;
+                        border-radius: 4px;
+                        
+                        padding: 4px 8px;
+                    }
+                }
+
+                .goals__button {
+                    background-color: $main-color;
+                    color: $font-color;
+
+                    border-radius: 4px;
+
+                    border: none;
+                    cursor: pointer;
+
+                    padding: 10px;
+                    width: 100%;
+
+                    font-size: 16px;
+                    text-align: center;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        .add_item {
+            @include itemStyle();
+
+            color: whitesmoke;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #36a4a4;
+            text-align: center;
+
+            user-select: none;
+
+            form {
+                gap: 7px;
+
+                #add_item_value {
+                    background: #f3f3f3;
+
+                    border: none;
+                    border-radius: 4px;
+
+                    outline: none;
+
+                    height: 35px;
+
+                    color: $grey-font-color;
+                    font-size: 16px;
+                }
+
+                #submit {
+                    border: none;
+                    border-radius: 4px;
+
+                    background-color: #f3f3f3;
+                    color: $grey-font-color;
+
+                    padding: 7px 15px;
+                    width: fit-content;
+
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
+
+.selected,
+.choosen {
+    opacity: 0.6;
+}
