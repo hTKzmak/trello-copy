@@ -49,15 +49,21 @@ form.addEventListener('submit', (e) => {
         // создаём task_item
         const task_item = document.createElement('li')
 
-        const task_item_value = document.createElement('span')
+        // создание header для карточки, где будет название карточки и меню
+        const task_header = document.createElement('div')
+        task_header.className = 'tasks__header'
 
+        // создание названия карточки
+        const task_item_value = document.createElement('span')
         task_item_value.innerHTML = task_item_data.value
+
 
         // доп. параметры task_item
         task_item.className = 'tasks__item'
         task_item.id = task_item_data.id
         // task_item.innerHTML = task_item_data.value
         task_item.draggable = true
+
 
         // удаление task_item
         task_item.addEventListener('dblclick', () => {
@@ -67,15 +73,22 @@ form.addEventListener('submit', (e) => {
             document.getElementById(task_item_data.id).remove();
         })
 
-        task_item.appendChild(task_item_value)
+        // добавляем название карточки в header самой карточки
+        task_header.appendChild(task_item_value)
+        // добавляем сам header карточки в саму карточку
+        task_item.appendChild(task_header)
 
+
+        // создаём tasks_content, где будет находиться кнопка и список подзаголовков
+        const tasks_content = document.createElement('div')
+        tasks_content.className = 'tasks__content'
 
 
         // создаём список задач и добавляем в task_item 
         const goals_list = document.createElement('ul')
         goals_list.className = 'goals__list'
         goals_list.id = "id" + Math.random().toString(16).slice(2) // второй способ создания рандомного id (чтобы он не совпадал с id переменной task_item)
-        task_item.appendChild(goals_list)
+        tasks_content.appendChild(goals_list)
 
 
         // создаём кнопку для добавления задач, делаем для него функционал и добавляем в task_item 
@@ -83,6 +96,7 @@ form.addEventListener('submit', (e) => {
         goals_button.className = 'goals__button'
         goals_button.innerHTML = 'Добавить заголовок'
 
+        // добавление подзаголовка 
         goals_button.addEventListener('click', () => {
 
             // тут можно написать код для показа формы заполнения, ...
@@ -103,7 +117,10 @@ form.addEventListener('submit', (e) => {
         })
 
         // добавление кнопки для добавления подзадач
-        task_item.appendChild(goals_button)
+        tasks_content.appendChild(goals_button)
+
+        // добавляем в task_item наш task_content, где находится список и кнопка
+        task_item.appendChild(tasks_content)
 
 
         // добавляем на сайт

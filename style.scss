@@ -3,7 +3,7 @@
 $background: #fff;
 $main-color: #36a4a4;
 $font-color: #fff;
-$goal-font-color: #6C757D;
+$goal-font-color: #6c757d;
 $grey-font-color: #6a6a6a;
 
 @mixin itemStyle {
@@ -60,50 +60,63 @@ body {
                 color: whitesmoke;
                 text-align: left;
 
+                padding: 0;
+
                 border: 1px solid #36a4a4;
-                
+
                 border-radius: 4px 4px 0 0;
 
-                .goals__list {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
+                .tasks__header {
+                    background-color: #36a4a4;
+                    padding: 11px 13px;
+                }
 
-                    margin-top: 10px;
-                    margin-bottom: 10px;
-                    padding: 5px 0;
+                .tasks__content{
 
-                    .goals__item {
-                        list-style-type: none;
-                        
-                        background-color: transparent;
-                        color: $goal-font-color;
+                    padding: 10px 12px;
 
-                        font-weight: 600;
-                        
-                        border: 1px solid #36a4a4;
+                    .goals__list {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+    
+                        margin-top: 10px;
+                        margin-bottom: 10px;
+                        padding: 5px 0;
+    
+                        .goals__item {
+                            list-style-type: none;
+    
+                            background-color: transparent;
+                            color: $goal-font-color;
+    
+                            font-weight: 600;
+    
+                            border: 1px solid #36a4a4;
+                            border-radius: 4px;
+    
+                            padding: 4px 8px;
+                        }
+                    }
+    
+                    .goals__button {
+                        background-color: $main-color;
+                        color: $font-color;
+    
                         border-radius: 4px;
-                        
-                        padding: 4px 8px;
+    
+                        border: none;
+                        cursor: pointer;
+    
+                        padding: 10px;
+                        width: 100%;
+    
+                        font-size: 16px;
+                        text-align: center;
+                        font-weight: 600;
                     }
                 }
 
-                .goals__button {
-                    background-color: $main-color;
-                    color: $font-color;
-
-                    border-radius: 4px;
-
-                    border: none;
-                    cursor: pointer;
-
-                    padding: 10px;
-                    width: 100%;
-
-                    font-size: 16px;
-                    text-align: center;
-                    font-weight: 600;
-                }
             }
         }
 

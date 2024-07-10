@@ -38,10 +38,18 @@ body .content__list .tasks__list .tasks__item {
   background-color: transparent;
   color: whitesmoke;
   text-align: left;
+  padding: 0;
   border: 1px solid #36a4a4;
   border-radius: 4px 4px 0 0;
 }
-body .content__list .tasks__list .tasks__item .goals__list {
+body .content__list .tasks__list .tasks__item .tasks__header {
+  background-color: #36a4a4;
+  padding: 11px 13px;
+}
+body .content__list .tasks__list .tasks__item .tasks__content {
+  padding: 10px 12px;
+}
+body .content__list .tasks__list .tasks__item .tasks__content .goals__list {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -49,16 +57,16 @@ body .content__list .tasks__list .tasks__item .goals__list {
   margin-bottom: 10px;
   padding: 5px 0;
 }
-body .content__list .tasks__list .tasks__item .goals__list .goals__item {
+body .content__list .tasks__list .tasks__item .tasks__content .goals__list .goals__item {
   list-style-type: none;
   background-color: transparent;
-  color: #6C757D;
+  color: #6c757d;
   font-weight: 600;
   border: 1px solid #36a4a4;
   border-radius: 4px;
   padding: 4px 8px;
 }
-body .content__list .tasks__list .tasks__item .goals__button {
+body .content__list .tasks__list .tasks__item .tasks__content .goals__button {
   background-color: #36a4a4;
   color: #fff;
   border-radius: 4px;
