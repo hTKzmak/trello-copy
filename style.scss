@@ -42,7 +42,7 @@ body {
         height: 70vh;
         margin-top: 50px;
 
-        .tasks__list {
+        .columns__list {
             margin: 0;
             padding: 0;
 
@@ -52,7 +52,7 @@ body {
 
             list-style: none;
 
-            .tasks__item {
+            .column__item {
                 @include itemStyle();
 
                 cursor: move;
@@ -66,16 +66,16 @@ body {
 
                 border-radius: 4px 4px 0 0;
 
-                .tasks__header {
+                .column__header {
                     background-color: #36a4a4;
                     padding: 11px 13px;
                 }
 
-                .tasks__content{
+                .column__content{
 
                     padding: 10px 12px;
 
-                    .goals__list {
+                    .cards__list {
                         display: flex;
                         flex-direction: column;
                         gap: 10px;
@@ -84,7 +84,7 @@ body {
                         margin-bottom: 10px;
                         padding: 5px 0;
     
-                        .goals__item {
+                        .card__item {
                             list-style-type: none;
     
                             background-color: transparent;
@@ -99,7 +99,7 @@ body {
                         }
                     }
     
-                    .goals__button {
+                    .cards__button {
                         background-color: $main-color;
                         color: $font-color;
     
@@ -120,7 +120,7 @@ body {
             }
         }
 
-        .add_item {
+        .add_column {
             @include itemStyle();
 
             color: whitesmoke;
@@ -134,7 +134,7 @@ body {
             form {
                 gap: 7px;
 
-                #add_item_value {
+                #add_column_value {
                     background: #f3f3f3;
 
                     border: none;

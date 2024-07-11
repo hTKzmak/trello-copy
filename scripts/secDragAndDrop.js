@@ -1,5 +1,5 @@
 document.addEventListener('dragstart', (evt) => {
-    if (evt.target.classList.contains('goals__item')) {
+    if (evt.target.classList.contains('card__item')) {
         evt.target.classList.add('choosen');
     }
 });
@@ -10,15 +10,15 @@ document.addEventListener('dragover', (evt) => {
 
     const activeElement = document.querySelector('.choosen');
 
-    // Проверяем если событие dragover произошёл на действительном/не в пустом goals__ist или goals__item 
-    if (activeElement && (evt.target.classList.contains('goals__list') || evt.target.classList.contains('goals__item'))) {
+    // Проверяем если событие dragover произошёл на действительном/не в пустом goals__ist или card__item 
+    if (activeElement && (evt.target.classList.contains('cards__list') || evt.target.classList.contains('card__item'))) {
         const currentElement = evt.target;
 
         // проверка на наличие подзадач в goals__list (он как бы должен работать, но не работает)
-        if (currentElement.classList.contains('goals__list') && currentElement.children.length === 0) {
+        if (currentElement.classList.contains('cards__list') && currentElement.children.length === 0) {
             currentElement.appendChild(activeElement);
         } else {
-            const isMoveable = activeElement !== currentElement && currentElement.classList.contains('goals__item');
+            const isMoveable = activeElement !== currentElement && currentElement.classList.contains('card__item');
 
             if (!isMoveable) {
                 return;

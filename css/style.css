@@ -13,7 +13,7 @@ body .content__list {
   height: 70vh;
   margin-top: 50px;
 }
-body .content__list .tasks__list {
+body .content__list .columns__list {
   margin: 0;
   padding: 0;
   display: flex;
@@ -21,7 +21,7 @@ body .content__list .tasks__list {
   gap: 10px;
   list-style: none;
 }
-body .content__list .tasks__list .tasks__item {
+body .content__list .columns__list .column__item {
   transition: background-color 0.5s;
   margin-bottom: 10px;
   padding: 5px;
@@ -42,14 +42,14 @@ body .content__list .tasks__list .tasks__item {
   border: 1px solid #36a4a4;
   border-radius: 4px 4px 0 0;
 }
-body .content__list .tasks__list .tasks__item .tasks__header {
+body .content__list .columns__list .column__item .column__header {
   background-color: #36a4a4;
   padding: 11px 13px;
 }
-body .content__list .tasks__list .tasks__item .tasks__content {
+body .content__list .columns__list .column__item .column__content {
   padding: 10px 12px;
 }
-body .content__list .tasks__list .tasks__item .tasks__content .goals__list {
+body .content__list .columns__list .column__item .column__content .cards__list {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -57,7 +57,7 @@ body .content__list .tasks__list .tasks__item .tasks__content .goals__list {
   margin-bottom: 10px;
   padding: 5px 0;
 }
-body .content__list .tasks__list .tasks__item .tasks__content .goals__list .goals__item {
+body .content__list .columns__list .column__item .column__content .cards__list .card__item {
   list-style-type: none;
   background-color: transparent;
   color: #6c757d;
@@ -66,7 +66,7 @@ body .content__list .tasks__list .tasks__item .tasks__content .goals__list .goal
   border-radius: 4px;
   padding: 4px 8px;
 }
-body .content__list .tasks__list .tasks__item .tasks__content .goals__button {
+body .content__list .columns__list .column__item .column__content .cards__button {
   background-color: #36a4a4;
   color: #fff;
   border-radius: 4px;
@@ -78,7 +78,7 @@ body .content__list .tasks__list .tasks__item .tasks__content .goals__button {
   text-align: center;
   font-weight: 600;
 }
-body .content__list .add_item {
+body .content__list .add_column {
   transition: background-color 0.5s;
   margin-bottom: 10px;
   padding: 5px;
@@ -100,10 +100,10 @@ body .content__list .add_item {
      -moz-user-select: none;
           user-select: none;
 }
-body .content__list .add_item form {
+body .content__list .add_column form {
   gap: 7px;
 }
-body .content__list .add_item form #add_item_value {
+body .content__list .add_column form #add_column_value {
   background: #f3f3f3;
   border: none;
   border-radius: 4px;
@@ -112,7 +112,7 @@ body .content__list .add_item form #add_item_value {
   color: #6a6a6a;
   font-size: 16px;
 }
-body .content__list .add_item form #submit {
+body .content__list .add_column form #submit {
   border: none;
   border-radius: 4px;
   background-color: #f3f3f3;
