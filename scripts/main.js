@@ -18,8 +18,6 @@ add_column_button.addEventListener('click', () => {
     add_column_button.querySelector('span').style.display = 'none'
 })
 
-
-
 // событие по добавлению задачи
 form.addEventListener('submit', (e) => {
     // глушитель
@@ -45,9 +43,12 @@ form.addEventListener('submit', (e) => {
         const columnsListElement = document.querySelector('.columns__list')
 
 
+        // _______Создание column_item_______
 
         // создаём column_item
         const column_item = document.createElement('li')
+
+        // _______Создаём содержимое для column_item_______
 
         // создание header для карточки, где будет название карточки и меню
         const column_header = document.createElement('div')
@@ -57,6 +58,16 @@ form.addEventListener('submit', (e) => {
         const column_item_value = document.createElement('span')
         column_item_value.innerHTML = column_item_data.value
 
+        // создание кнопки меню для коломны
+        const menu_button = document.createElement('button')
+        menu_button.className = 'menu__button'
+        menu_button.innerHTML = `
+            <div class="menu-icon">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+        `
 
         // доп. параметры column_item
         column_item.className = 'column__item'
@@ -73,8 +84,14 @@ form.addEventListener('submit', (e) => {
             document.getElementById(column_item_data.id).remove();
         })
 
+        // событие по отображению окна для определённой коломны (пока показывает только id коломны)
+        menu_button.addEventListener('click', () => {
+            showId(column_item.id)
+        })
+
         // добавляем название карточки в header самой карточки
         column_header.appendChild(column_item_value)
+        column_header.appendChild(menu_button)
         // добавляем сам header карточки в саму карточку
         column_item.appendChild(column_header)
 
@@ -84,14 +101,16 @@ form.addEventListener('submit', (e) => {
         column_content.className = 'column__content'
 
 
-        // создаём список задач и добавляем в column_item 
+        // _______Создание списка карточек_______
+
+        // создаём список карточек и добавляем в column_item 
         const cards_list = document.createElement('ul')
         cards_list.className = 'cards__list'
         cards_list.id = "id" + Math.random().toString(16).slice(2) // второй способ создания рандомного id (чтобы он не совпадал с id переменной column_item)
         column_content.appendChild(cards_list)
 
 
-        // создаём кнопку для добавления задач, делаем для него функционал и добавляем в column_item 
+        // создаём кнопку для добавления карточек, делаем для него функционал и добавляем в column_item 
         const cards_button = document.createElement('button')
         cards_button.className = 'cards__button'
         cards_button.innerHTML = 'Добавить карточку'
@@ -116,6 +135,9 @@ form.addEventListener('submit', (e) => {
 
         // добавляем в column_item наш column_content, где находится список и кнопка
         column_item.appendChild(column_content)
+        
+        // добавление окна для column_item
+        column_item.appendChild(windowElem)
 
 
         // добавляем на сайт

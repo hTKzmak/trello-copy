@@ -38,13 +38,17 @@ body .content__list .columns__list .column__item {
   background-color: transparent;
   color: whitesmoke;
   text-align: left;
+  position: relative;
   padding: 0;
   border: 1px solid #36a4a4;
   border-radius: 4px 4px 0 0;
 }
 body .content__list .columns__list .column__item .column__header {
   background-color: #36a4a4;
-  padding: 11px 13px;
+  padding: 7px 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 body .content__list .columns__list .column__item .column__content {
   padding: 10px 12px;
@@ -53,7 +57,6 @@ body .content__list .columns__list .column__item .column__content .cards__list {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 10px;
   margin-bottom: 10px;
   padding: 5px 0;
 }
@@ -74,7 +77,7 @@ body .content__list .columns__list .column__item .column__content .cards__button
   cursor: pointer;
   padding: 10px;
   width: 100%;
-  font-size: 16px;
+  font-size: 13px;
   text-align: center;
   font-weight: 600;
 }
@@ -126,4 +129,31 @@ body .content__list .add_column form #submit {
 .selected,
 .choosen {
   opacity: 0.6;
+}
+
+.menu__button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  height: 25px;
+}
+.menu__button .menu-icon {
+  display: flex;
+  gap: 4px;
+}
+.menu__button .menu-icon .circle {
+  width: 5px;
+  height: 5px;
+  background-color: #FFF;
+  border-radius: 100px;
+}
+
+.window__elem {
+  position: absolute;
+  display: none;
+  width: 50px;
+  height: 50px;
+  top: 5px;
+  right: 0;
+  background-color: red;
 }/*# sourceMappingURL=style.css.map */
