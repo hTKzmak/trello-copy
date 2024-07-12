@@ -64,7 +64,11 @@ function createColumnItem(columnItemData) {
         };
 
         addingCard(cardsList.id, cardData.id, cardData.value, columnItemData);
-        columnItemData.cards.push(cardData);
+        
+        if(cardData.value){
+            columnItemData.cards.push(cardData);
+        }
+        
         console.log(columnItemData);
     });
 
@@ -138,7 +142,7 @@ function changeColumn(columnItem) {
 
     let newName = prompt('Новое название', 'new name')
 
-    if (index !== -1) {
+    if (index !== -1 && newName) {
         columnsData[index].value = newName
         console.log(columnsData)
         document.getElementById(columnItem.id).firstChild.firstChild.innerHTML = newName;
@@ -180,7 +184,7 @@ form.addEventListener('submit', (e) => {
     }
 });
 
-// Функция по добавлению подзадачи
+// Функция по добавлению карточки
 function addingCard(cardListId, cardDataId, value, data) {
     const cardsList = document.getElementById(cardListId);
 
@@ -201,7 +205,7 @@ function addingCard(cardListId, cardDataId, value, data) {
         }
     });
 
-    if (value) {
+    if(value) {
         cardsList.appendChild(cardItem);
     }
 }

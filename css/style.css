@@ -42,6 +42,8 @@ body .content__list .columns__list .column__item {
   padding: 0;
   border: 1px solid #36a4a4;
   border-radius: 4px 4px 0 0;
+  word-wrap: anywhere;
+  word-break: break-all;
 }
 body .content__list .columns__list .column__item .column__header {
   background-color: #36a4a4;
@@ -156,10 +158,11 @@ body .content__list .add_column form #submit {
   width: auto;
   padding: 8px;
   top: 5px;
-  right: 5px;
+  right: -30px;
   background-color: #FFF;
   box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
   border-radius: 4px;
+  z-index: 1;
 }
 .window__elem #delete {
   background-color: #d12c2c;
@@ -177,4 +180,7 @@ body .content__list .add_column form #submit {
   background-color: #fff;
   text-align: left;
   cursor: pointer;
+}
+.window__elem .buttonStyle:hover {
+  background-color: #f0f0f0;
 }/*# sourceMappingURL=style.css.map */
