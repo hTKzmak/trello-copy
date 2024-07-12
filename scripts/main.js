@@ -68,7 +68,42 @@ function createColumnItem(columnItemData) {
     });
 
     columnContent.appendChild(cardsButton);
+
+    
     columnItem.appendChild(columnContent);
+
+    
+    // меню с выбором действий для колонки
+    const menuWindow = document.createElement('div')
+    menuWindow.className = 'window__elem'
+
+    const changeButton = document.createElement('button')
+    changeButton.className = 'buttonStyle'
+    changeButton.innerHTML = 'Изменить'
+
+    const deleteButton = document.createElement('button')
+    deleteButton.className = 'buttonStyle'
+    deleteButton.id = 'delete'
+    deleteButton.innerHTML = 'Удалить'
+
+    menuWindow.appendChild(changeButton)
+    menuWindow.appendChild(deleteButton)
+
+    // функционал отображения и исчезновения окна
+    menuButton.addEventListener('click', () => {
+        if (menuWindow.style.display === 'none' || menuWindow.style.display === '') {
+            menuWindow.style.display = 'flex';
+        } else {
+            menuWindow.style.display = 'none';
+        }
+    });
+
+    menuWindow.addEventListener('mouseleave', () => {
+        menuWindow.style.display = 'none';
+    })
+
+    columnItem.appendChild(menuWindow)
+
 
     return columnItem;
 }

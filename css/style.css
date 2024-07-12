@@ -144,17 +144,37 @@ body .content__list .add_column form #submit {
 .menu__button .menu-icon .circle {
   width: 5px;
   height: 5px;
-  background-color: #FFF;
+  background-color: #fff;
   border-radius: 100px;
 }
 
 .window__elem {
   position: absolute;
   display: none;
+  gap: 10px;
   flex-direction: column;
-  width: 50px;
-  height: 50px;
-  top: 35px;
+  width: auto;
+  padding: 8px;
+  top: 5px;
   right: 5px;
-  background-color: red;
+  background-color: #FFF;
+  box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
+  border-radius: 4px;
+}
+.window__elem #delete {
+  background-color: #d12c2c;
+  color: #fffcfc;
+}
+.window__elem .buttonStyle {
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px;
+  width: 143px;
+  border: none;
+  border-radius: 4px;
+  color: #6a6a6a;
+  background-color: #fff;
+  text-align: left;
+  cursor: pointer;
 }/*# sourceMappingURL=style.css.map */
