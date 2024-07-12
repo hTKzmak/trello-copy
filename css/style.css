@@ -63,15 +63,37 @@ body .content__list .columns__list .column__item .column__content .cards__list {
   padding: 5px 0;
 }
 body .content__list .columns__list .column__item .column__content .cards__list .card__item {
+  position: relative;
   list-style-type: none;
   background-color: transparent;
   color: #6c757d;
   font-weight: 600;
   border: 1px solid #36a4a4;
   border-radius: 4px;
-  padding: 4px 8px;
+  padding: 8px 14px;
 }
-body .content__list .columns__list .column__item .column__content .cards__button {
+body .content__list .columns__list .column__item .column__content .cards__list .card__item .card__button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: none;
+  padding: 5px 8px;
+  border-radius: 100px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  position: absolute;
+}
+body .content__list .columns__list .column__item .column__content .cards__list .card__item .card__button img {
+  width: 16px;
+}
+body .content__list .columns__list .column__item .column__content .cards__list .card__item .card__button:hover {
+  background-color: rgba(240, 240, 240, 0.7568627451);
+}
+body .content__list .columns__list .column__item .column__content .cards__list .card__item:hover .card__button {
+  display: block;
+}
+body .content__list .columns__list .column__item .column__content .add__cards__button {
   background-color: #36a4a4;
   color: #fff;
   border-radius: 4px;
@@ -159,7 +181,7 @@ body .content__list .add_column form #submit {
   padding: 8px;
   top: 5px;
   right: -30px;
-  background-color: #FFF;
+  background-color: #fff;
   box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
   border-radius: 4px;
   z-index: 1;

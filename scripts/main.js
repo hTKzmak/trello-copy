@@ -17,6 +17,51 @@ function hideForm() {
     addColumnButton.querySelector('span').style.display = 'block';
 }
 
+// функция по отображению меню
+function addWindow(type, button, item) {
+    const menuWindow = document.createElement('div')
+    menuWindow.className = 'window__elem'
+
+    const changeButton = document.createElement('button')
+    changeButton.className = 'buttonStyle'
+    changeButton.innerHTML = 'Изменить'
+
+    changeButton.addEventListener('click', () => {
+        changeFunc(type, item)
+        menuWindow.style.display = 'none';
+    })
+
+    const deleteButton = document.createElement('button')
+    deleteButton.className = 'buttonStyle'
+    deleteButton.id = 'delete'
+    deleteButton.innerHTML = 'Удалить'
+
+    // удаление колонки
+    deleteButton.addEventListener('click', () => {
+        deleteFunc(type, item)
+        menuWindow.style.display = 'none';
+    })
+
+    menuWindow.appendChild(changeButton)
+    menuWindow.appendChild(deleteButton)
+
+    // функционал отображения и исчезновения окна
+    button.addEventListener('click', () => {
+        if (menuWindow.style.display === 'none' || menuWindow.style.display === '') {
+            menuWindow.style.display = 'flex';
+        } else {
+            menuWindow.style.display = 'none';
+        }
+    });
+
+    menuWindow.addEventListener('mouseleave', () => {
+        menuWindow.style.display = 'none';
+    })
+
+    item.appendChild(menuWindow)
+}
+
+
 // Функция для создания элемента колонки
 function createColumnItem(columnItemData) {
     const columnItem = document.createElement('li');
@@ -53,7 +98,7 @@ function createColumnItem(columnItemData) {
     columnContent.appendChild(cardsList);
 
     const cardsButton = document.createElement('button');
-    cardsButton.className = 'cards__button';
+    cardsButton.className = 'add__cards__button';
     cardsButton.innerHTML = 'Добавить карточку';
 
     // добавление карточки
@@ -64,11 +109,11 @@ function createColumnItem(columnItemData) {
         };
 
         addingCard(cardsList.id, cardData.id, cardData.value, columnItemData);
-        
-        if(cardData.value){
+
+        if (cardData.value) {
             columnItemData.cards.push(cardData);
         }
-        
+
         console.log(columnItemData);
     });
 
@@ -77,75 +122,60 @@ function createColumnItem(columnItemData) {
 
     columnItem.appendChild(columnContent);
 
-
-    // меню с выбором действий для колонки
-    const menuWindow = document.createElement('div')
-    menuWindow.className = 'window__elem'
-
-    const changeButton = document.createElement('button')
-    changeButton.className = 'buttonStyle'
-    changeButton.innerHTML = 'Изменить'
-
-    changeButton.addEventListener('click', () => {
-        changeColumn(columnItem)
-        menuWindow.style.display = 'none';
-    })
-
-    const deleteButton = document.createElement('button')
-    deleteButton.className = 'buttonStyle'
-    deleteButton.id = 'delete'
-    deleteButton.innerHTML = 'Удалить'
-
-    // удаление колонки
-    deleteButton.addEventListener('click', () => {
-        deleteColumn(columnItem)
-        menuWindow.style.display = 'none';
-    })
-
-    menuWindow.appendChild(changeButton)
-    menuWindow.appendChild(deleteButton)
-
-    // функционал отображения и исчезновения окна
-    menuButton.addEventListener('click', () => {
-        if (menuWindow.style.display === 'none' || menuWindow.style.display === '') {
-            menuWindow.style.display = 'flex';
-        } else {
-            menuWindow.style.display = 'none';
-        }
-    });
-
-    menuWindow.addEventListener('mouseleave', () => {
-        menuWindow.style.display = 'none';
-    })
-
-    columnItem.appendChild(menuWindow)
-
+    // отображение окна меню
+    addWindow('column', menuButton, columnItem)
 
     return columnItem;
 }
 
 // удаление колонки
-function deleteColumn(columnItem) {
-    const index = columnsData.findIndex(elem => elem.id == columnItem.id);
+function deleteFunc(type, columnItem) {
 
-    if (index !== -1) {
-        columnsData.splice(index, 1);
-        document.getElementById(columnItem.id).remove();
+    if (type === 'column') {
+        const index = columnsData.findIndex(elem => elem.id == columnItem.id);
 
-        console.log(columnsData);
+        if (index !== -1) {
+            columnsData.splice(index, 1);
+            document.getElementById(columnItem.id).remove();
+
+            console.log(columnsData);
+        }
     }
+    else if (type === 'card') {
+        const index = data.cards.findIndex(elem => elem.id == cardDataId);
+
+        if (index !== -1) {
+            data.cards.splice(index, 1);
+            document.getElementById(cardItem.id).remove();
+
+            console.log('Card removed:', data.cards);
+        }
+    }
+
 }
 
 // изменение колонки
-function changeColumn(columnItem) {
-    const index = columnsData.findIndex(elem => elem.id == columnItem.id);
-
+function changeFunc(type, columnItem) {
     let newName = prompt('Новое название', 'new name')
 
-    if (index !== -1 && newName) {
-        columnsData[index].value = newName
-        console.log(columnsData)
-        document.getElementById(columnItem.id).firstChild.firstChild.innerHTML = newName;
+    if (type === 'column') {
+        const index = columnsData.findIndex(elem => elem.id == columnItem.id);
+
+        if (index !== -1 && newName) {
+            columnsData[index].value = newName
+            console.log(columnsData)
+            document.getElementById(columnItem.id).firstChild.firstChild.innerHTML = newName;
+        }
+    }
+    else if (type === 'card') {
+        const index = data.cards.findIndex(elem => elem.id == cardDataId);
+
+        if (index !== -1 && newName) {
+            data.cards.splice(index, 1);
+            document.getElementById(cardItem.id).remove();
+
+            console.log('Card removed:', data.cards);
+        }
     }
 }
 
@@ -194,18 +224,17 @@ function addingCard(cardListId, cardDataId, value, data) {
     cardItem.innerHTML = value;
     cardItem.draggable = true;
 
-    cardItem.addEventListener('click', () => {
-        const index = data.cards.findIndex(elem => elem.id == cardDataId);
 
-        if (index !== -1) {
-            data.cards.splice(index, 1);
-            document.getElementById(cardItem.id).remove();
+    const cardMenuButton = document.createElement('button')
+    cardMenuButton.innerHTML = '<img src="./icons/pen.svg" alt="#">'
+    cardMenuButton.className = 'card__button'
 
-            console.log('Card removed:', data.cards);
-        }
-    });
+    // отображение окна меню
+    addWindow('card', cardMenuButton, cardItem)
 
-    if(value) {
+    cardItem.appendChild(cardMenuButton)
+
+    if (value) {
         cardsList.appendChild(cardItem);
     }
 }

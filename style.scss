@@ -63,7 +63,7 @@ body {
 
                 padding: 0;
 
-                border: 1px solid #36a4a4;
+                border: 1px solid $main-color;
 
                 border-radius: 4px 4px 0 0;
 
@@ -71,7 +71,7 @@ body {
                 word-break: break-all;
 
                 .column__header {
-                    background-color: #36a4a4;
+                    background-color: $main-color;
                     padding: 7px 13px;
 
                     display: flex;
@@ -91,6 +91,8 @@ body {
                         padding: 5px 0;
 
                         .card__item {
+                            position: relative;
+
                             list-style-type: none;
 
                             background-color: transparent;
@@ -98,14 +100,46 @@ body {
 
                             font-weight: 600;
 
-                            border: 1px solid #36a4a4;
+                            border: 1px solid $main-color;
                             border-radius: 4px;
 
-                            padding: 4px 8px;
+                            padding: 8px 14px;
+
+                            .card__button {
+                                position: absolute;
+                                top: 5px;
+                                right: 5px;
+
+                                display: none;
+
+                                padding: 5px 8px;
+                                border-radius: 100px;
+                                border: none;
+
+                                background-color: transparent;
+
+                                cursor: pointer;
+
+                                position: absolute;
+
+                                img{
+                                    width: 16px;
+                                }
+
+                                &:hover{
+                                    background-color: #f0f0f0c1;
+                                }
+                            }
+
+                            &:hover {
+                                .card__button {
+                                    display: block;
+                                }
+                            }
                         }
                     }
 
-                    .cards__button {
+                    .add__cards__button {
                         background-color: $main-color;
                         color: $font-color;
 
@@ -131,7 +165,7 @@ body {
             color: whitesmoke;
             border-radius: 4px;
             cursor: pointer;
-            background-color: #36a4a4;
+            background-color: $main-color;
             text-align: center;
 
             user-select: none;
@@ -210,7 +244,7 @@ body {
     top: 5px;
     right: -30px;
 
-    background-color: #FFF;
+    background-color: #fff;
     -webkit-box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
     -moz-box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
     box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
@@ -243,7 +277,7 @@ body {
 
         cursor: pointer;
 
-        &:hover{
+        &:hover {
             background-color: #f0f0f0;
         }
     }
