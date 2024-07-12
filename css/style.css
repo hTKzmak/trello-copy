@@ -90,6 +90,11 @@ body .content__list .columns__list .column__item .column__content .cards__list .
 body .content__list .columns__list .column__item .column__content .cards__list .card__item .card__button:hover {
   background-color: rgba(240, 240, 240, 0.7568627451);
 }
+@media screen and (max-width: 1440px) {
+  body .content__list .columns__list .column__item .column__content .cards__list .card__item .card__button {
+    display: block;
+  }
+}
 body .content__list .columns__list .column__item .column__content .cards__list .card__item:hover .card__button {
   display: block;
 }

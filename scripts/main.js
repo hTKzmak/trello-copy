@@ -18,7 +18,7 @@ function hideForm() {
 }
 
 // функция по отображению меню
-function addWindow(type, button, item) {
+function addWindow(type, button, item, cartData) {
     const menuWindow = document.createElement('div')
     menuWindow.className = 'window__elem'
 
@@ -26,8 +26,14 @@ function addWindow(type, button, item) {
     changeButton.className = 'buttonStyle'
     changeButton.innerHTML = 'Изменить'
 
+    // изменение колонки/карточки
     changeButton.addEventListener('click', () => {
-        changeFunc(type, item)
+        if (type === 'column') {
+            changeColumn(item)
+        }
+        else if (type === 'card') {
+            changeCard(item, cartData)
+        }
         menuWindow.style.display = 'none';
     })
 
@@ -36,9 +42,14 @@ function addWindow(type, button, item) {
     deleteButton.id = 'delete'
     deleteButton.innerHTML = 'Удалить'
 
-    // удаление колонки
+    // удаление колонки/карточки
     deleteButton.addEventListener('click', () => {
-        deleteFunc(type, item)
+        if (type === 'column') {
+            deleteColumn(item)
+        }
+        else if (type === 'card') {
+            deleteCard(item, cartData)
+        }
         menuWindow.style.display = 'none';
     })
 
@@ -129,53 +140,56 @@ function createColumnItem(columnItemData) {
 }
 
 // удаление колонки
-function deleteFunc(type, columnItem) {
+function deleteColumn(columnItem) {
 
-    if (type === 'column') {
-        const index = columnsData.findIndex(elem => elem.id == columnItem.id);
+    const index = columnsData.findIndex(elem => elem.id == columnItem.id);
 
-        if (index !== -1) {
-            columnsData.splice(index, 1);
-            document.getElementById(columnItem.id).remove();
+    if (index !== -1) {
+        columnsData.splice(index, 1);
+        document.getElementById(columnItem.id).remove();
 
-            console.log(columnsData);
-        }
+        console.log(columnsData);
     }
-    else if (type === 'card') {
-        const index = data.cards.findIndex(elem => elem.id == cardDataId);
-
-        if (index !== -1) {
-            data.cards.splice(index, 1);
-            document.getElementById(cardItem.id).remove();
-
-            console.log('Card removed:', data.cards);
-        }
-    }
+    // const index = data.cards.findIndex(elem => elem.id == cardDataId);
 
 }
 
 // изменение колонки
-function changeFunc(type, columnItem) {
+function changeColumn(columnItem) {
     let newName = prompt('Новое название', 'new name')
 
-    if (type === 'column') {
-        const index = columnsData.findIndex(elem => elem.id == columnItem.id);
+    const index = columnsData.findIndex(elem => elem.id == columnItem.id);
 
-        if (index !== -1 && newName) {
-            columnsData[index].value = newName
-            console.log(columnsData)
-            document.getElementById(columnItem.id).firstChild.firstChild.innerHTML = newName;
-        }
+    if (index !== -1 && newName) {
+        columnsData[index].value = newName
+        console.log(columnsData)
+        document.getElementById(columnItem.id).firstChild.firstChild.innerHTML = newName;
     }
-    else if (type === 'card') {
-        const index = data.cards.findIndex(elem => elem.id == cardDataId);
+}
 
-        if (index !== -1 && newName) {
-            data.cards.splice(index, 1);
-            document.getElementById(cardItem.id).remove();
+// удаление карточки
+function deleteCard(item, data) {
+    const index = data.cards.findIndex(elem => elem.id == item.id);
 
-            console.log('Card removed:', data.cards);
-        }
+    if (index !== -1) {
+        data.cards.splice(index, 1);
+        document.getElementById(item.id).remove();
+
+        console.log('Card removed:', data.cards);
+    }
+
+}
+
+// изменение карточки
+function changeCard(item, data) {
+    let newName = prompt('Новое название', 'new name')
+
+    const index = data.cards.findIndex(elem => elem.id == item.id);
+
+    if (index !== -1 && newName) {
+        data.cards[index].value = newName
+        console.log(data)
+        document.getElementById(item.id).firstChild.textContent = newName;
     }
 }
 
@@ -215,7 +229,7 @@ form.addEventListener('submit', (e) => {
 });
 
 // Функция по добавлению карточки
-function addingCard(cardListId, cardDataId, value, data) {
+function addingCard(cardListId, cardDataId, value, columnItemData) {
     const cardsList = document.getElementById(cardListId);
 
     const cardItem = document.createElement('li');
@@ -230,7 +244,7 @@ function addingCard(cardListId, cardDataId, value, data) {
     cardMenuButton.className = 'card__button'
 
     // отображение окна меню
-    addWindow('card', cardMenuButton, cardItem)
+    addWindow('card', cardMenuButton, cardItem, columnItemData)
 
     cardItem.appendChild(cardMenuButton)
 

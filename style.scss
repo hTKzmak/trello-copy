@@ -122,12 +122,16 @@ body {
 
                                 position: absolute;
 
-                                img{
+                                img {
                                     width: 16px;
                                 }
 
-                                &:hover{
+                                &:hover {
                                     background-color: #f0f0f0c1;
+                                }
+
+                                @media screen and (max-width: 1440px) {
+                                    display: block;
                                 }
                             }
 
