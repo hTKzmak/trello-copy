@@ -14,7 +14,7 @@ document.addEventListener('dragover', (evt) => {
     if (activeElement && (evt.target.classList.contains('cards__list') || evt.target.classList.contains('card__item'))) {
         const currentElement = evt.target;
 
-        // проверка на наличие подзадач в goals__list (он как бы должен работать, но не работает)
+        // проверка на наличие подзадач в goals__list
         if (currentElement.classList.contains('cards__list') && currentElement.children.length === 0) {
             currentElement.appendChild(activeElement);
         } else {

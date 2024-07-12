@@ -1,194 +1,146 @@
-// кнопка добавления задачи
-const add_column_button = document.querySelector(`.add_column`);
+// Находим элементы на странице
+const addColumnButton = document.querySelector('.add_column');
+const form = document.querySelector('form');
 
-// находим форму заполнения
-const form = document.querySelector(`form`)
-
-
-// здесь будут храниться задачи (item_data)
+// Массив для хранения данных колонок
 let columnsData = [];
 
+// Функция для отображения формы заполнения
+function showForm() {
+    form.style.display = 'grid';
+    addColumnButton.querySelector('span').style.display = 'none';
+}
 
-// событие по отображению формы заполнения
-add_column_button.addEventListener('click', () => {
-    // делаем форму зыполнения видимым
-    form.style.display = 'grid'
+// Функция для скрытия формы заполнения
+function hideForm() {
+    form.style.display = 'none';
+    addColumnButton.querySelector('span').style.display = 'block';
+}
 
-    // убираем текст тега span
-    add_column_button.querySelector('span').style.display = 'none'
-})
+// Функция для создания элемента колонки
+function createColumnItem(columnItemData) {
+    const columnItem = document.createElement('li');
+    columnItem.className = 'column__item';
+    columnItem.id = columnItemData.id;
+    columnItem.draggable = true;
 
-// событие по добавлению задачи
-form.addEventListener('submit', (e) => {
-    // глушитель
-    e.preventDefault();
+    const columnHeader = document.createElement('div');
+    columnHeader.className = 'column__header';
 
-    // значение input
-    let input_value = form.querySelector('#add_column_value').value
+    const columnItemValue = document.createElement('span');
+    columnItemValue.innerHTML = columnItemData.value;
 
-    // если значение input_value не пустое, то выполняется следущее условие
-    if (input_value) {
+    const menuButton = document.createElement('button');
+    menuButton.className = 'menu__button';
+    menuButton.innerHTML = `
+        <div class="menu-icon">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+    `;
 
-        // данные, которые будут храниться в блоках с задачами
-        let column_item_data = {
+    columnHeader.appendChild(columnItemValue);
+    columnHeader.appendChild(menuButton);
+    columnItem.appendChild(columnHeader);
+
+    const columnContent = document.createElement('div');
+    columnContent.className = 'column__content';
+
+    const cardsList = document.createElement('ul');
+    cardsList.className = 'cards__list';
+    cardsList.id = "id" + Math.random().toString(16).slice(2);
+    columnContent.appendChild(cardsList);
+
+    const cardsButton = document.createElement('button');
+    cardsButton.className = 'cards__button';
+    cardsButton.innerHTML = 'Добавить карточку';
+
+    cardsButton.addEventListener('click', () => {
+        let cardData = {
             id: Date.now(),
-            value: input_value,
-            cards: []
-        }
+            value: prompt('Write card name', 'card 1'),
+        };
 
-        // добавляем данные в columnsData
-        columnsData.push(column_item_data)
+        addingCard(cardsList.id, cardData.id, cardData.value, columnItemData);
+        columnItemData.cards.push(cardData);
+        console.log(columnItemData);
+    });
 
-        // находим основной список задач на странице
-        const columnsListElement = document.querySelector('.columns__list')
+    columnContent.appendChild(cardsButton);
+    columnItem.appendChild(columnContent);
 
+    return columnItem;
+}
 
-        // _______Создание column_item_______
+// Функция для добавления колонки на страницу
+function addColumnItemToPage(columnItem) {
+    const columnsListElement = document.querySelector('.columns__list');
 
-        // создаём column_item
-        const column_item = document.createElement('li')
-
-        // _______Создаём содержимое для column_item_______
-
-        // создание header для карточки, где будет название карточки и меню
-        const column_header = document.createElement('div')
-        column_header.className = 'column__header'
-
-        // создание названия карточки
-        const column_item_value = document.createElement('span')
-        column_item_value.innerHTML = column_item_data.value
-
-        // создание кнопки меню для коломны
-        const menu_button = document.createElement('button')
-        menu_button.className = 'menu__button'
-        menu_button.innerHTML = `
-            <div class="menu-icon">
-                <div class="circle"></div>
-                <div class="circle"></div>
-                <div class="circle"></div>
-            </div>
-        `
-
-        // доп. параметры column_item
-        column_item.className = 'column__item'
-        column_item.id = column_item_data.id
-        // column_item.innerHTML = column_item_data.value
-        column_item.draggable = true
-
-
-        // удаление column_item
-        column_item.addEventListener('dblclick', () => {
-            // удаляем задачу из массива columnsData
-            columnsData = columnsData.filter(elem => elem.id !== column_item_data.id)
-            // удаляем задачу со страницы
-            document.getElementById(column_item_data.id).remove();
-        })
-
-        // событие по отображению окна для определённой коломны (пока показывает только id коломны)
-        menu_button.addEventListener('click', () => {
-            showId(column_item.id)
-        })
-
-        // добавляем название карточки в header самой карточки
-        column_header.appendChild(column_item_value)
-        column_header.appendChild(menu_button)
-        // добавляем сам header карточки в саму карточку
-        column_item.appendChild(column_header)
-
-
-        // создаём column_content, где будет находиться кнопка и список подзаголовков
-        const column_content = document.createElement('div')
-        column_content.className = 'column__content'
-
-
-        // _______Создание списка карточек_______
-
-        // создаём список карточек и добавляем в column_item 
-        const cards_list = document.createElement('ul')
-        cards_list.className = 'cards__list'
-        cards_list.id = "id" + Math.random().toString(16).slice(2) // второй способ создания рандомного id (чтобы он не совпадал с id переменной column_item)
-        column_content.appendChild(cards_list)
-
-
-        // создаём кнопку для добавления карточек, делаем для него функционал и добавляем в column_item 
-        const cards_button = document.createElement('button')
-        cards_button.className = 'cards__button'
-        cards_button.innerHTML = 'Добавить карточку'
-
-        // добавление подзаголовка 
-        cards_button.addEventListener('click', () => {
-            // данные для подзадачи
-            let card_data = {
-                id: Date.now(),
-                value: prompt('Write card name', 'card 1'),
-            }
-
-            // функция по добавлению подзадач
-            addingCard(cards_list.id, card_data.id, card_data.value, column_item_data)
-
-            column_item_data.cards.push(card_data)
-            console.log(column_item_data)
-        })
-
-        // добавление кнопки для добавления подзадач
-        column_content.appendChild(cards_button)
-
-        // добавляем в column_item наш column_content, где находится список и кнопка
-        column_item.appendChild(column_content)
-        
-        // добавление окна для column_item
-        column_item.appendChild(windowElem)
-
-
-        // добавляем на сайт
-        columnsListElement.appendChild(column_item)
-
-
-        // отображает данные (содержимое массива) в консоле
-        console.log(columnsData)
-
-
-        // убираем форму заполнения
-        form.style.display = 'none'
-
-        // делаем текст span видимым
-        add_column_button.querySelector('span').style.display = 'block'
-    }
-
-})
-
-// функция по добавлению подзадачи
-function addingCard(cardListId, cardDataId, value, data) {
-    const cards_list = document.getElementById(cardListId)
-
-    const card_item = document.createElement('li')
-    card_item.className = 'card__item'
-    card_item.id = cardDataId
-    card_item.innerHTML = value
-    card_item.draggable = true
-
-    // удаление подзадачи по клику
-    card_item.addEventListener('click', () => {
-
-        // удаление подзадачи в данных
-        const index = data.cards.findIndex(elem => elem.id == cardDataId)
+    // удаление коломны
+    columnItem.addEventListener('dblclick', () => {
+        const index = columnsData.findIndex(elem => elem.id == columnItem.id);
 
         if (index !== -1) {
-            // Удаляем элемент из массива cards
-            data.cards.splice(index, 1);
+            columnsData.splice(index, 1);
+            document.getElementById(columnItem.id).remove();
 
-            // Удаляем  из DOM
-            document.getElementById(card_item.id).remove();
-
-            console.log('result');
-            console.log(data.cards); // Проверяем, что элемент был удален из массива
-            console.log(data);
+            console.log(columnsData);
         }
-
     })
 
-    if (value) {
-        cards_list.appendChild(card_item)
-    }
+    columnsListElement.appendChild(columnItem);
+}
 
+// Событие по отображению формы заполнения
+addColumnButton.addEventListener('click', showForm);
+
+// Событие по добавлению задачи
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const inputValue = form.querySelector('#add_column_value').value;
+
+    if (inputValue) {
+        let columnItemData = {
+            id: Date.now(),
+            value: inputValue,
+            cards: []
+        };
+
+        columnsData.push(columnItemData);
+
+        const columnItem = createColumnItem(columnItemData);
+        addColumnItemToPage(columnItem);
+
+        console.log(columnsData);
+
+        hideForm();
+    }
+});
+
+// Функция по добавлению подзадачи
+function addingCard(cardListId, cardDataId, value, data) {
+    const cardsList = document.getElementById(cardListId);
+
+    const cardItem = document.createElement('li');
+    cardItem.className = 'card__item';
+    cardItem.id = cardDataId;
+    cardItem.innerHTML = value;
+    cardItem.draggable = true;
+
+    cardItem.addEventListener('click', () => {
+        const index = data.cards.findIndex(elem => elem.id == cardDataId);
+
+        if (index !== -1) {
+            data.cards.splice(index, 1);
+            document.getElementById(cardItem.id).remove();
+
+            console.log('Card removed:', data.cards);
+        }
+    });
+
+    if (value) {
+        cardsList.appendChild(cardItem);
+    }
 }
