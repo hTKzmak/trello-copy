@@ -56,6 +56,7 @@ function createColumnItem(columnItemData) {
     cardsButton.className = 'cards__button';
     cardsButton.innerHTML = 'Добавить карточку';
 
+    // добавление карточки
     cardsButton.addEventListener('click', () => {
         let cardData = {
             id: Date.now(),
@@ -69,10 +70,10 @@ function createColumnItem(columnItemData) {
 
     columnContent.appendChild(cardsButton);
 
-    
+
     columnItem.appendChild(columnContent);
 
-    
+
     // меню с выбором действий для колонки
     const menuWindow = document.createElement('div')
     menuWindow.className = 'window__elem'
@@ -81,10 +82,21 @@ function createColumnItem(columnItemData) {
     changeButton.className = 'buttonStyle'
     changeButton.innerHTML = 'Изменить'
 
+    changeButton.addEventListener('click', () => {
+        changeColumn(columnItem)
+        menuWindow.style.display = 'none';
+    })
+
     const deleteButton = document.createElement('button')
     deleteButton.className = 'buttonStyle'
     deleteButton.id = 'delete'
     deleteButton.innerHTML = 'Удалить'
+
+    // удаление колонки
+    deleteButton.addEventListener('click', () => {
+        deleteColumn(columnItem)
+        menuWindow.style.display = 'none';
+    })
 
     menuWindow.appendChild(changeButton)
     menuWindow.appendChild(deleteButton)
@@ -108,21 +120,35 @@ function createColumnItem(columnItemData) {
     return columnItem;
 }
 
+// удаление колонки
+function deleteColumn(columnItem) {
+    const index = columnsData.findIndex(elem => elem.id == columnItem.id);
+
+    if (index !== -1) {
+        columnsData.splice(index, 1);
+        document.getElementById(columnItem.id).remove();
+
+        console.log(columnsData);
+    }
+}
+
+// изменение колонки
+function changeColumn(columnItem) {
+    const index = columnsData.findIndex(elem => elem.id == columnItem.id);
+
+    let newName = prompt('Новое название', 'new name')
+
+    if (index !== -1) {
+        columnsData[index].value = newName
+        console.log(columnsData)
+        document.getElementById(columnItem.id).firstChild.firstChild.innerHTML = newName;
+    }
+}
+
+
 // Функция для добавления колонки на страницу
 function addColumnItemToPage(columnItem) {
     const columnsListElement = document.querySelector('.columns__list');
-
-    // удаление коломны
-    columnItem.addEventListener('dblclick', () => {
-        const index = columnsData.findIndex(elem => elem.id == columnItem.id);
-
-        if (index !== -1) {
-            columnsData.splice(index, 1);
-            document.getElementById(columnItem.id).remove();
-
-            console.log(columnsData);
-        }
-    })
 
     columnsListElement.appendChild(columnItem);
 }
