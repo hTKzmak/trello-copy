@@ -80,6 +80,9 @@ function createColumnItem(columnItemData) {
     columnItem.id = columnItemData.id;
     columnItem.draggable = true;
 
+    const columnItemCore = document.createElement('div');
+    columnItemCore.className = 'column__item__core'
+
     const columnHeader = document.createElement('div');
     columnHeader.className = 'column__header';
 
@@ -98,7 +101,7 @@ function createColumnItem(columnItemData) {
 
     columnHeader.appendChild(columnItemValue);
     columnHeader.appendChild(menuButton);
-    columnItem.appendChild(columnHeader);
+    columnItemCore.appendChild(columnHeader);
 
     const columnContent = document.createElement('div');
     columnContent.className = 'column__content';
@@ -130,8 +133,9 @@ function createColumnItem(columnItemData) {
 
     columnContent.appendChild(cardsButton);
 
+    columnItemCore.appendChild(columnContent);
 
-    columnItem.appendChild(columnContent);
+    columnItem.appendChild(columnItemCore)
 
     // отображение окна меню
     addWindow('column', menuButton, columnItem)

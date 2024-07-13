@@ -3,6 +3,8 @@ body {
   font-family: "Roboto", sans-serif;
   font-size: 18px;
   line-height: 25px;
+  margin: 0 auto;
+  padding: 0;
   color: #fff;
   background: #fff;
 }
@@ -10,8 +12,10 @@ body .content__list {
   display: flex;
   overflow-x: auto;
   gap: 10px;
-  height: 70vh;
+  height: 90vh;
   margin-top: 50px;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 body .content__list .columns__list {
   margin: 0;
@@ -22,6 +26,9 @@ body .content__list .columns__list {
   list-style: none;
 }
 body .content__list .columns__list .column__item {
+  height: 90%;
+}
+body .content__list .columns__list .column__item .column__item__core {
   transition: background-color 0.5s;
   margin-bottom: 10px;
   padding: 5px;
@@ -61,6 +68,9 @@ body .content__list .columns__list .column__item .column__content .cards__list {
   gap: 10px;
   margin-bottom: 10px;
   padding: 5px 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 370px;
 }
 body .content__list .columns__list .column__item .column__content .cards__list .card__item {
   position: relative;
@@ -131,6 +141,7 @@ body .content__list .add_column {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+  text-wrap: nowrap;
 }
 body .content__list .add_column form {
   gap: 7px;
@@ -185,7 +196,7 @@ body .content__list .add_column form #submit {
   width: auto;
   padding: 8px;
   top: 5px;
-  right: -30px;
+  right: 5px;
   background-color: #fff;
   box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
   border-radius: 4px;
