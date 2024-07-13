@@ -30,6 +30,15 @@ document.addEventListener('dragover', (evt) => {
             currentElement.parentElement.insertBefore(activeElement, nextElement);
         }
     }
+    // Проверяем если событие dragover произошёл на column__item
+    else if (activeElement && (evt.target.classList.contains('column__item'))){
+        const currentElement = evt.target;
+
+        const cardsList = currentElement.querySelector('.cards__list');
+
+        cardsList.appendChild(activeElement)
+    }
+
 });
 
 document.addEventListener('dragend', (evt) => {
