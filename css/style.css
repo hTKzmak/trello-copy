@@ -26,6 +26,7 @@ body .content__list .columns__list {
   list-style: none;
 }
 body .content__list .columns__list .column__item {
+  position: relative;
   height: 90%;
 }
 body .content__list .columns__list .column__item .column__item__core {
@@ -45,7 +46,6 @@ body .content__list .columns__list .column__item .column__item__core {
   background-color: transparent;
   color: whitesmoke;
   text-align: left;
-  position: relative;
   padding: 0;
   border: 1px solid #36a4a4;
   border-radius: 4px 4px 0 0;

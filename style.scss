@@ -58,6 +58,8 @@ body {
             list-style: none;
 
             .column__item {
+                position: relative;
+                
                 height: 90%;
 
                 .column__item__core {
@@ -67,8 +69,6 @@ body {
                     background-color: transparent;
                     color: whitesmoke;
                     text-align: left;
-
-                    position: relative;
 
                     padding: 0;
 
