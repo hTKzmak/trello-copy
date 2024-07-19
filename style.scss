@@ -25,6 +25,55 @@ $grey-font-color: #6a6a6a;
     transition: background-color 0.5s;
 }
 
+@mixin buttonStyle {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    display: none;
+
+    padding: 5px 8px;
+    border-radius: 100px;
+    border: none;
+
+    background-color: transparent;
+
+    cursor: pointer;
+}
+
+@mixin infoCard {
+    background-color: transparent;
+    color: #6c757d;
+    
+    border: 1px solid #36a4a4;
+    border-radius: 4px;
+    
+    font-weight: 600;
+    
+    padding: 8px 14px;
+    
+    word-wrap: anywhere;
+    word-break: break-all;
+    
+    overflow-y: auto;
+    
+    max-height: 70px;
+}
+
+@mixin btnStyle {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    padding: 5px 8px;
+    border-radius: 100px;
+    border: none;
+
+    background-color: transparent;
+
+    cursor: pointer;
+}
+
 body {
     font-family: "Roboto", sans-serif;
     font-size: 18px;
@@ -36,6 +85,68 @@ body {
     color: $font-color;
 
     background: $background;
+
+    .modalWindow_container {
+
+        // display: none;
+        display: flex;
+
+        height: 100vh;
+        width: 100vw;
+
+        background-color: #0000009b;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        justify-content: center;
+        align-items: center;
+
+        z-index: 1;
+
+        .window {
+            position: relative;
+
+            background-color: #fff;
+            box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
+            border-radius: 4px;
+
+            border: 1px solid $main-color;
+
+            width: 50%;
+
+            header{
+                display: flex;
+                justify-content: space-between;
+
+                background-color: $main-color;
+                padding: 10px;
+
+                .options{
+                    display: flex;
+                    gap: 15px;
+                }
+            }
+
+
+            .window_main_info {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                padding: 20px 15px 15px;
+
+                .card_name {
+                    @include infoCard();
+                }
+            }
+
+            @media screen and (max-width: 1000px) {
+                width: 80%;
+            }
+        }
+    }
 
     .content__list {
         display: flex;
@@ -59,7 +170,7 @@ body {
 
             .column__item {
                 position: relative;
-                
+
                 height: 90%;
 
                 .column__item__core {
@@ -120,21 +231,9 @@ body {
                             padding: 8px 14px;
 
                             .card__button {
-                                position: absolute;
-                                top: 5px;
-                                right: 5px;
-
+                                @include btnStyle();
                                 display: none;
 
-                                padding: 5px 8px;
-                                border-radius: 100px;
-                                border: none;
-
-                                background-color: transparent;
-
-                                cursor: pointer;
-
-                                position: absolute;
 
                                 img {
                                     width: 16px;

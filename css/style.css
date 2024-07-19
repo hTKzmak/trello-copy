@@ -8,6 +8,59 @@ body {
   color: #fff;
   background: #fff;
 }
+body .modalWindow_container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.6078431373);
+  position: fixed;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+body .modalWindow_container .window {
+  position: relative;
+  background-color: #fff;
+  box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
+  border-radius: 4px;
+  border: 1px solid #36a4a4;
+  width: 50%;
+}
+body .modalWindow_container .window header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #36a4a4;
+  padding: 10px;
+}
+body .modalWindow_container .window header .options {
+  display: flex;
+  gap: 15px;
+}
+body .modalWindow_container .window .window_main_info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 15px 15px;
+}
+body .modalWindow_container .window .window_main_info .card_name {
+  background-color: transparent;
+  color: #6c757d;
+  border: 1px solid #36a4a4;
+  border-radius: 4px;
+  font-weight: 600;
+  padding: 8px 14px;
+  word-wrap: anywhere;
+  word-break: break-all;
+  overflow-y: auto;
+  max-height: 70px;
+}
+@media screen and (max-width: 1000px) {
+  body .modalWindow_container .window {
+    width: 80%;
+  }
+}
 body .content__list {
   display: flex;
   overflow-x: auto;
@@ -86,13 +139,12 @@ body .content__list .columns__list .column__item .column__content .cards__list .
   position: absolute;
   top: 5px;
   right: 5px;
-  display: none;
   padding: 5px 8px;
   border-radius: 100px;
   border: none;
   background-color: transparent;
   cursor: pointer;
-  position: absolute;
+  display: none;
 }
 body .content__list .columns__list .column__item .column__content .cards__list .card__item .card__button img {
   width: 16px;

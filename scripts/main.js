@@ -1,6 +1,13 @@
 // Находим элементы на странице
 const addColumnButton = document.querySelector('.add_column');
 const form = document.querySelector('form');
+// const windowModal = document.querySelector('.modalWindow_container');
+// const exitButton = document.querySelector('.exit');
+
+// Элементы (кнопки для карточки)
+// const changeCardButton = document.querySelector('#change');
+// const deleteCardButton = document.querySelector('#delete');
+// const descCardButton = document.querySelector('#write_desc');
 
 // Массив для хранения данных колонок
 let columnsData = [];
@@ -17,63 +24,136 @@ function hideForm() {
     addColumnButton.querySelector('span').style.display = 'block';
 }
 
-// функция по отображению меню
-function addWindow(type, button, item, cartData) {
-    const menuWindow = document.createElement('div')
-    menuWindow.className = 'window__elem'
 
-    const changeButton = document.createElement('button')
-    changeButton.className = 'buttonStyle'
-    changeButton.innerHTML = 'Изменить'
+// Функция по отображению меню
+function addWindow(button, item) {
+    const menuWindow = document.createElement('div');
+    menuWindow.className = 'window__elem';
 
-    // изменение колонки/карточки
+    const changeButton = document.createElement('button');
+    changeButton.className = 'buttonStyle';
+    changeButton.innerHTML = 'Изменить';
+
+    // Изменение колонки/карточки
     changeButton.addEventListener('click', () => {
-        if (type === 'column') {
-            changeColumn(item)
-        }
-        else if (type === 'card') {
-            changeCard(item, cartData)
-        }
+        changeColumn(item);
         menuWindow.style.display = 'none';
-    })
+    });
 
-    const deleteButton = document.createElement('button')
-    deleteButton.className = 'buttonStyle'
-    deleteButton.id = 'delete'
-    deleteButton.innerHTML = 'Удалить'
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'buttonStyle';
+    deleteButton.id = 'delete';
+    deleteButton.innerHTML = 'Удалить';
 
-    // удаление колонки/карточки
+    // Удаление колонки/карточки
     deleteButton.addEventListener('click', () => {
-        if (type === 'column') {
-            deleteColumn(item)
-        }
-        else if (type === 'card') {
-            deleteCard(item, cartData)
-        }
+        deleteColumn(item);
         menuWindow.style.display = 'none';
-    })
+    });
 
-    menuWindow.appendChild(changeButton)
-    menuWindow.appendChild(deleteButton)
+    menuWindow.appendChild(changeButton);
+    menuWindow.appendChild(deleteButton);
 
-    // функционал отображения и исчезновения окна
+    // Функционал отображения и исчезновения окна
     button.addEventListener('click', () => {
-        if (menuWindow.style.display === 'none' || menuWindow.style.display === '') {
-            menuWindow.style.display = 'flex';
-        } else {
-            menuWindow.style.display = 'none';
-        }
+        menuWindow.style.display = (menuWindow.style.display === 'none' || menuWindow.style.display === '') ? 'flex' : 'none';
     });
 
     menuWindow.addEventListener('mouseleave', () => {
         menuWindow.style.display = 'none';
-    })
+    });
 
-    item.appendChild(menuWindow)
+    item.appendChild(menuWindow);
 }
 
-
 // Функция для создания элемента колонки
+
+function addWindowModal(cardItem, columnItemData) {
+    const index = columnItemData.cards.findIndex(elem => elem.id == cardItem.id);
+
+    // Создание элементов
+    const modalWindowContainer = document.createElement('div');
+    modalWindowContainer.classList.add('modalWindow_container');
+
+    const windowElement = document.createElement('div');
+    windowElement.classList.add('window');
+
+    const header = document.createElement('header');
+
+    const options = document.createElement('div');
+    options.classList.add('options');
+
+    // const writeDescButton = document.createElement('button');
+    // writeDescButton.id = 'write_desc';
+    // writeDescButton.textContent = 'Написать описание';
+
+    const deleteButton = document.createElement('button');
+    deleteButton.id = 'delete';
+    deleteButton.textContent = 'Удалить';
+
+    deleteButton.addEventListener('click', () => {
+
+        if (index !== -1) {
+            columnItemData.cards.splice(index, 1);
+            document.getElementById(cardItem.id).remove();
+
+            modalWindowContainer.remove();
+        }
+    })
+
+    // options.appendChild(writeDescButton);
+    options.appendChild(deleteButton);
+
+    const closeButton = document.createElement('button');
+    closeButton.classList.add('exit');
+    closeButton.textContent = 'Закрыть';
+
+    closeButton.addEventListener('click', () => {
+        modalWindowContainer.remove();
+    })
+
+    header.appendChild(options);
+    header.appendChild(closeButton);
+
+    const windowMainInfo = document.createElement('div');
+    windowMainInfo.classList.add('window_main_info');
+
+    const cardNameInput = document.createElement('input');
+    cardNameInput.type = 'text';
+    cardNameInput.classList.add('card_name');
+
+
+    cardNameInput.addEventListener('input', (event) => {
+        let newCardName = event.target.value;
+
+        if (index !== -1) {
+            console.log(newCardName)
+            columnItemData.cards[index].value = newCardName;
+            document.getElementById(cardItem.id).querySelector('span').innerHTML = newCardName;
+        }
+    })
+
+
+    const cardDescriptionTextarea = document.createElement('textarea');
+    cardDescriptionTextarea.name = 'textarea';
+    cardDescriptionTextarea.id = 'card_description';
+    cardDescriptionTextarea.cols = 30;
+    cardDescriptionTextarea.rows = 10;
+
+    windowMainInfo.appendChild(cardNameInput);
+    windowMainInfo.appendChild(cardDescriptionTextarea);
+
+    // Добавление элементов на страницу
+    windowElement.appendChild(header);
+    windowElement.appendChild(windowMainInfo);
+
+    modalWindowContainer.appendChild(windowElement);
+
+    // Добавление модального окна на страницу
+    document.body.appendChild(modalWindowContainer);
+
+}
+
 function createColumnItem(columnItemData) {
     const columnItem = document.createElement('li');
     columnItem.className = 'column__item';
@@ -81,7 +161,7 @@ function createColumnItem(columnItemData) {
     columnItem.draggable = true;
 
     const columnItemCore = document.createElement('div');
-    columnItemCore.className = 'column__item__core'
+    columnItemCore.className = 'column__item__core';
 
     const columnHeader = document.createElement('div');
     columnHeader.className = 'column__header';
@@ -115,14 +195,15 @@ function createColumnItem(columnItemData) {
     cardsButton.className = 'add__cards__button';
     cardsButton.innerHTML = 'Добавить карточку';
 
-    // добавление карточки
+    // Добавление карточки
     cardsButton.addEventListener('click', () => {
         let cardData = {
             id: Date.now(),
             value: prompt('Write card name', 'card 1'),
+            description: null,
         };
 
-        addingCard(cardsList.id, cardData.id, cardData.value, columnItemData);
+        addingCard(cardsList.id, cardData.id, cardData.value, columnItemData, cardData.description);
 
         if (cardData.value) {
             columnItemData.cards.push(cardData);
@@ -132,76 +213,42 @@ function createColumnItem(columnItemData) {
     });
 
     columnContent.appendChild(cardsButton);
-
     columnItemCore.appendChild(columnContent);
+    columnItem.appendChild(columnItemCore);
 
-    columnItem.appendChild(columnItemCore)
-
-    // отображение окна меню
-    addWindow('column', menuButton, columnItem)
+    // Отображение окна меню
+    addWindow(menuButton, columnItem);
 
     return columnItem;
 }
 
-// удаление колонки
+// Удаление колонки
 function deleteColumn(columnItem) {
-
     const index = columnsData.findIndex(elem => elem.id == columnItem.id);
 
     if (index !== -1) {
         columnsData.splice(index, 1);
         document.getElementById(columnItem.id).remove();
-
         console.log(columnsData);
     }
-    // const index = data.cards.findIndex(elem => elem.id == cardDataId);
-
 }
 
-// изменение колонки
+// Изменение колонки
 function changeColumn(columnItem) {
-    let newName = prompt('Новое название', 'new name')
+    let newName = prompt('Новое название', 'new name');
 
     const index = columnsData.findIndex(elem => elem.id == columnItem.id);
 
     if (index !== -1 && newName) {
-        columnsData[index].value = newName
-        console.log(columnsData)
-        document.getElementById(columnItem.id).firstChild.firstChild.innerHTML = newName;
+        columnsData[index].value = newName;
+        console.log(columnsData);
+        document.getElementById(columnItem.id).querySelector('.column__header span').innerHTML = newName;
     }
 }
-
-// удаление карточки
-function deleteCard(item, data) {
-    const index = data.cards.findIndex(elem => elem.id == item.id);
-
-    if (index !== -1) {
-        data.cards.splice(index, 1);
-        document.getElementById(item.id).remove();
-
-        console.log('Card removed:', data.cards);
-    }
-
-}
-
-// изменение карточки
-function changeCard(item, data) {
-    let newName = prompt('Новое название', 'new name')
-
-    const index = data.cards.findIndex(elem => elem.id == item.id);
-
-    if (index !== -1 && newName) {
-        data.cards[index].value = newName
-        console.log(data)
-        document.getElementById(item.id).firstChild.textContent = newName;
-    }
-}
-
 
 // Функция для добавления колонки на страницу
 function addColumnItemToPage(columnItem) {
     const columnsListElement = document.querySelector('.columns__list');
-
     columnsListElement.appendChild(columnItem);
 }
 
@@ -227,32 +274,89 @@ form.addEventListener('submit', (e) => {
         addColumnItemToPage(columnItem);
 
         console.log(columnsData);
-
         hideForm();
     }
 });
 
 // Функция по добавлению карточки
-function addingCard(cardListId, cardDataId, value, columnItemData) {
+function addingCard(cardListId, cardDataId, value, columnItemData, description) {
     const cardsList = document.getElementById(cardListId);
 
     const cardItem = document.createElement('li');
     cardItem.className = 'card__item';
     cardItem.id = cardDataId;
-    cardItem.innerHTML = value;
     cardItem.draggable = true;
 
+    const cardItemName = document.createElement('span')
+    cardItemName.innerHTML = value;
 
-    const cardMenuButton = document.createElement('button')
-    cardMenuButton.innerHTML = '<img src="./icons/pen.svg" alt="#">'
-    cardMenuButton.className = 'card__button'
+    const cardMenuButton = document.createElement('button');
+    cardMenuButton.innerHTML = '<img src="./icons/pen.svg" alt="#">';
+    cardMenuButton.className = 'card__button';
 
-    // отображение окна меню
-    addWindow('card', cardMenuButton, cardItem, columnItemData)
 
-    cardItem.appendChild(cardMenuButton)
+    cardMenuButton.addEventListener('click', () => {
+        // windowModal.style.display = 'flex';
+
+        // deleteCardButton.addEventListener('click', () => {
+        //     console.log(cardItem.id)
+        // })
+        addWindowModal(cardItem, columnItemData);
+    })
+
+    cardItem.appendChild(cardItemName)
+    cardItem.appendChild(cardMenuButton);
 
     if (value) {
         cardsList.appendChild(cardItem);
     }
 }
+
+
+
+
+
+
+// function addingCard(cardListId, cardDataId, value, columnItemData, description) {
+//     const cardsList = document.getElementById(cardListId);
+
+//     const cardItem = document.createElement('li');
+//     cardItem.className = 'card__item';
+//     cardItem.id = cardDataId;
+//     cardItem.innerHTML = value;
+//     cardItem.draggable = true;
+
+//     const cardMenuButton = document.createElement('button');
+//     cardMenuButton.innerHTML = '<img src="./icons/pen.svg" alt="#">';
+//     cardMenuButton.className = 'card__button';
+
+//     // Отображение окна меню
+//     cardMenuButton.addEventListener('click', () => {
+//         const index = columnItemData.cards.findIndex(elem => elem.id == cardItem.id);
+//         console.log(index);
+//         windowModal.style.display = 'flex';
+//     });
+
+//     // Обработчик удаления карточки
+//     deleteCardButton.addEventListener('click', () => {
+//         const index = columnItemData.cards.findIndex(elem => elem.id == cardItem.id);
+
+//         if (index !== -1) {
+//             columnItemData.cards.splice(index, 1);
+//             document.getElementById(cardItem.id).remove();
+//             console.log(columnItemData.cards);
+
+//             windowModal.style.display = 'none';
+//         }
+//     });
+
+//     exitButton.addEventListener('click', () => {
+//         windowModal.style.display = 'none';
+//     });
+
+//     cardItem.appendChild(cardMenuButton);
+
+//     if (value) {
+//         cardsList.appendChild(cardItem);
+//     }
+// }
