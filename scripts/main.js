@@ -1,13 +1,6 @@
 // Находим элементы на странице
 const addColumnButton = document.querySelector('.add_column');
 const form = document.querySelector('form');
-// const windowModal = document.querySelector('.modalWindow_container');
-// const exitButton = document.querySelector('.exit');
-
-// Элементы (кнопки для карточки)
-// const changeCardButton = document.querySelector('#change');
-// const deleteCardButton = document.querySelector('#delete');
-// const descCardButton = document.querySelector('#write_desc');
 
 // Массив для хранения данных колонок
 let columnsData = [];
@@ -26,20 +19,23 @@ function hideForm() {
 
 
 // Функция по отображению меню
-function addWindow(button, item) {
+function addMenuWindow(button, item, span, input) {
+    // создание самого окна меню
     const menuWindow = document.createElement('div');
     menuWindow.className = 'window__elem';
 
+    // кнопка для изменения названия карточки
     const changeButton = document.createElement('button');
     changeButton.className = 'buttonStyle';
     changeButton.innerHTML = 'Изменить';
 
     // Изменение колонки/карточки
     changeButton.addEventListener('click', () => {
-        changeColumn(item);
+        changeColumn(item, span, input);
         menuWindow.style.display = 'none';
     });
 
+    // кнопка для удаления самой карточки
     const deleteButton = document.createElement('button');
     deleteButton.className = 'buttonStyle';
     deleteButton.id = 'delete';
@@ -66,31 +62,32 @@ function addWindow(button, item) {
     item.appendChild(menuWindow);
 }
 
-// Функция для создания элемента колонки
-
+// Функция для создания модального окна только для выбранной нами карточки
 function addWindowModal(cardItem, columnItemData) {
     const index = columnItemData.cards.findIndex(elem => elem.id == cardItem.id);
 
-    // Создание элементов
+    // Создание основы для модального окна
     const modalWindowContainer = document.createElement('div');
     modalWindowContainer.classList.add('modalWindow_container');
 
+    // само модальное окно
     const windowElement = document.createElement('div');
     windowElement.classList.add('window');
 
+
+    // header с кнопками закрытия окна и удаления карточки
     const header = document.createElement('header');
 
+    // создания списока options (здесь будут находиться другие кнопки, если надо. Сейчас тут находится только кнопка deleteButton)
     const options = document.createElement('div');
     options.classList.add('options');
 
-    // const writeDescButton = document.createElement('button');
-    // writeDescButton.id = 'write_desc';
-    // writeDescButton.textContent = 'Написать описание';
-
+    // кнопка для удаления карточки
     const deleteButton = document.createElement('button');
     deleteButton.id = 'delete';
-    deleteButton.textContent = 'Удалить';
+    deleteButton.innerHTML = '<img src="./icons/trash.svg" alt="#">';
 
+    // функционал удаления карточки
     deleteButton.addEventListener('click', () => {
 
         if (index !== -1) {
@@ -101,13 +98,14 @@ function addWindowModal(cardItem, columnItemData) {
         }
     })
 
-    // options.appendChild(writeDescButton);
     options.appendChild(deleteButton);
 
+    // кнопка закрытия окна
     const closeButton = document.createElement('button');
     closeButton.classList.add('exit');
-    closeButton.textContent = 'Закрыть';
+    closeButton.innerHTML = '<img src="./icons/close.svg" alt="#">';
 
+    // фунционал закрытия окна (то есть, удаляет modalWindowContainer с разметки)
     closeButton.addEventListener('click', () => {
         modalWindowContainer.remove();
     })
@@ -115,25 +113,37 @@ function addWindowModal(cardItem, columnItemData) {
     header.appendChild(options);
     header.appendChild(closeButton);
 
+
+    // основной контент окна: название и описание
     const windowMainInfo = document.createElement('div');
     windowMainInfo.classList.add('window_main_info');
 
+
+    // input с названием карточки
     const cardNameInput = document.createElement('input');
     cardNameInput.type = 'text';
     cardNameInput.classList.add('card_name');
+    cardNameInput.placeholder = 'Пустая карточка'
+    cardNameInput.value = columnItemData.cards[index].value;
 
-
+    // функционал изменения названия карточки при нажатии на клавиши
     cardNameInput.addEventListener('input', (event) => {
         let newCardName = event.target.value;
 
         if (index !== -1) {
-            console.log(newCardName)
-            columnItemData.cards[index].value = newCardName;
-            document.getElementById(cardItem.id).querySelector('span').innerHTML = newCardName;
+            if (newCardName) {
+                columnItemData.cards[index].value = newCardName;
+                document.getElementById(cardItem.id).querySelector('span').innerHTML = newCardName;
+            }
+            else {
+                columnItemData.cards[index].value = 'Пустая карточка';
+                document.getElementById(cardItem.id).querySelector('span').innerHTML = 'Пустая карточка';
+            }
         }
     })
 
 
+    // описание карточки
     const cardDescriptionTextarea = document.createElement('textarea');
     cardDescriptionTextarea.name = 'textarea';
     cardDescriptionTextarea.id = 'card_description';
@@ -154,21 +164,35 @@ function addWindowModal(cardItem, columnItemData) {
 
 }
 
+// функция по созданию колонки 
 function createColumnItem(columnItemData) {
+
+    // создание columnItem (основу для содержимого самой колонки)
     const columnItem = document.createElement('li');
     columnItem.className = 'column__item';
     columnItem.id = columnItemData.id;
     columnItem.draggable = true;
 
+    // создание содержания всей инвормации самой колонки
     const columnItemCore = document.createElement('div');
     columnItemCore.className = 'column__item__core';
 
+    // header для колонки (содержимое: название колонки и кнопка для отображения меню)
     const columnHeader = document.createElement('div');
     columnHeader.className = 'column__header';
 
+    // название карточки
     const columnItemValue = document.createElement('span');
     columnItemValue.innerHTML = columnItemData.value;
 
+    // поле ввода для карточки (нужен для редактирования названия карточки во время ввода текста)
+    const columnItemInput = document.createElement('input')
+    columnItemInput.type = 'text';
+    columnItemInput.value = columnItemData.value;
+    columnItemInput.placeholder = 'Пустая колонка'
+    columnItemInput.style.display = 'none';
+
+    // кнопка меню
     const menuButton = document.createElement('button');
     menuButton.className = 'menu__button';
     menuButton.innerHTML = `
@@ -179,50 +203,83 @@ function createColumnItem(columnItemData) {
         </div>
     `;
 
+    // добавляем в columnHeader название колонки, input и кнопку
     columnHeader.appendChild(columnItemValue);
+    columnHeader.appendChild(columnItemInput);
     columnHeader.appendChild(menuButton);
+
+    // добавляем columnHeader (наш header колонки) в columnItemCore (содержания всей инвормации колонки)
     columnItemCore.appendChild(columnHeader);
 
+
+    // создание контента колонки
     const columnContent = document.createElement('div');
     columnContent.className = 'column__content';
 
+    // создание списка карточек
     const cardsList = document.createElement('ul');
     cardsList.className = 'cards__list';
     cardsList.id = "id" + Math.random().toString(16).slice(2);
     columnContent.appendChild(cardsList);
 
+    // кнопка для добавления карточек
     const cardsButton = document.createElement('button');
     cardsButton.className = 'add__cards__button';
-    cardsButton.innerHTML = 'Добавить карточку';
+
+    cardsButton.innerHTML = `
+    <span>Добавить карточку</span>
+
+    <form style="display: none;">
+        <input type="text" id="add_card_value">
+        <button id="submit" type="submit">Добавить</button>
+    </form>
+    `;
+
+    // находим в cardsButtonSpan теги с названием карточки, формы заполнения и поле ввода
+    const cardsButtonSpan = cardsButton.querySelector('span')
+    const cardsButtonForm = cardsButton.querySelector('form')
+    const cardsButtonInput = cardsButtonForm.querySelector('input')
 
     // Добавление карточки
     cardsButton.addEventListener('click', () => {
+        cardsButtonSpan.style.display = 'none'
+        cardsButtonForm.style.display = 'flex'
+    });
+
+    // функционал добавления карточки
+    cardsButtonForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
         let cardData = {
             id: Date.now(),
-            value: prompt('Write card name', 'card 1'),
+            value: cardsButtonInput.value,
             description: null,
         };
 
+        // необходимые данные даём функции addingCard (добавление карточки)
         addingCard(cardsList.id, cardData.id, cardData.value, columnItemData, cardData.description);
 
         if (cardData.value) {
             columnItemData.cards.push(cardData);
+
+            cardsButtonSpan.style.display = 'block'
+            cardsButtonForm.style.display = 'none'
         }
 
         console.log(columnItemData);
-    });
+    })
 
     columnContent.appendChild(cardsButton);
     columnItemCore.appendChild(columnContent);
     columnItem.appendChild(columnItemCore);
 
     // Отображение окна меню
-    addWindow(menuButton, columnItem);
+    addMenuWindow(menuButton, columnItem, columnItemValue, columnItemInput);
 
     return columnItem;
 }
 
-// Удаление колонки
+// Фунция для удаления колонки
 function deleteColumn(columnItem) {
     const index = columnsData.findIndex(elem => elem.id == columnItem.id);
 
@@ -233,32 +290,60 @@ function deleteColumn(columnItem) {
     }
 }
 
-// Изменение колонки
-function changeColumn(columnItem) {
-    let newName = prompt('Новое название', 'new name');
+// функция для изменения колонки
+function changeColumn(columnItem, span, input) {
 
-    const index = columnsData.findIndex(elem => elem.id == columnItem.id);
+    // исчезновение названия колонки и отображение поле ввода
+    span.style.display = 'none'
+    input.style.display = 'block'
 
-    if (index !== -1 && newName) {
-        columnsData[index].value = newName;
-        console.log(columnsData);
-        document.getElementById(columnItem.id).querySelector('.column__header span').innerHTML = newName;
-    }
+
+    // изменение имени колонки (почему-то выполняется несколько раз, когда выбираю другую колонку)
+    input.addEventListener('keydown', (event) => {
+
+        // находим index самой колонки
+        const index = columnsData.findIndex(elem => elem.id == columnItem.id);
+
+        // новое название карточки
+        let newName = input.value;
+
+        if (event.key === 'Enter' && index !== -1) {
+            if (newName) {
+                columnsData[index].value = newName;
+                console.log(columnsData);
+                document.getElementById(columnItem.id).querySelector('.column__header span').innerHTML = newName;
+            }
+            else {
+                columnsData[index].value = 'Пустая колонка';
+                console.log(columnsData);
+                document.getElementById(columnItem.id).querySelector('.column__header span').innerHTML = 'Пустая колонка';
+            }
+
+            span.style.display = 'block'
+            input.style.display = 'none'
+        }
+
+    })
+
 }
 
 // Функция для добавления колонки на страницу
 function addColumnItemToPage(columnItem) {
+    // находим на странице .columns__list
     const columnsListElement = document.querySelector('.columns__list');
+    
+    // добавляем в него колонку
     columnsListElement.appendChild(columnItem);
 }
 
 // Событие по отображению формы заполнения
 addColumnButton.addEventListener('click', showForm);
 
-// Событие по добавлению задачи
+// Событие по добавлению колонки
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    // находим #add_column_value и смотрим у него значение
     const inputValue = form.querySelector('#add_column_value').value;
 
     if (inputValue) {
@@ -268,95 +353,51 @@ form.addEventListener('submit', (e) => {
             cards: []
         };
 
+        // добавляем данные о колонке в columnsData
         columnsData.push(columnItemData);
 
+        // создаём колонку
         const columnItem = createColumnItem(columnItemData);
         addColumnItemToPage(columnItem);
 
         console.log(columnsData);
+
+        // скрываем формы заполнения
         hideForm();
     }
 });
 
 // Функция по добавлению карточки
 function addingCard(cardListId, cardDataId, value, columnItemData, description) {
+    // находим id списка карточек 
     const cardsList = document.getElementById(cardListId);
 
+    // создаём саму карточку
     const cardItem = document.createElement('li');
     cardItem.className = 'card__item';
     cardItem.id = cardDataId;
     cardItem.draggable = true;
 
+    // создаём span, где будет находиться название карточки
     const cardItemName = document.createElement('span')
     cardItemName.innerHTML = value;
-
+    
+    // создаём кнопку для отображения модального окна для карточки
     const cardMenuButton = document.createElement('button');
     cardMenuButton.innerHTML = '<img src="./icons/pen.svg" alt="#">';
     cardMenuButton.className = 'card__button';
 
-
+    // функционал для создания модального (только для выбранной нами карточки)
     cardMenuButton.addEventListener('click', () => {
-        // windowModal.style.display = 'flex';
-
-        // deleteCardButton.addEventListener('click', () => {
-        //     console.log(cardItem.id)
-        // })
         addWindowModal(cardItem, columnItemData);
     })
 
+    // добавляем название карточки и кнопку в самоу карточку
     cardItem.appendChild(cardItemName)
     cardItem.appendChild(cardMenuButton);
 
+    // добавляем саму карточку в список, если значение value не пустое
     if (value) {
         cardsList.appendChild(cardItem);
     }
 }
-
-
-
-
-
-
-// function addingCard(cardListId, cardDataId, value, columnItemData, description) {
-//     const cardsList = document.getElementById(cardListId);
-
-//     const cardItem = document.createElement('li');
-//     cardItem.className = 'card__item';
-//     cardItem.id = cardDataId;
-//     cardItem.innerHTML = value;
-//     cardItem.draggable = true;
-
-//     const cardMenuButton = document.createElement('button');
-//     cardMenuButton.innerHTML = '<img src="./icons/pen.svg" alt="#">';
-//     cardMenuButton.className = 'card__button';
-
-//     // Отображение окна меню
-//     cardMenuButton.addEventListener('click', () => {
-//         const index = columnItemData.cards.findIndex(elem => elem.id == cardItem.id);
-//         console.log(index);
-//         windowModal.style.display = 'flex';
-//     });
-
-//     // Обработчик удаления карточки
-//     deleteCardButton.addEventListener('click', () => {
-//         const index = columnItemData.cards.findIndex(elem => elem.id == cardItem.id);
-
-//         if (index !== -1) {
-//             columnItemData.cards.splice(index, 1);
-//             document.getElementById(cardItem.id).remove();
-//             console.log(columnItemData.cards);
-
-//             windowModal.style.display = 'none';
-//         }
-//     });
-
-//     exitButton.addEventListener('click', () => {
-//         windowModal.style.display = 'none';
-//     });
-
-//     cardItem.appendChild(cardMenuButton);
-
-//     if (value) {
-//         cardsList.appendChild(cardItem);
-//     }
-// }
