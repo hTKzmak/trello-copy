@@ -78,14 +78,18 @@ function addWindowModal(cardItem, columnItemData) {
     // header с кнопками закрытия окна и удаления карточки
     const header = document.createElement('header');
 
-    // создания списока options (здесь будут находиться другие кнопки, если надо. Сейчас тут находится только кнопка deleteButton)
+    // создания списока options (здесь будут находиться кнопки сохранения, удаления и закрытия окна)
     const options = document.createElement('div');
     options.classList.add('options');
 
+    // кнопка для сохранения карточки
+    const saveButton = document.createElement('button');
+    saveButton.innerHTML = 'Сохранить';
+
     // кнопка для удаления карточки
     const deleteButton = document.createElement('button');
-    deleteButton.id = 'delete';
-    deleteButton.innerHTML = '<img src="./icons/trash.svg" alt="#">';
+    deleteButton.id = 'delete_card';
+    deleteButton.innerHTML = 'Удалить';
 
     // функционал удаления карточки
     deleteButton.addEventListener('click', () => {
@@ -98,7 +102,9 @@ function addWindowModal(cardItem, columnItemData) {
         }
     })
 
-    options.appendChild(deleteButton);
+    // заголовок самого окна
+    const windowSpan = document.createElement('span')
+    windowSpan.innerHTML = 'Окно с информацией о карточке'
 
     // кнопка закрытия окна
     const closeButton = document.createElement('button');
@@ -110,7 +116,7 @@ function addWindowModal(cardItem, columnItemData) {
         modalWindowContainer.remove();
     })
 
-    header.appendChild(options);
+    header.appendChild(windowSpan);
     header.appendChild(closeButton);
 
 
@@ -123,24 +129,40 @@ function addWindowModal(cardItem, columnItemData) {
     const cardNameInput = document.createElement('input');
     cardNameInput.type = 'text';
     cardNameInput.classList.add('card_name');
-    cardNameInput.placeholder = 'Пустая карточка'
+    cardNameInput.placeholder = 'Введите название карточки'
     cardNameInput.value = columnItemData.cards[index].value;
 
     // функционал изменения названия карточки при нажатии на клавиши
-    cardNameInput.addEventListener('input', (event) => {
-        let newCardName = event.target.value;
+    saveButton.addEventListener('click', (event) => {
+        let newCardName = cardNameInput.value;
 
         if (index !== -1) {
             if (newCardName) {
                 columnItemData.cards[index].value = newCardName;
                 document.getElementById(cardItem.id).querySelector('span').innerHTML = newCardName;
+
+                cardNameInput.id = '';
             }
             else {
-                columnItemData.cards[index].value = 'Пустая карточка';
-                document.getElementById(cardItem.id).querySelector('span').innerHTML = 'Пустая карточка';
+                cardNameInput.id = 'empty';
             }
         }
     })
+
+
+    // Вторая кнопка закрытия модального окна, сделанная для options
+    const secondCloseButton = document.createElement('button');
+    secondCloseButton.innerHTML = 'Закрыть'
+
+    // фунционал закрытия окна (то есть, удаляет modalWindowContainer с разметки)
+    secondCloseButton.addEventListener('click', () => {
+        modalWindowContainer.remove();
+    })
+
+    // в options добавляем кнопки: сохранение, удаление, закрытие окна
+    options.appendChild(saveButton);
+    options.appendChild(deleteButton);
+    options.appendChild(secondCloseButton);
 
 
     // описание карточки
@@ -152,6 +174,7 @@ function addWindowModal(cardItem, columnItemData) {
 
     windowMainInfo.appendChild(cardNameInput);
     windowMainInfo.appendChild(cardDescriptionTextarea);
+    windowMainInfo.appendChild(options)
 
     // Добавление элементов на страницу
     windowElement.appendChild(header);
@@ -331,7 +354,7 @@ function changeColumn(columnItem, span, input) {
 function addColumnItemToPage(columnItem) {
     // находим на странице .columns__list
     const columnsListElement = document.querySelector('.columns__list');
-    
+
     // добавляем в него колонку
     columnsListElement.appendChild(columnItem);
 }
@@ -381,7 +404,7 @@ function addingCard(cardListId, cardDataId, value, columnItemData, description) 
     // создаём span, где будет находиться название карточки
     const cardItemName = document.createElement('span')
     cardItemName.innerHTML = value;
-    
+
     // создаём кнопку для отображения модального окна для карточки
     const cardMenuButton = document.createElement('button');
     cardMenuButton.innerHTML = '<img src="./icons/pen.svg" alt="#">';

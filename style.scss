@@ -41,6 +41,8 @@ $grey-font-color: #6a6a6a;
 
     overflow-y: auto;
 
+    transition: 0.3s;
+
     max-height: 70px;
 }
 
@@ -102,15 +104,13 @@ body {
 
             header {
                 display: flex;
+                // justify-content: right;
                 justify-content: space-between;
+                align-items: center;
 
                 background-color: $main-color;
                 padding: 5px 10px;
 
-                .options {
-                    display: flex;
-                    gap: 15px;
-                }
 
                 button {
                     background: transparent;
@@ -133,8 +133,42 @@ body {
 
                 padding: 20px 15px 15px;
 
+                #empty {
+                    border-color: red;
+                    background-color: rgba(255, 0, 0, .2);
+                    color: #FFF
+                }
+
                 .card_name {
                     @include infoCard();
+                }
+
+                .options {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    gap: 15px;
+
+                    button {
+                        text-transform: uppercase;
+                        font-size: .7rem;
+
+                        background-color: $main-color;
+                        color: #FFF;
+                        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+                        border: none;
+
+                        border-radius: 1em;
+
+                        padding: .7rem 1.6rem;
+
+                        cursor: pointer;
+                    }
+
+                    #delete_card {
+                        border: 1px solid #D7362E;
+                        background-color: #FFD3D3;
+                    }
                 }
             }
 
