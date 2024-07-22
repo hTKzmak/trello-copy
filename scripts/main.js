@@ -5,6 +5,7 @@ const form = document.querySelector('form');
 // Массив для хранения данных колонок
 let columnsData = [];
 
+
 // Функция для отображения формы заполнения
 function showForm() {
     form.style.display = 'grid';
@@ -64,6 +65,7 @@ function addMenuWindow(button, item, span, input) {
 
 // Функция для создания модального окна только для выбранной нами карточки
 function addWindowModal(cardItem, columnItemData) {
+    // находим index самой карточки
     const index = columnItemData.cards.findIndex(elem => elem.id == cardItem.id);
 
     // Создание основы для модального окна
@@ -133,7 +135,7 @@ function addWindowModal(cardItem, columnItemData) {
     cardNameInput.value = columnItemData.cards[index].value;
 
     // функционал изменения названия карточки при нажатии на клавиши
-    saveButton.addEventListener('click', (event) => {
+    saveButton.addEventListener('click', () => {
         let newCardName = cardNameInput.value;
 
         if (index !== -1) {
@@ -142,6 +144,8 @@ function addWindowModal(cardItem, columnItemData) {
                 document.getElementById(cardItem.id).querySelector('span').innerHTML = newCardName;
 
                 cardNameInput.id = '';
+
+                getDescValue(columnItemData, index)
             }
             else {
                 cardNameInput.id = 'empty';
@@ -172,6 +176,7 @@ function addWindowModal(cardItem, columnItemData) {
     cardDescriptionTextarea.cols = 30;
     cardDescriptionTextarea.rows = 10;
 
+    // добавляем строку, поле ввода и опции в windowMainInfo
     windowMainInfo.appendChild(cardNameInput);
     windowMainInfo.appendChild(cardDescriptionTextarea);
     windowMainInfo.appendChild(options)
@@ -187,23 +192,45 @@ function addWindowModal(cardItem, columnItemData) {
     document.body.appendChild(modalWindowContainer);
 
 
+    // Работа с TinyMCE:
+
+    // Уничтожение существующего экземпляра TinyMCE, если он есть, перед инициализацией нового.
+    // Он нужен для того, чтобы при следующем выборе карточки снова появлися этот редактор, а не пустое поле ввода
+    if (tinymce.get('card_description')) {
+        tinymce.get('card_description').remove();
+    }
+
+
     // подключение tinymce для #card_description после создания модального окна
     tinymce.init({
-        selector: '#card_description',
+        selector: 'textarea#card_description',
         license_key: 'gpl',
         statusbar: false,
         promotion: false,
         menubar: true,
-        language: 'ru',
+        // language: 'ru',
         plugins: 'lists emoticons',
         // forced_root_block: 'div',
         // newline_behavior: 'linebreak',
         toolbar: 'fontfamily fontsize | bold italic underline | alignleft aligncenter alignright alignjustify | emoticons | backcolor forecolor removeformat | bullist numlist outdent indent | undo redo',
         mobile: {
             toolbar_mode: 'floating'
+        },
+
+        // Добавляем описание к карточке
+        // Этот обратный вызов срабатывает после инициализации редактора и устанавливает содержимое, если описание существует.
+        setup: function (editor) {
+            editor.on('init', function () {
+                let cardDesc = columnItemData.cards[index].description;
+                if (cardDesc) {
+                    editor.setContent(cardDesc);
+                }
+            });
         }
     })
+
 }
+
 
 // функция по созданию колонки 
 function createColumnItem(columnItemData) {
@@ -377,6 +404,7 @@ function addColumnItemToPage(columnItem) {
     columnsListElement.appendChild(columnItem);
 }
 
+
 // Событие по отображению формы заполнения
 addColumnButton.addEventListener('click', showForm);
 
@@ -407,6 +435,7 @@ form.addEventListener('submit', (e) => {
         hideForm();
     }
 });
+
 
 // Функция по добавлению карточки
 function addingCard(cardListId, cardDataId, value, columnItemData, description) {
@@ -441,4 +470,19 @@ function addingCard(cardListId, cardDataId, value, columnItemData, description) 
     if (value) {
         cardsList.appendChild(cardItem);
     }
+}
+
+// получение значения поле ввода TinyMCE
+function getDescValue(columnData, cardIndex) {
+
+    // получаем значение поле ввода
+    const editorContent = tinymce.activeEditor.getContent();
+
+    // получаем значение поле ввода, но без тегов
+    // const editorContent = (((tinymce.activeEditor.getContent()).replace(/(&nbsp;)*/g, "")).replace(/(<p>)*/g, "")).replace(/<(\/)?p[^>]*>/g, "");
+
+    // сохраняем значение в описание карточки
+    columnData.cards[cardIndex].description = editorContent;
+
+    console.log(columnData)
 }

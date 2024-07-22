@@ -71,7 +71,7 @@ body .modalWindow_container .window .window_main_info .card_name {
 body .modalWindow_container .window .window_main_info .options {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 15px;
 }
 body .modalWindow_container .window .window_main_info .options button {
