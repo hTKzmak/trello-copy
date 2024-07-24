@@ -9,14 +9,16 @@ for (const task of columnElements) {
     task.draggable = true;
 }
 
+
 // при перетаскивании будет у выбранного объекта класс selected
-columnsListElement.addEventListener(`dragstart`, (evt) => {
+const addSelect = (evt) => {
     if (evt.target.classList.contains('column__item')) {
         evt.target.classList.add(`selected`);
     }
-});
+}
 
-columnsListElement.addEventListener(`dragover`, (evt) => {
+// Перетаскивание колонок
+const dragColumn = (evt) => {
     // Разрешаем сбрасывать элементы в эту область
     evt.preventDefault();
 
@@ -48,11 +50,24 @@ columnsListElement.addEventListener(`dragover`, (evt) => {
         // Вставляем activeElement перед nextElement
         columnsListElement.insertBefore(activeElement, nextElement);
     }
-});
+}
 
 // когда отпустим элемент, то класс selected исчезнет
-columnsListElement.addEventListener(`dragend`, (evt) => {
+const removeSelect = (evt) => {
     if (evt.target.classList.contains('column__item')) {
         evt.target.classList.remove(`selected`);
     }
-});
+}
+
+
+// событие добавления класса selected
+columnsListElement.addEventListener('dragstart', addSelect)
+columnsListElement.addEventListener('touchstart', addSelect)
+
+// событие перетаскивания колоноки
+columnsListElement.addEventListener(`dragover`, dragColumn)
+
+// событие удаления класса selected
+columnsListElement.addEventListener('dragend', removeSelect)
+columnsListElement.addEventListener('touchend', removeSelect)
+

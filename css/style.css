@@ -98,10 +98,10 @@ body .content__list {
   display: flex;
   overflow-x: auto;
   gap: 10px;
-  height: 90vh;
+  height: 95vh;
   margin-top: 50px;
-  margin-left: 30px;
-  margin-right: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 body .content__list .columns__list {
   margin: 0;
@@ -113,7 +113,7 @@ body .content__list .columns__list {
 }
 body .content__list .columns__list .column__item {
   position: relative;
-  height: 90%;
+  height: 100%;
 }
 body .content__list .columns__list .column__item .column__item__core {
   transition: background-color 0.5s;
@@ -182,7 +182,7 @@ body .content__list .columns__list .column__item .column__item__core .column__co
   padding: 5px 0;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 370px;
+  max-height: 65vh;
 }
 body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item {
   position: relative;
@@ -263,6 +263,12 @@ body .content__list .columns__list .column__item .window__elem .buttonStyle {
 }
 body .content__list .columns__list .column__item .window__elem .buttonStyle:hover {
   background-color: #f0f0f0;
+}
+@media screen and (max-width: 900px) {
+  body .content__list .columns__list .column__item {
+    height: -moz-fit-content;
+    height: fit-content;
+  }
 }
 body .content__list .add_column {
   transition: background-color 0.5s;

@@ -1,10 +1,10 @@
-document.addEventListener('dragstart', (evt) => {
+const addChoosen = (evt) => {
     if (evt.target.classList.contains('card__item')) {
         evt.target.classList.add('choosen');
     }
-});
+}
 
-document.addEventListener('dragover', (evt) => {
+const dragCard = (evt) => {
     // Разрешаем сбрасывать элементы в эту область
     evt.preventDefault();
 
@@ -31,18 +31,31 @@ document.addEventListener('dragover', (evt) => {
         }
     }
     // Проверяем если событие dragover произошёл на column__item
-    else if (activeElement && (evt.target.classList.contains('column__item'))){
+    else if (activeElement && (evt.target.classList.contains('column__item'))) {
         const currentElement = evt.target;
 
         const cardsList = currentElement.querySelector('.cards__list');
 
         cardsList.appendChild(activeElement)
     }
+}
 
-});
-
-document.addEventListener('dragend', (evt) => {
+const removeChoosen = (evt) => {
     if (evt.target.classList.contains('choosen')) {
         evt.target.classList.remove('choosen');
     }
-});
+}
+
+
+// событие добавления класса choosen
+document.addEventListener('dragstart', addChoosen);
+document.addEventListener('touchstart', addChoosen);
+
+// событие перемещения карточки
+document.addEventListener('dragover', dragCard);
+
+// событие удаления класса choosen
+document.addEventListener('dragend', removeChoosen);
+document.addEventListener('touchend', removeChoosen);
+
+

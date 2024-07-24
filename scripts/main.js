@@ -146,11 +146,14 @@ function addWindowModal(cardItem, columnItemData) {
                 cardNameInput.id = '';
 
                 getDescValue(columnItemData, index)
+                
+                modalWindowContainer.remove();
             }
             else {
                 cardNameInput.id = 'empty';
             }
         }
+
     })
 
 
