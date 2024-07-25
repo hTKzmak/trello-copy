@@ -21,6 +21,7 @@ function hideForm() {
 
 // Функция по отображению меню
 function addMenuWindow(button, item, span, input) {
+
     // создание самого окна меню
     const menuWindow = document.createElement('div');
     menuWindow.className = 'window__elem';
@@ -32,7 +33,8 @@ function addMenuWindow(button, item, span, input) {
 
     // Изменение колонки/карточки
     changeButton.addEventListener('click', () => {
-        changeColumn(item, span, input);
+        changeColumn(button, item, span, input);
+        button.style.display = 'none'
         menuWindow.style.display = 'none';
     });
 
@@ -54,6 +56,14 @@ function addMenuWindow(button, item, span, input) {
     // Функционал отображения и исчезновения окна
     button.addEventListener('click', () => {
         menuWindow.style.display = (menuWindow.style.display === 'none' || menuWindow.style.display === '') ? 'flex' : 'none';
+
+        document.addEventListener('touchstart', (evt) => {
+            const touch = evt.touches[0];
+            
+            if(touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle'){
+                menuWindow.style.display = 'none';
+            }
+        })
     });
 
     menuWindow.addEventListener('mouseleave', () => {
@@ -146,7 +156,7 @@ function addWindowModal(cardItem, columnItemData) {
                 cardNameInput.id = '';
 
                 getDescValue(columnItemData, index)
-                
+
                 modalWindowContainer.remove();
             }
             else {
@@ -362,12 +372,11 @@ function deleteColumn(columnItem) {
 }
 
 // функция для изменения колонки
-function changeColumn(columnItem, span, input) {
+function changeColumn(button, columnItem, span, input) {
 
     // исчезновение названия колонки и отображение поле ввода
     span.style.display = 'none'
     input.style.display = 'block'
-
 
     // изменение имени колонки (почему-то выполняется несколько раз, когда выбираю другую колонку)
     input.addEventListener('keydown', (event) => {
@@ -392,6 +401,7 @@ function changeColumn(columnItem, span, input) {
 
             span.style.display = 'block'
             input.style.display = 'none'
+            button.style.display = 'block'
         }
 
     })
@@ -441,7 +451,7 @@ form.addEventListener('submit', (e) => {
 
 
 // Функция по добавлению карточки
-function addingCard(cardListId, cardDataId, value, columnItemData, description) {
+function addingCard(cardListId, cardDataId, value, columnItemData) {
     // находим id списка карточек 
     const cardsList = document.getElementById(cardListId);
 

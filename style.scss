@@ -240,7 +240,7 @@ body {
 
                             outline: none;
 
-                            width: 10rem;
+                            width: 100%;
                             height: 25px;
 
                             color: $grey-font-color;
@@ -425,9 +425,7 @@ body {
 
 // стилизация для формы заполнения названия карточки или колонки
 form {
-    display: flex;
-    flex-direction: column;
-
+    display: none;
     gap: 7px;
 
     input {
@@ -444,20 +442,35 @@ form {
         font-size: 16px;
     }
 
-    #submit {
-        border: none;
-        border-radius: 4px;
+    .form-options{
 
-        background-color: #f3f3f3;
-        color: $grey-font-color;
+        display: flex;
+        gap: 10px;
 
-        padding: 7px 15px;
-        width: fit-content;
 
-        font-size: 14px;
+        #cancel{
+            font-size: 14px;
+            padding: 7px;
 
-        cursor: pointer;
+            cursor: pointer;
+        }
+    
+        #submit {
+            border: none;
+            border-radius: 4px;
+    
+            background-color: #f3f3f3;
+            color: $grey-font-color;
+    
+            padding: 7px 15px;
+            width: fit-content;
+    
+            font-size: 14px;
+    
+            cursor: pointer;
+        }
     }
+
 }
 
 .selected,
