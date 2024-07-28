@@ -312,7 +312,9 @@ function createColumnItem(columnItemData) {
 
     <form style="display: none;">
         <input type="text" id="add_card_value">
-        <button id="submit" type="submit">Добавить</button>
+        <div class="form-options">
+            <button id="submit" type="submit">Добавить</button>
+        </div>
     </form>
     `;
 
@@ -373,39 +375,48 @@ function deleteColumn(columnItem) {
 
 // функция для изменения колонки
 function changeColumn(button, columnItem, span, input) {
+    // Исчезновение названия колонки и отображение поля ввода
+    span.style.display = 'none';
+    input.style.display = 'block';
+    input.focus(); // Устанавливаем фокус на input
 
-    // исчезновение названия колонки и отображение поле ввода
-    span.style.display = 'none'
-    input.style.display = 'block'
+    // Находим индекс самой колонки
+    const index = columnsData.findIndex(elem => elem.id == columnItem.id);
 
-    // изменение имени колонки (почему-то выполняется несколько раз, когда выбираю другую колонку)
-    input.addEventListener('keydown', (event) => {
-
-        // находим index самой колонки
-        const index = columnsData.findIndex(elem => elem.id == columnItem.id);
-
-        // новое название карточки
+    // Функция для сохранения нового значения
+    const saveNewName = () => {
         let newName = input.value;
 
-        if (event.key === 'Enter' && index !== -1) {
+        if (index !== -1) {
             if (newName) {
                 columnsData[index].value = newName;
                 console.log(columnsData);
                 document.getElementById(columnItem.id).querySelector('.column__header span').innerHTML = newName;
-            }
-            else {
+            } else {
                 columnsData[index].value = 'Пустая колонка';
                 console.log(columnsData);
                 document.getElementById(columnItem.id).querySelector('.column__header span').innerHTML = 'Пустая колонка';
             }
-
-            span.style.display = 'block'
-            input.style.display = 'none'
-            button.style.display = 'block'
         }
 
-    })
+        // Скрываем input и показываем span и button
+        span.style.display = 'block';
+        input.style.display = 'none';
+        button.style.display = 'block';
+    };
 
+    // Удаляем предыдущие обработчики, если они существуют
+    input.removeEventListener('keydown', saveNewName);
+    input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            saveNewName();
+        }
+    });
+
+    // Обработчик события blur для input
+    input.addEventListener('blur', () => {
+        saveNewName();
+    });
 }
 
 // Функция для добавления колонки на страницу

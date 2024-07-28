@@ -296,6 +296,7 @@ body .content__list .add_column {
 
 form {
   display: none;
+  flex-direction: column;
   gap: 7px;
 }
 form input {
