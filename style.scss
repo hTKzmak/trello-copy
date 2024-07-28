@@ -6,7 +6,7 @@ $font-color: #fff;
 $goal-font-color: #6c757d;
 $grey-font-color: #6a6a6a;
 
-@mixin itemStyle {
+@mixin itemStyle($width, $maxWidth) {
     transition: background-color 0.5s;
     margin-bottom: 10px;
     padding: 5px;
@@ -18,8 +18,9 @@ $grey-font-color: #6a6a6a;
     font-size: 16px;
     font-weight: 600;
 
-    width: 250px;
-    max-width: 250px;
+    width: $width;
+    max-width: $maxWidth;
+
     height: fit-content;
 
     transition: background-color 0.5s;
@@ -73,7 +74,6 @@ body {
     background: $background;
 
     .modalWindow_container {
-
         // display: none;
         display: flex;
 
@@ -111,7 +111,6 @@ body {
                 background-color: $main-color;
                 padding: 5px 10px;
 
-
                 button {
                     background: transparent;
                     border: none;
@@ -125,7 +124,6 @@ body {
                 }
             }
 
-
             .window_main_info {
                 display: flex;
                 flex-direction: column;
@@ -135,8 +133,8 @@ body {
 
                 #empty {
                     border-color: red;
-                    background-color: rgba(255, 0, 0, .2);
-                    color: #FFF
+                    background-color: rgba(255, 0, 0, 0.2);
+                    color: #fff;
                 }
 
                 .card_name {
@@ -151,23 +149,25 @@ body {
 
                     button {
                         text-transform: uppercase;
-                        font-size: .7rem;
+                        font-size: 0.7rem;
 
                         background-color: $main-color;
-                        color: #FFF;
-                        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+                        color: #fff;
+                        box-shadow:
+                            0 2px 5px 0 rgba(0, 0, 0, 0.16),
+                            0 2px 10px 0 rgba(0, 0, 0, 0.12);
                         border: none;
 
                         border-radius: 1em;
 
-                        padding: .7rem 1.6rem;
+                        padding: 0.7rem 1.6rem;
 
                         cursor: pointer;
                     }
 
                     #delete_card {
-                        border: 1px solid #D7362E;
-                        background-color: #FFD3D3;
+                        border: 1px solid #d7362e;
+                        background-color: #ffd3d3;
                     }
                 }
             }
@@ -185,10 +185,10 @@ body {
 
         // height: 100vh;
         height: 95vh;
-        
+
         // margin-top: 20px;
         margin-top: 50px;
-        
+
         padding-left: 30px;
         padding-right: 30px;
 
@@ -208,7 +208,7 @@ body {
                 height: 100%;
 
                 .column__item__core {
-                    @include itemStyle();
+                    @include itemStyle(250px, 250px);
 
                     cursor: move;
                     background-color: transparent;
@@ -403,12 +403,13 @@ body {
                 @media screen and (max-width: 900px) {
                     height: fit-content;
                 }
-
             }
         }
 
         .add_column {
-            @include itemStyle();
+            @include itemStyle(250px, none);
+
+            min-width: 250px;
 
             color: whitesmoke;
             border-radius: 4px;
@@ -419,6 +420,11 @@ body {
             user-select: none;
 
             text-wrap: nowrap;
+
+            @media screen and (max-width: 900px) {
+                @include itemStyle(190px, none);
+                min-width: 190px;
+            }
         }
     }
 }
@@ -443,35 +449,32 @@ form {
         font-size: 16px;
     }
 
-    .form-options{
-
+    .form-options {
         display: flex;
         gap: 10px;
 
-
-        #cancel{
+        #cancel {
             font-size: 14px;
             padding: 7px;
 
             cursor: pointer;
         }
-    
+
         #submit {
             border: none;
             border-radius: 4px;
-    
+
             background-color: #f3f3f3;
             color: $grey-font-color;
-    
+
             padding: 7px 15px;
             width: fit-content;
-    
+
             font-size: 14px;
-    
+
             cursor: pointer;
         }
     }
-
 }
 
 .selected,
