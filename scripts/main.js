@@ -59,8 +59,8 @@ function addMenuWindow(button, item, span, input) {
 
         document.addEventListener('touchstart', (evt) => {
             const touch = evt.touches[0];
-            
-            if(touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle'){
+
+            if (touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle') {
                 menuWindow.style.display = 'none';
             }
         })
@@ -145,6 +145,11 @@ function addWindowModal(cardItem, columnItemData) {
     cardNameInput.value = columnItemData.cards[index].value;
 
     // функционал изменения названия карточки при нажатии на клавиши
+
+    cardNameInput.addEventListener('input', () => {
+        cardNameInput.id = cardNameInput.value ? '' : 'empty';
+    })
+
     saveButton.addEventListener('click', () => {
         let newCardName = cardNameInput.value;
 
@@ -153,14 +158,9 @@ function addWindowModal(cardItem, columnItemData) {
                 columnItemData.cards[index].value = newCardName;
                 document.getElementById(cardItem.id).querySelector('span').innerHTML = newCardName;
 
-                cardNameInput.id = '';
-
                 getDescValue(columnItemData, index)
 
                 modalWindowContainer.remove();
-            }
-            else {
-                cardNameInput.id = 'empty';
             }
         }
 

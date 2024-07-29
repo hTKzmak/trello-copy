@@ -53,7 +53,7 @@ body .modalWindow_container .window .window_main_info {
 body .modalWindow_container .window .window_main_info #empty {
   border-color: red;
   background-color: rgba(255, 0, 0, 0.2);
-  color: #fff;
+  color: #495057;
 }
 body .modalWindow_container .window .window_main_info .card_name {
   background-color: transparent;
@@ -64,6 +64,7 @@ body .modalWindow_container .window .window_main_info .card_name {
   padding: 8px 14px;
   word-wrap: anywhere;
   word-break: break-all;
+  outline: none;
   overflow-y: auto;
   transition: 0.3s;
   max-height: 70px;
@@ -86,8 +87,8 @@ body .modalWindow_container .window .window_main_info .options button {
   cursor: pointer;
 }
 body .modalWindow_container .window .window_main_info .options #delete_card {
-  border: 1px solid #d7362e;
-  background-color: #ffd3d3;
+  border: 1px solid #e72b3d;
+  background-color: #dc3545;
 }
 @media screen and (max-width: 1000px) {
   body .modalWindow_container .window {

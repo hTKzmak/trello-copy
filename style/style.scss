@@ -40,6 +40,8 @@ $grey-font-color: #6a6a6a;
     word-wrap: anywhere;
     word-break: break-all;
 
+    outline: none;
+
     overflow-y: auto;
 
     transition: 0.3s;
@@ -134,7 +136,7 @@ body {
                 #empty {
                     border-color: red;
                     background-color: rgba(255, 0, 0, 0.2);
-                    color: #fff;
+                    color: #495057;
                 }
 
                 .card_name {
@@ -166,8 +168,8 @@ body {
                     }
 
                     #delete_card {
-                        border: 1px solid #d7362e;
-                        background-color: #ffd3d3;
+                        border: 1px solid #e72b3d;
+                        background-color: #dc3545;
                     }
                 }
             }
