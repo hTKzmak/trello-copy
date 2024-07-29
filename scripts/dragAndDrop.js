@@ -4,10 +4,10 @@ const columnsListElement = document.querySelector(`.columns__list`);
 // сам элемент задачи 
 const columnElements = columnsListElement.querySelectorAll(`.column__item`);
 
-// Перебираем все элементы списка задач и присваиваем нужное значение
-for (const task of columnElements) {
-    task.draggable = true;
-}
+// // Перебираем все элементы списка задач и присваиваем нужное значение
+// for (const task of columnElements) {
+//     task.draggable = true;
+// }
 
 
 // при перетаскивании будет у выбранного объекта класс selected
@@ -62,12 +62,10 @@ const removeSelect = (evt) => {
 
 // событие добавления класса selected
 columnsListElement.addEventListener('dragstart', addSelect)
-columnsListElement.addEventListener('touchstart', addSelect)
 
 // событие перетаскивания колоноки
 columnsListElement.addEventListener(`dragover`, dragColumn)
 
 // событие удаления класса selected
 columnsListElement.addEventListener('dragend', removeSelect)
-columnsListElement.addEventListener('touchend', removeSelect)
 

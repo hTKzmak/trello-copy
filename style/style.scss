@@ -315,7 +315,7 @@ body {
                                         background-color: #f0f0f0c1;
                                     }
 
-                                    @media screen and (max-width: 900px) {
+                                    @media screen and (max-width: 1200px) {
                                         display: block;
                                     }
                                 }
@@ -400,6 +400,7 @@ body {
                     }
                 }
 
+                // нужен чтобы мы не могли перетаскивать колонки, удерживая его в самом низу экрана
                 @media screen and (max-width: 900px) {
                     height: fit-content;
                 }

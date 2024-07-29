@@ -211,7 +211,7 @@ body .content__list .columns__list .column__item .column__item__core .column__co
 body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item .card__button:hover {
   background-color: rgba(240, 240, 240, 0.7568627451);
 }
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1200px) {
   body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item .card__button {
     display: block;
   }

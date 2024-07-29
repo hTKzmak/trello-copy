@@ -49,13 +49,11 @@ const removeChoosen = (evt) => {
 
 // событие добавления класса choosen
 document.addEventListener('dragstart', addChoosen);
-document.addEventListener('touchstart', addChoosen);
 
 // событие перемещения карточки
 document.addEventListener('dragover', dragCard);
 
 // событие удаления класса choosen
 document.addEventListener('dragend', removeChoosen);
-document.addEventListener('touchend', removeChoosen);
 
 
