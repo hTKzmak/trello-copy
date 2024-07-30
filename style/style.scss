@@ -75,6 +75,8 @@ body {
 
     background: $background;
 
+    position: relative;
+
     .modalWindow_container {
         // display: none;
         display: flex;
@@ -348,59 +350,59 @@ body {
                     }
                 }
 
-                // стилизация меню для колонок
-                .window__elem {
-                    position: absolute;
+                // // стилизация меню для колонок
+                // .window__elem {
+                //     position: absolute;
 
-                    display: none;
-                    gap: 10px;
-                    flex-direction: column;
+                //     display: none;
+                //     gap: 10px;
+                //     flex-direction: column;
 
-                    width: auto;
+                //     width: auto;
 
-                    padding: 8px;
+                //     padding: 8px;
 
-                    top: 5px;
-                    right: 5px;
+                //     top: 5px;
+                //     right: 5px;
 
-                    background-color: #fff;
-                    -webkit-box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
-                    -moz-box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
-                    box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
+                //     background-color: #fff;
+                //     -webkit-box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
+                //     -moz-box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
+                //     box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
 
-                    border-radius: 4px;
+                //     border-radius: 4px;
 
-                    z-index: 1;
+                //     z-index: 1;
 
-                    #delete {
-                        background-color: #d12c2c;
-                        color: #fffcfc;
-                    }
+                //     #delete {
+                //         background-color: #d12c2c;
+                //         color: #fffcfc;
+                //     }
 
-                    .buttonStyle {
-                        border-radius: 4px;
+                //     .buttonStyle {
+                //         border-radius: 4px;
 
-                        font-size: 12px;
-                        font-weight: 600;
+                //         font-size: 12px;
+                //         font-weight: 600;
 
-                        padding: 8px;
+                //         padding: 8px;
 
-                        width: 143px;
-                        border: none;
-                        border-radius: 4px;
+                //         width: 143px;
+                //         border: none;
+                //         border-radius: 4px;
 
-                        color: #6a6a6a;
-                        background-color: #fff;
+                //         color: #6a6a6a;
+                //         background-color: #fff;
 
-                        text-align: left;
+                //         text-align: left;
 
-                        cursor: pointer;
+                //         cursor: pointer;
 
-                        &:hover {
-                            background-color: #f0f0f0;
-                        }
-                    }
-                }
+                //         &:hover {
+                //             background-color: #f0f0f0;
+                //         }
+                //     }
+                // }
 
                 // нужен чтобы мы не могли перетаскивать колонки, удерживая его в самом низу экрана
                 @media screen and (max-width: 900px) {
@@ -476,6 +478,60 @@ form {
             font-size: 14px;
 
             cursor: pointer;
+        }
+    }
+}
+
+// стилизация меню для колонок
+.window__elem {
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    width: auto;
+
+    padding: 8px;
+
+    top: 5px;
+    left: 90px;
+
+    background-color: #fff;
+    -webkit-box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
+
+    border-radius: 4px;
+
+    z-index: 1;
+
+    #delete {
+        background-color: #d12c2c;
+        color: #fffcfc;
+    }
+
+    .buttonStyle {
+        border-radius: 4px;
+
+        font-size: 12px;
+        font-weight: 600;
+
+        padding: 8px;
+
+        width: 143px;
+        border: none;
+        border-radius: 4px;
+
+        color: #6a6a6a;
+        background-color: #fff;
+
+        text-align: left;
+
+        cursor: pointer;
+
+        &:hover {
+            background-color: #f0f0f0;
         }
     }
 }

@@ -20,7 +20,7 @@ function hideForm() {
 
 
 // Функция по отображению меню
-function addMenuWindow(button, item, span, input) {
+function addMenuWindow(button, item, place, type, input, columnItemData) {
 
     // создание самого окна меню
     const menuWindow = document.createElement('div');
@@ -33,9 +33,15 @@ function addMenuWindow(button, item, span, input) {
 
     // Изменение колонки/карточки
     changeButton.addEventListener('click', () => {
-        changeColumn(button, item, span, input);
-        button.style.display = 'none'
-        menuWindow.style.display = 'none';
+        if (type === 'column') {
+            changeColumn(item, input);
+            button.style.display = 'none'
+            menuWindow.remove();
+        }
+        else if (type === 'card') {
+            // функционал для создания модального (только для выбранной нами карточки)
+            addWindowModal(item, columnItemData)
+        }
     });
 
     // кнопка для удаления самой карточки
@@ -46,8 +52,18 @@ function addMenuWindow(button, item, span, input) {
 
     // Удаление колонки/карточки
     deleteButton.addEventListener('click', () => {
-        deleteColumn(item);
-        menuWindow.style.display = 'none';
+        if (type === 'column') {
+            deleteColumn(item);
+            menuWindow.remove();
+        }
+        else if (type === 'card') {
+            const index = columnItemData.cards.findIndex(elem => elem.id == item.id);
+            if (index !== -1) {
+                columnItemData.cards.splice(index, 1);
+                document.getElementById(item.id).remove();
+                menuWindow.remove();
+            }
+        }
     });
 
     menuWindow.appendChild(changeButton);
@@ -55,22 +71,29 @@ function addMenuWindow(button, item, span, input) {
 
     // Функционал отображения и исчезновения окна
     button.addEventListener('click', () => {
-        menuWindow.style.display = (menuWindow.style.display === 'none' || menuWindow.style.display === '') ? 'flex' : 'none';
-
         document.addEventListener('touchstart', (evt) => {
             const touch = evt.touches[0];
 
             if (touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle') {
-                menuWindow.style.display = 'none';
+                menuWindow.remove();
             }
         })
     });
 
     menuWindow.addEventListener('mouseleave', () => {
-        menuWindow.style.display = 'none';
+        menuWindow.remove();
     });
 
-    item.appendChild(menuWindow);
+    // нужно определить позицию выбранной нами карточки, чтобы расположить его рядом с самой карточкой
+    // Добавляем само меню для выбранного нами места (то есть, place)
+    document.addEventListener('click', (event) => {
+        if(type === 'card' && event.target.className !== 'buttonStyle'){
+            menuWindow.style.top = (event.clientY - 66) + 'px'
+            menuWindow.style.left = (event.clientX - 131) + 'px'
+        }
+    })
+
+    place.appendChild(menuWindow);
 }
 
 // Функция для создания модального окна только для выбранной нами карточки
@@ -205,6 +228,7 @@ function addWindowModal(cardItem, columnItemData) {
     document.body.appendChild(modalWindowContainer);
 
 
+
     // Работа с TinyMCE:
 
     // Уничтожение существующего экземпляра TinyMCE, если он есть, перед инициализацией нового.
@@ -245,7 +269,7 @@ function addWindowModal(cardItem, columnItemData) {
 }
 
 
-// функция по созданию колонки 
+// функция по созданию колонки
 function createColumnItem(columnItemData) {
 
     // создание columnItem (основу для содержимого самой колонки)
@@ -357,7 +381,9 @@ function createColumnItem(columnItemData) {
     columnItem.appendChild(columnItemCore);
 
     // Отображение окна меню
-    addMenuWindow(menuButton, columnItem, columnItemValue, columnItemInput);
+    menuButton.addEventListener('click', () => {
+        addMenuWindow(menuButton, columnItem, columnItem, 'column', columnItemInput);
+    })
 
     return columnItem;
 }
@@ -374,9 +400,9 @@ function deleteColumn(columnItem) {
 }
 
 // функция для изменения колонки
-function changeColumn(button, columnItem, span, input) {
+function changeColumn(columnItem, input) {
     // Исчезновение названия колонки и отображение поля ввода
-    span.style.display = 'none';
+    columnItem.querySelector('.column__header').childNodes[0].style.display = 'none';
     input.style.display = 'block';
     input.focus(); // Устанавливаем фокус на input
 
@@ -400,9 +426,9 @@ function changeColumn(button, columnItem, span, input) {
         }
 
         // Скрываем input и показываем span и button
-        span.style.display = 'block';
+        columnItem.querySelector('.column__header').childNodes[0].style.display = 'block';
         input.style.display = 'none';
-        button.style.display = 'block';
+        columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
     };
 
     // Удаляем предыдущие обработчики, если они существуют
@@ -481,10 +507,11 @@ function addingCard(cardListId, cardDataId, value, columnItemData) {
     cardMenuButton.innerHTML = '<img src="./icons/pen.svg" alt="#">';
     cardMenuButton.className = 'card__button';
 
-    // функционал для создания модального (только для выбранной нами карточки)
+    // отображение окна меню для карточки
     cardMenuButton.addEventListener('click', () => {
-        addWindowModal(cardItem, columnItemData);
+        addMenuWindow(cardMenuButton, cardItem, document.body, 'card', null, columnItemData)
     })
+
 
     // добавляем название карточки и кнопку в самоу карточку
     cardItem.appendChild(cardItemName)
