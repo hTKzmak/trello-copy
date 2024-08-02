@@ -19,6 +19,82 @@ function hideForm() {
 }
 
 
+
+// Функция по добавлению кнопки сортировки карточек
+function addSortButton(window, column) {
+    // кнопка для сортировки карточек
+    const sortButton = document.createElement('button');
+    sortButton.className = 'buttonStyle';
+    sortButton.innerHTML = 'Сортировать';
+
+    // примерная сортировка от большего к меньшему
+    sortButton.addEventListener('click', () => {
+        console.log('сортировка от большего к меньшему')
+        // Находим индекс самой колонки
+        const index = columnsData.findIndex(elem => elem.id == column.id);
+
+        // сортировка карточек
+        columnsData[index].cards.sort((a, b) => b.data - a.data)
+        console.log(columnsData[index])
+        console.log(columnsData)
+
+        // удаляем карточки с определённой колонки, чтобы добавить отсортированные
+        let htmlData = document.getElementById(column.id).childNodes[0].lastChild.childNodes[0].childNodes;
+        // Создаем копию коллекции HTML-элементов
+        const htmlDataCopy = [...htmlData];
+
+        // находим список карточек выбранной нами колонки
+        let cardListId = document.getElementById(column.id).childNodes[0].lastChild.childNodes[0].id;
+
+        // Удаляем карточки из копии
+        for (let i of htmlDataCopy) {
+            i.remove();
+        }
+        
+        // добавляем отсортированные карточки
+        for(let j of columnsData[index].cards){
+            addingCard(cardListId, j.id, j.value, j.color, columnsData[index])
+            console.log(j)
+        }
+
+        window.remove();
+    })
+
+    window.appendChild(sortButton)
+}
+
+// Функция по добавлению кнопки изменения цвета выбранной нами карточки
+function addColorButton(window, card, columnItemData) {
+    // кнопка для перекраски карточки
+    const colorButton = document.createElement('button');
+    colorButton.className = 'buttonStyle';
+    colorButton.innerHTML = 'Изменить цвет';
+
+    colorButton.addEventListener('click', () => {
+        // Создаем элемент input типа цвет
+        const colorPicker = document.createElement('input');
+        colorPicker.type = 'color';
+        colorPicker.value = '#FFFFFF';
+
+        // Добавляем слушатель события изменения цвета
+        colorPicker.addEventListener('input', (e) => {
+            const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
+
+            // Выводим выбранное значение цвета в консоль
+            document.getElementById(card.id).style.background = e.target.value; 
+            // console.log(e.target.value);
+            
+            columnItemData.cards[index].color = e.target.value;
+            console.log(columnItemData.cards[index])
+        });
+
+        // Отображаем окно выбора цвета
+        colorPicker.click();
+    });
+
+    window.appendChild(colorButton);
+}
+
 // Функция по отображению меню
 function addMenuWindow(button, item, place, type, input, columnItemData) {
 
@@ -67,6 +143,14 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     });
 
     menuWindow.appendChild(changeButton);
+
+    if (type === 'column') {
+        addSortButton(menuWindow, item)
+    }
+    else if (type === 'card') {
+        addColorButton(menuWindow, item, columnItemData)
+    }
+
     menuWindow.appendChild(deleteButton);
 
     // Функционал отображения и исчезновения окна
@@ -87,7 +171,7 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     // нужно определить позицию выбранной нами карточки, чтобы расположить его рядом с самой карточкой
     // Добавляем само меню для выбранного нами места (то есть, place)
     document.addEventListener('click', (event) => {
-        if(type === 'card' && event.target.className !== 'buttonStyle'){
+        if (type === 'card' && event.target.className !== 'buttonStyle') {
             menuWindow.style.top = (event.clientY - 66) + 'px'
             menuWindow.style.left = (event.clientX - 131) + 'px'
         }
@@ -269,6 +353,8 @@ function addWindowModal(cardItem, columnItemData) {
 }
 
 
+
+
 // функция по созданию колонки
 function createColumnItem(columnItemData) {
 
@@ -357,14 +443,19 @@ function createColumnItem(columnItemData) {
     cardsButtonForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
+        // находим дату
+        const currentDate = new Date()
+
         let cardData = {
             id: Date.now(),
+            data: currentDate.getTime(),
+            color: null,
             value: cardsButtonInput.value,
             description: null,
         };
 
         // необходимые данные даём функции addingCard (добавление карточки)
-        addingCard(cardsList.id, cardData.id, cardData.value, columnItemData, cardData.description);
+        addingCard(cardsList.id, cardData.id, cardData.value, cardData.color, columnItemData);
 
         if (cardData.value) {
             columnItemData.cards.push(cardData);
@@ -454,7 +545,6 @@ function addColumnItemToPage(columnItem) {
     columnsListElement.appendChild(columnItem);
 }
 
-
 // Событие по отображению формы заполнения
 addColumnButton.addEventListener('click', showForm);
 
@@ -481,14 +571,16 @@ form.addEventListener('submit', (e) => {
 
         console.log(columnsData);
 
+        
         // скрываем формы заполнения
         hideForm();
     }
 });
 
 
+
 // Функция по добавлению карточки
-function addingCard(cardListId, cardDataId, value, columnItemData) {
+function addingCard(cardListId, cardDataId, value, color, columnItemData) {
     // находим id списка карточек 
     const cardsList = document.getElementById(cardListId);
 
@@ -497,6 +589,7 @@ function addingCard(cardListId, cardDataId, value, columnItemData) {
     cardItem.className = 'card__item';
     cardItem.id = cardDataId;
     cardItem.draggable = true;
+    cardItem.style.background = color;
 
     // создаём span, где будет находиться название карточки
     const cardItemName = document.createElement('span')
