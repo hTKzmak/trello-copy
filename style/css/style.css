@@ -101,7 +101,7 @@ body .content__list {
   overflow-x: auto;
   gap: 10px;
   height: 95vh;
-  margin-top: 50px;
+  padding-top: 50px;
   padding-left: 30px;
   padding-right: 30px;
 }
@@ -198,7 +198,7 @@ body .content__list .columns__list .column__item .column__item__core .column__co
 }
 body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item .card__button {
   position: absolute;
-  top: 5px;
+  top: 13px;
   right: 5px;
   padding: 5px 8px;
   border-radius: 100px;
@@ -207,8 +207,15 @@ body .content__list .columns__list .column__item .column__item__core .column__co
   cursor: pointer;
   display: none;
 }
-body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item .card__button img {
-  width: 16px;
+body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item .card__button .menu-icon {
+  display: flex;
+  gap: 4px;
+}
+body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item .card__button .menu-icon .circle {
+  width: 5px;
+  height: 5px;
+  background-color: #36a4a4;
+  border-radius: 100px;
 }
 body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item .card__button:hover {
   background-color: rgba(240, 240, 240, 0.7568627451);
@@ -262,23 +269,6 @@ body .content__list .add_column {
           user-select: none;
   text-wrap: nowrap;
 }
-@media screen and (max-width: 900px) {
-  body .content__list .add_column {
-    transition: background-color 0.5s;
-    margin-bottom: 10px;
-    padding: 5px;
-    border-radius: 4px;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    width: 190px;
-    max-width: none;
-    height: -moz-fit-content;
-    height: fit-content;
-    transition: background-color 0.5s;
-    min-width: 190px;
-  }
-}
 
 form {
   display: none;
@@ -290,6 +280,7 @@ form input {
   border: none;
   border-radius: 4px;
   outline: none;
+  width: initial;
   height: 35px;
   color: #6a6a6a;
   font-size: 16px;

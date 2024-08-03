@@ -6,11 +6,6 @@ const form = document.querySelector('form');
 let columnsData = [];
 
 
-// Функция для отображения формы заполнения
-function showForm() {
-    form.style.display = 'grid';
-    addColumnButton.querySelector('span').style.display = 'none';
-}
 
 // Функция для скрытия формы заполнения
 function hideForm() {
@@ -18,7 +13,28 @@ function hideForm() {
     addColumnButton.querySelector('span').style.display = 'block';
 }
 
+// Функция для отображения формы заполнения
+function showForm() {
+    form.style.display = 'grid';
+    addColumnButton.querySelector('span').style.display = 'none';
 
+    // Функционал отображения и исчезновения окна
+    document.addEventListener('touchstart', (evt) => {
+        const touch = evt.touches[0];
+
+        if (touch.target.className !== 'form-options' && touch.target.id !== 'add_column_value' && touch.target.id !== 'submit') {
+            hideForm();
+        }
+    })
+
+    document.addEventListener('click', (evt) => {
+        if (evt.target.className !== 'form-options' && evt.target.id !== 'add_column_value' && evt.target.id !== 'submit' && evt.target.className !== 'add_column' && evt.target.id !== 'column_btn_title') {
+            hideForm();
+        }
+    })
+
+
+}
 
 // Функция по добавлению кнопки сортировки карточек
 function addSortButton(window, column) {
@@ -50,9 +66,9 @@ function addSortButton(window, column) {
         for (let i of htmlDataCopy) {
             i.remove();
         }
-        
+
         // добавляем отсортированные карточки
-        for(let j of columnsData[index].cards){
+        for (let j of columnsData[index].cards) {
             addingCard(cardListId, j.id, j.value, j.color, columnsData[index])
             console.log(j)
         }
@@ -81,15 +97,16 @@ function addColorButton(window, card, columnItemData) {
             const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
 
             // Выводим выбранное значение цвета в консоль
-            document.getElementById(card.id).style.background = e.target.value; 
-            // console.log(e.target.value);
-            
+            document.getElementById(card.id).style.background = e.target.value;
+
             columnItemData.cards[index].color = e.target.value;
             console.log(columnItemData.cards[index])
         });
 
         // Отображаем окно выбора цвета
         colorPicker.click();
+
+        window.remove();
     });
 
     window.appendChild(colorButton);
@@ -117,6 +134,7 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
         else if (type === 'card') {
             // функционал для создания модального (только для выбранной нами карточки)
             addWindowModal(item, columnItemData)
+            menuWindow.remove();
         }
     });
 
@@ -154,15 +172,13 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     menuWindow.appendChild(deleteButton);
 
     // Функционал отображения и исчезновения окна
-    button.addEventListener('click', () => {
-        document.addEventListener('touchstart', (evt) => {
-            const touch = evt.touches[0];
+    document.addEventListener('touchstart', (evt) => {
+        const touch = evt.touches[0];
 
-            if (touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle') {
-                menuWindow.remove();
-            }
-        })
-    });
+        if (touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle') {
+            menuWindow.remove();
+        }
+    })
 
     menuWindow.addEventListener('mouseleave', () => {
         menuWindow.remove();
@@ -418,7 +434,7 @@ function createColumnItem(columnItemData) {
     cardsButton.className = 'add__cards__button';
 
     cardsButton.innerHTML = `
-    <span>Добавить карточку</span>
+    <span id="card_btn_title">Добавить карточку</span>
 
     <form style="display: none;">
         <input type="text" id="add_card_value">
@@ -437,6 +453,24 @@ function createColumnItem(columnItemData) {
     cardsButton.addEventListener('click', () => {
         cardsButtonSpan.style.display = 'none'
         cardsButtonForm.style.display = 'flex'
+
+        // Функционал отображения и исчезновения окна
+        document.addEventListener('touchstart', (evt) => {
+            const touch = evt.touches[0];
+
+            if (touch.target.className !== 'form-options' && touch.target.id !== 'add_card_value' && touch.target.id !== 'submit') {
+                cardsButtonSpan.style.display = 'block'
+                cardsButtonForm.style.display = 'none'
+            }
+        })
+
+        document.addEventListener('click', (evt) => {
+            if (evt.target.className !== 'form-options' && evt.target.id !== 'add_card_value' && evt.target.id !== 'submit' && evt.target.className !== 'add_card' && evt.target.id !== 'card_btn_title') {
+                cardsButtonSpan.style.display = 'block'
+                cardsButtonForm.style.display = 'none'
+            }
+        })
+
     });
 
     // функционал добавления карточки
@@ -571,7 +605,7 @@ form.addEventListener('submit', (e) => {
 
         console.log(columnsData);
 
-        
+
         // скрываем формы заполнения
         hideForm();
     }
@@ -597,7 +631,12 @@ function addingCard(cardListId, cardDataId, value, color, columnItemData) {
 
     // создаём кнопку для отображения модального окна для карточки
     const cardMenuButton = document.createElement('button');
-    cardMenuButton.innerHTML = '<img src="./icons/pen.svg" alt="#">';
+    cardMenuButton.innerHTML = `
+        <div class="menu-icon">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div> `;
     cardMenuButton.className = 'card__button';
 
     // отображение окна меню для карточки

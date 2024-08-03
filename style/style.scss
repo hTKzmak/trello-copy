@@ -51,7 +51,7 @@ $grey-font-color: #6a6a6a;
 
 @mixin btnStyle {
     position: absolute;
-    top: 5px;
+    top: 13px;
     right: 5px;
 
     padding: 5px 8px;
@@ -191,7 +191,7 @@ body {
         height: 95vh;
 
         // margin-top: 20px;
-        margin-top: 50px;
+        padding-top: 50px;
 
         padding-left: 30px;
         padding-right: 30px;
@@ -311,8 +311,20 @@ body {
                                     @include btnStyle();
                                     display: none;
 
-                                    img {
-                                        width: 16px;
+                                    // img {
+                                    //     width: 16px;
+                                    // }
+
+                                    .menu-icon {
+                                        display: flex;
+                                        gap: 4px;
+
+                                        .circle {
+                                            width: 5px;
+                                            height: 5px;
+                                            background-color: $main-color;
+                                            border-radius: 100px;
+                                        }
                                     }
 
                                     &:hover {
@@ -350,60 +362,6 @@ body {
                     }
                 }
 
-                // // стилизация меню для колонок
-                // .window__elem {
-                //     position: absolute;
-
-                //     display: none;
-                //     gap: 10px;
-                //     flex-direction: column;
-
-                //     width: auto;
-
-                //     padding: 8px;
-
-                //     top: 5px;
-                //     right: 5px;
-
-                //     background-color: #fff;
-                //     -webkit-box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
-                //     -moz-box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
-                //     box-shadow: 0px 12px 15px 5px rgba(34, 60, 80, 0.2);
-
-                //     border-radius: 4px;
-
-                //     z-index: 1;
-
-                //     #delete {
-                //         background-color: #d12c2c;
-                //         color: #fffcfc;
-                //     }
-
-                //     .buttonStyle {
-                //         border-radius: 4px;
-
-                //         font-size: 12px;
-                //         font-weight: 600;
-
-                //         padding: 8px;
-
-                //         width: 143px;
-                //         border: none;
-                //         border-radius: 4px;
-
-                //         color: #6a6a6a;
-                //         background-color: #fff;
-
-                //         text-align: left;
-
-                //         cursor: pointer;
-
-                //         &:hover {
-                //             background-color: #f0f0f0;
-                //         }
-                //     }
-                // }
-
                 // нужен чтобы мы не могли перетаскивать колонки, удерживая его в самом низу экрана
                 @media screen and (max-width: 900px) {
                     height: fit-content;
@@ -425,11 +383,6 @@ body {
             user-select: none;
 
             text-wrap: nowrap;
-
-            @media screen and (max-width: 900px) {
-                @include itemStyle(190px, none);
-                min-width: 190px;
-            }
         }
     }
 }
@@ -483,7 +436,7 @@ form {
     }
 }
 
-// стилизация меню для колонок
+// стилизация меню для колонок и для карточек
 .window__elem {
     position: absolute;
 
