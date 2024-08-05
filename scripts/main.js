@@ -281,7 +281,7 @@ function addWindowModal(cardItem, columnItemData) {
         descIcon.innerHTML = '<img src="./icons/description.svg" alt="#" style="width: 15px; height: 15px;">';
         descIcon.style = `
             position: absolute;
-            bottom: 6px;
+            bottom: 5px;
             left: 15px;
         `
 
@@ -368,10 +368,10 @@ function addWindowModal(cardItem, columnItemData) {
         statusbar: false,
         promotion: false,
         menubar: true,
-        // language: 'ru',
+        language: 'ru',
         plugins: 'lists emoticons',
-        // forced_root_block: 'div',
-        // newline_behavior: 'linebreak',
+        forced_root_block: 'div',
+        newline_behavior: 'linebreak',
         toolbar: 'fontfamily fontsize | bold italic underline | alignleft aligncenter alignright alignjustify | emoticons | backcolor forecolor removeformat | bullist numlist outdent indent | undo redo',
         mobile: {
             toolbar_mode: 'floating'
