@@ -276,6 +276,16 @@ function addWindowModal(cardItem, columnItemData) {
     saveButton.addEventListener('click', () => {
         let newCardName = cardNameInput.value;
 
+        // икнока наличия описания
+        const descIcon = document.createElement('span')
+        descIcon.innerHTML = '<img src="./icons/description.svg" alt="#" style="width: 15px; height: 15px;">';
+        descIcon.style = `
+            position: absolute;
+            bottom: 6px;
+            left: 15px;
+        `
+
+
         if (index !== -1) {
             if (newCardName) {
                 columnItemData.cards[index].value = newCardName;
@@ -284,6 +294,19 @@ function addWindowModal(cardItem, columnItemData) {
                 getDescValue(columnItemData, index)
 
                 modalWindowContainer.remove();
+
+                console.log(columnItemData.cards[index].description !== '')
+                console.log(columnItemData.cards[index].description)
+
+                if (columnItemData.cards[index].description !== '') {
+                    cardItem.style.paddingBottom = '30px';
+
+                    cardItem.appendChild(descIcon);
+                }
+                else {
+                    cardItem.style.paddingBottom = '8px';
+                    cardItem.children[2].remove()
+                }
             }
         }
 
