@@ -80,6 +80,7 @@ function addSortButton(window, column) {
 }
 
 // Функция по добавлению кнопки изменения цвета выбранной нами карточки
+
 function addColorButton(window, card, columnItemData) {
     // кнопка для перекраски карточки
     const colorButton = document.createElement('button');
@@ -87,10 +88,11 @@ function addColorButton(window, card, columnItemData) {
     colorButton.innerHTML = 'Изменить цвет';
 
     colorButton.addEventListener('click', () => {
-        // Создаем элемент input типа цвет
+        // Создаем элемент input типа цвет вне функции addColorButton
         const colorPicker = document.createElement('input');
         colorPicker.type = 'color';
         colorPicker.value = '#FFFFFF';
+        colorPicker.style.display = 'none'; // скрываем элемент
 
         // Добавляем слушатель события изменения цвета
         colorPicker.addEventListener('input', (e) => {
@@ -100,13 +102,22 @@ function addColorButton(window, card, columnItemData) {
             document.getElementById(card.id).style.background = e.target.value;
 
             columnItemData.cards[index].color = e.target.value;
-            console.log(columnItemData.cards[index])
+            console.log(columnItemData.cards[index]);
         });
 
-        // Отображаем окно выбора цвета
-        colorPicker.click();
+        // Добавляем элемент colorPicker в DOM, чтобы он работал в Safari
+        document.body.appendChild(colorPicker);
 
-        window.remove();
+        // Даем браузеру время для корректной обработки элемента в DOM
+        setTimeout(() => {
+            // Отображаем окно выбора цвета
+            colorPicker.click();
+
+            // Удаляем элемент colorPicker после выбора цвета
+            colorPicker.addEventListener('change', () => {
+                colorPicker.remove();
+            });
+        }, 0);
     });
 
     window.appendChild(colorButton);
@@ -183,7 +194,7 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     menuWindow.addEventListener('mouseleave', () => {
         menuWindow.remove();
     });
-
+    
     // нужно определить позицию выбранной нами карточки, чтобы расположить его рядом с самой карточкой
     // Добавляем само меню для выбранного нами места (то есть, place)
     document.addEventListener('click', (event) => {
@@ -192,8 +203,9 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
             menuWindow.style.left = (event.clientX - 131) + 'px'
         }
     })
-
+    
     place.appendChild(menuWindow);
+
 }
 
 // Функция для создания модального окна только для выбранной нами карточки
@@ -284,7 +296,6 @@ function addWindowModal(cardItem, columnItemData) {
             bottom: 5px;
             left: 15px;
         `
-
 
         if (index !== -1) {
             if (newCardName) {
