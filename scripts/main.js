@@ -6,7 +6,6 @@ const form = document.querySelector('form');
 let columnsData = [];
 
 
-
 // Функция для скрытия формы заполнения
 function hideForm() {
     form.style.display = 'none';
@@ -80,46 +79,42 @@ function addSortButton(window, column) {
 }
 
 // Функция по добавлению кнопки изменения цвета выбранной нами карточки
-
 function addColorButton(window, card, columnItemData) {
     // кнопка для перекраски карточки
     const colorButton = document.createElement('button');
     colorButton.className = 'buttonStyle';
     colorButton.innerHTML = 'Изменить цвет';
 
-    colorButton.addEventListener('click', () => {
-        // Создаем элемент input типа цвет вне функции addColorButton
-        const colorPicker = document.createElement('input');
-        colorPicker.type = 'color';
-        colorPicker.value = '#FFFFFF';
-        colorPicker.style.display = 'none'; // скрываем элемент
+    // Создаем элемент input типа color
+    const colorPicker = document.createElement('input');
+    colorPicker.type = 'color';
+    colorPicker.value = '#FFFFFF';
+    colorPicker.style = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        cursor: pointer;
+    `
 
-        // Добавляем слушатель события изменения цвета
-        colorPicker.addEventListener('input', (e) => {
-            const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
+    colorPicker.addEventListener('click', () => {
+        window.remove();
+    })
 
-            // Выводим выбранное значение цвета в консоль
-            document.getElementById(card.id).style.background = e.target.value;
-
-            columnItemData.cards[index].color = e.target.value;
-            console.log(columnItemData.cards[index]);
-        });
-
-        // Добавляем элемент colorPicker в DOM, чтобы он работал в Safari
-        document.body.appendChild(colorPicker);
-
-        // Даем браузеру время для корректной обработки элемента в DOM
-        setTimeout(() => {
-            // Отображаем окно выбора цвета
-            colorPicker.click();
-
-            // Удаляем элемент colorPicker после выбора цвета
-            colorPicker.addEventListener('change', () => {
-                colorPicker.remove();
-            });
-        }, 0);
+    colorPicker.addEventListener('input', (e) => {
+        const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
+        // Выводим выбранное значение цвета в консоль
+        document.getElementById(card.id).style.background = e.target.value;
+        // console.log(e.target.value);
+        columnItemData.cards[index].color = e.target.value;
+        console.log(columnItemData.cards[index])
     });
 
+    // добавляем сам input в кнопку, делая его невидимым
+    colorButton.appendChild(colorPicker)
+
+    // добавляем в окно эту кнопку
     window.appendChild(colorButton);
 }
 
@@ -194,7 +189,7 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     menuWindow.addEventListener('mouseleave', () => {
         menuWindow.remove();
     });
-    
+
     // нужно определить позицию выбранной нами карточки, чтобы расположить его рядом с самой карточкой
     // Добавляем само меню для выбранного нами места (то есть, place)
     document.addEventListener('click', (event) => {
@@ -203,7 +198,7 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
             menuWindow.style.left = (event.clientX - 131) + 'px'
         }
     })
-    
+
     place.appendChild(menuWindow);
 
 }
