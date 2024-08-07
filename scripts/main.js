@@ -35,6 +35,67 @@ function showForm() {
 
 }
 
+// фукнция для сортровки карточек выбранной нами колонки
+function sortFunctionality(type, column) {
+    console.log('сортировка от большего к меньшему')
+    // Находим индекс самой колонки
+    const index = columnsData.findIndex(elem => elem.id == column.id);
+
+
+    // сортировка карточек
+    switch (type) {
+        case 'upToDown':
+            columnsData[index].cards.sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
+            console.log(columnsData[index]);
+            console.log(columnsData);
+            break
+        case 'downToUp':
+            columnsData[index].cards.sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime());
+            console.log(columnsData[index]);
+            console.log(columnsData);
+            break
+        case 'letter':
+            columnsData[index].cards.sort((a, b) => {
+                if (a.value < b.value) {
+                    return -1;
+                } else if (a.value > b.value) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+            console.log(columnsData[index]);
+            console.log(columnsData);
+            break
+        default:
+            // выполнится, если ни один другой случай не сработал
+            console.log('Сортировка не сработала (ಡ‸ಡ)')
+            break
+    }
+
+
+    // удаляем карточки с определённой колонки, чтобы добавить отсортированные
+    let htmlData = document.getElementById(column.id).childNodes[0].lastChild.childNodes[0].childNodes;
+
+    // Создаем копию коллекции HTML-элементов
+    const htmlDataCopy = [...htmlData];
+
+    // находим список карточек выбранной нами колонки
+    let cardListId = document.getElementById(column.id).childNodes[0].lastChild.childNodes[0].id;
+
+    // Удаляем карточки из копии
+    for (let i of htmlDataCopy) {
+        i.remove();
+    }
+
+    // добавляем отсортированные карточки
+    for (let j of columnsData[index].cards) {
+        addingCard(cardListId, j.id, j.value, j.color, columnsData[index])
+        console.log(j)
+    }
+}
+
+
 // Функция по добавлению кнопки сортировки карточек
 function addSortButton(window, column) {
     // кнопка для сортировки карточек
@@ -42,38 +103,69 @@ function addSortButton(window, column) {
     sortButton.className = 'buttonStyle';
     sortButton.innerHTML = 'Сортировать';
 
-    // примерная сортировка от большего к меньшему
+    // отдельное окно для сортировки карточек
+    const sortWindow = document.createElement('div')
+    sortWindow.className = 'window__elem';
+    sortWindow.style = `
+        top: -15px;
+        right: -150px;
+        left: auto;
+    `
+
+    // кнопка для сортировки от большего к меньшему
+    const upToDown_BTN = document.createElement('button');
+    upToDown_BTN.className = 'buttonStyle';
+    upToDown_BTN.innerHTML = 'От большего к меньшему';
+
+    // кнопка для сортировки от большего к меньшему
+    const downToUp_BTN = document.createElement('button');
+    downToUp_BTN.className = 'buttonStyle';
+    downToUp_BTN.innerHTML = 'От меньшего к большему';
+
+    // кнопка для сортировки от большего к меньшему
+    const letterSort_BTN = document.createElement('button');
+    letterSort_BTN.className = 'buttonStyle';
+    letterSort_BTN.innerHTML = 'По алфавиту';
+
+    sortWindow.appendChild(upToDown_BTN)
+    sortWindow.appendChild(downToUp_BTN)
+    sortWindow.appendChild(letterSort_BTN)
+
+
+    // отображение окна сортировки
+    sortButton.addEventListener('mouseenter', () => {
+        sortButton.appendChild(sortWindow)
+    })
+
     sortButton.addEventListener('click', () => {
-        console.log('сортировка от большего к меньшему')
-        // Находим индекс самой колонки
-        const index = columnsData.findIndex(elem => elem.id == column.id);
+        sortButton.appendChild(sortWindow)
+    })
 
-        // сортировка карточек
-        columnsData[index].cards.sort((a, b) => b.data - a.data)
-        console.log(columnsData[index])
-        console.log(columnsData)
+    sortButton.addEventListener('mouseleave', () => {
+        sortWindow.remove();
+    })
 
-        // удаляем карточки с определённой колонки, чтобы добавить отсортированные
-        let htmlData = document.getElementById(column.id).childNodes[0].lastChild.childNodes[0].childNodes;
-        // Создаем копию коллекции HTML-элементов
-        const htmlDataCopy = [...htmlData];
 
-        // находим список карточек выбранной нами колонки
-        let cardListId = document.getElementById(column.id).childNodes[0].lastChild.childNodes[0].id;
 
-        // Удаляем карточки из копии
-        for (let i of htmlDataCopy) {
-            i.remove();
-        }
-
-        // добавляем отсортированные карточки
-        for (let j of columnsData[index].cards) {
-            addingCard(cardListId, j.id, j.value, j.color, columnsData[index])
-            console.log(j)
-        }
-
+    // сортировка карточек
+    upToDown_BTN.addEventListener('click', () => {
+        sortFunctionality('upToDown', column)
+        sortWindow.remove();
         window.remove();
     })
+
+    downToUp_BTN.addEventListener('click', () => {
+        sortFunctionality('downToUp', column)
+        sortWindow.remove();
+        window.remove();
+    })
+
+    letterSort_BTN.addEventListener('click', () => {
+        sortFunctionality('letter', column)
+        sortWindow.remove();
+        window.remove();
+    })
+
 
     window.appendChild(sortButton)
 }
@@ -98,7 +190,7 @@ function addColorButton(window, card, columnItemData) {
         cursor: pointer;
         `
 
-    
+
     // новый функционал изменения цвета
     colorPicker.addEventListener('change', (e) => {
 
@@ -523,12 +615,12 @@ function createColumnItem(columnItemData) {
     cardsButtonForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        // находим дату
-        const currentDate = new Date()
+        // находим дату и время создания карточки
+        const formatUTC = new Date().toISOString().replace('T', ' ').split('.')[0];
 
         let cardData = {
             id: Date.now(),
-            data: currentDate.getTime(),
+            data: formatUTC,
             color: null,
             value: cardsButtonInput.value,
             description: null,
