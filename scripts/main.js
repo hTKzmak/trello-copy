@@ -93,23 +93,40 @@ function addColorButton(window, card, columnItemData) {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
         opacity: 0;
+        width: 100%;
         cursor: pointer;
-    `
+        `
 
-    colorPicker.addEventListener('click', () => {
-        window.remove();
-    })
+    
+    // новый функционал изменения цвета
+    colorPicker.addEventListener('change', (e) => {
 
-    colorPicker.addEventListener('input', (e) => {
         const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
         // Выводим выбранное значение цвета в консоль
         document.getElementById(card.id).style.background = e.target.value;
         // console.log(e.target.value);
         columnItemData.cards[index].color = e.target.value;
         console.log(columnItemData.cards[index])
-    });
+
+        window.remove();
+    })
+
+
+    // старый функционал изменения цвета
+    // colorPicker.addEventListener('click', () => {
+    //     window.remove();
+    // })
+
+    // colorPicker.addEventListener('input', (e) => {
+    //     const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
+    //     // Выводим выбранное значение цвета в консоль
+    //     document.getElementById(card.id).style.background = e.target.value;
+    //     // console.log(e.target.value);
+    //     columnItemData.cards[index].color = e.target.value;
+    //     console.log(columnItemData.cards[index])
+    // });
+
 
     // добавляем сам input в кнопку, делая его невидимым
     colorButton.appendChild(colorPicker)
@@ -181,7 +198,7 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     document.addEventListener('touchstart', (evt) => {
         const touch = evt.touches[0];
 
-        if (touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle') {
+        if (touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle' && event.target.type !== 'color') {
             menuWindow.remove();
         }
     })
@@ -193,7 +210,7 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     // нужно определить позицию выбранной нами карточки, чтобы расположить его рядом с самой карточкой
     // Добавляем само меню для выбранного нами места (то есть, place)
     document.addEventListener('click', (event) => {
-        if (type === 'card' && event.target.className !== 'buttonStyle') {
+        if (type === 'card' && event.target.className !== 'buttonStyle' && event.target.type !== 'color') {
             menuWindow.style.top = (event.clientY - 66) + 'px'
             menuWindow.style.left = (event.clientX - 131) + 'px'
         }
