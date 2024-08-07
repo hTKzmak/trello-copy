@@ -476,6 +476,7 @@ function addWindowModal(cardItem, columnItemData) {
     // подключение tinymce для #card_description после создания модального окна
     tinymce.init({
         selector: 'textarea#card_description',
+        highlight_on_focus: false,
         license_key: 'gpl',
         statusbar: false,
         promotion: false,
