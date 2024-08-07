@@ -115,17 +115,17 @@ function addSortButton(window, column) {
     // кнопка для сортировки от большего к меньшему
     const upToDown_BTN = document.createElement('button');
     upToDown_BTN.className = 'buttonStyle';
-    upToDown_BTN.innerHTML = 'От большего к меньшему';
+    upToDown_BTN.innerHTML = 'Дата создания (сначала новые)';
 
     // кнопка для сортировки от большего к меньшему
     const downToUp_BTN = document.createElement('button');
     downToUp_BTN.className = 'buttonStyle';
-    downToUp_BTN.innerHTML = 'От меньшего к большему';
+    downToUp_BTN.innerHTML = 'Дата создания (сначала старые)';
 
     // кнопка для сортировки от большего к меньшему
     const letterSort_BTN = document.createElement('button');
     letterSort_BTN.className = 'buttonStyle';
-    letterSort_BTN.innerHTML = 'По алфавиту';
+    letterSort_BTN.innerHTML = 'Название карточки (по алфавиту)';
 
     sortWindow.appendChild(upToDown_BTN)
     sortWindow.appendChild(downToUp_BTN)
@@ -191,33 +191,20 @@ function addColorButton(window, card, columnItemData) {
         `
 
 
-    // новый функционал изменения цвета
+    // функционал изменения цвета
     colorPicker.addEventListener('change', (e) => {
 
         const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
         // Выводим выбранное значение цвета в консоль
         document.getElementById(card.id).style.background = e.target.value;
+        document.getElementById(card.id).style.borderColor = e.target.value;
+
         // console.log(e.target.value);
         columnItemData.cards[index].color = e.target.value;
         console.log(columnItemData.cards[index])
 
         window.remove();
     })
-
-
-    // старый функционал изменения цвета
-    // colorPicker.addEventListener('click', () => {
-    //     window.remove();
-    // })
-
-    // colorPicker.addEventListener('input', (e) => {
-    //     const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
-    //     // Выводим выбранное значение цвета в консоль
-    //     document.getElementById(card.id).style.background = e.target.value;
-    //     // console.log(e.target.value);
-    //     columnItemData.cards[index].color = e.target.value;
-    //     console.log(columnItemData.cards[index])
-    // });
 
 
     // добавляем сам input в кнопку, делая его невидимым
@@ -303,8 +290,8 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     // Добавляем само меню для выбранного нами места (то есть, place)
     document.addEventListener('click', (event) => {
         if (type === 'card' && event.target.className !== 'buttonStyle' && event.target.type !== 'color') {
-            menuWindow.style.top = (event.clientY - 66) + 'px'
-            menuWindow.style.left = (event.clientX - 131) + 'px'
+            menuWindow.style.top = (event.clientY - 45) + 'px'
+            menuWindow.style.left = (event.clientX - 110) + 'px'
         }
     })
 
@@ -351,6 +338,9 @@ function addWindowModal(cardItem, columnItemData) {
 
             modalWindowContainer.remove();
         }
+
+        // удаление поле ввода описания
+        tinymce.remove();
     })
 
     // заголовок самого окна
@@ -365,6 +355,9 @@ function addWindowModal(cardItem, columnItemData) {
     // фунционал закрытия окна (то есть, удаляет modalWindowContainer с разметки)
     closeButton.addEventListener('click', () => {
         modalWindowContainer.remove();
+
+        // удаление поле ввода описания
+        tinymce.remove();
     })
 
     header.appendChild(windowSpan);
@@ -420,11 +413,12 @@ function addWindowModal(cardItem, columnItemData) {
                 }
                 else {
                     cardItem.style.paddingBottom = '8px';
-                    cardItem.children[2].remove()
                 }
             }
         }
 
+        // удаление поле ввода описания
+        tinymce.remove();
     })
 
 
@@ -435,6 +429,9 @@ function addWindowModal(cardItem, columnItemData) {
     // фунционал закрытия окна (то есть, удаляет modalWindowContainer с разметки)
     secondCloseButton.addEventListener('click', () => {
         modalWindowContainer.remove();
+
+        // удаление поле ввода описания
+        tinymce.remove();
     })
 
     // в options добавляем кнопки: сохранение, удаление, закрытие окна
@@ -762,6 +759,7 @@ function addingCard(cardListId, cardDataId, value, color, columnItemData) {
     cardItem.id = cardDataId;
     cardItem.draggable = true;
     cardItem.style.background = color;
+    cardItem.style.borderColor = color;
 
     // создаём span, где будет находиться название карточки
     const cardItemName = document.createElement('span')

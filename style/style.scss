@@ -63,6 +63,10 @@ $grey-font-color: #6a6a6a;
     cursor: pointer;
 }
 
+input{
+    outline: none
+}
+
 body {
     font-family: "Roboto", sans-serif;
     font-size: 18px;
@@ -177,7 +181,7 @@ body {
             }
 
             @media screen and (max-width: 1000px) {
-                width: 80%;
+                width: 95%;
             }
         }
     }
@@ -306,6 +310,10 @@ body {
                                 border-radius: 4px;
 
                                 padding: 8px 14px;
+
+                                span{
+                                    mix-blend-mode: difference;
+                                }
 
                                 .card__button {
                                     @include btnStyle();

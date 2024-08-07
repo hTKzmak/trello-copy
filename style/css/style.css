@@ -1,4 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+input {
+  outline: none;
+}
+
 body {
   font-family: "Roboto", sans-serif;
   font-size: 18px;
@@ -93,7 +97,7 @@ body .modalWindow_container .window .window_main_info .options #delete_card {
 }
 @media screen and (max-width: 1000px) {
   body .modalWindow_container .window {
-    width: 80%;
+    width: 95%;
   }
 }
 body .content__list {
@@ -195,6 +199,9 @@ body .content__list .columns__list .column__item .column__item__core .column__co
   border: 1px solid #36a4a4;
   border-radius: 4px;
   padding: 8px 14px;
+}
+body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item span {
+  mix-blend-mode: difference;
 }
 body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item .card__button {
   position: absolute;
