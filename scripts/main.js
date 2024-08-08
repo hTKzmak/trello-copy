@@ -5,6 +5,10 @@ const form = document.querySelector('form');
 // Массив для хранения данных колонок
 let columnsData = [];
 
+// choosenColor отвечает за исчезновение окна после нажатия на кнопку изменения цвета (если false, то окно исчезает, если true, то не исчезает)
+let colorChoosen = false;
+console.log(colorChoosen)
+
 
 // Функция для скрытия формы заполнения
 function hideForm() {
@@ -190,9 +194,18 @@ function addColorButton(window, card, columnItemData) {
         cursor: pointer;
         `
 
+    // изменение значеня colorChoosen (чтобы окно не исчезло)
+    colorButton.addEventListener('click', () => {
+        colorChoosen = true;
+        console.log(colorChoosen)
+    })
 
     // функционал изменения цвета
     colorPicker.addEventListener('change', (e) => {
+
+        // изменение значеня colorChoosen
+        colorChoosen = false;
+        console.log(colorChoosen)
 
         const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
         // Выводим выбранное значение цвета в консоль
@@ -273,17 +286,20 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
 
     menuWindow.appendChild(deleteButton);
 
-    // Функционал отображения и исчезновения окна
+    // Функционал отображения и исчезновения окна для смартфонов/планшетов
     document.addEventListener('touchstart', (evt) => {
         const touch = evt.touches[0];
 
-        if (touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle' && event.target.type !== 'color') {
+        if (touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle' && evt.target.type !== 'color') {
             menuWindow.remove();
         }
     })
 
-    menuWindow.addEventListener('mouseleave', () => {
-        menuWindow.remove();
+    // Функционал отображения и исчезновения окна для ПК
+    menuWindow.addEventListener('mouseleave', (evt) => {
+        if(colorChoosen !== true){
+            menuWindow.remove();
+        }
     });
 
     // нужно определить позицию выбранной нами карточки, чтобы расположить его рядом с самой карточкой
@@ -760,7 +776,7 @@ function addingCard(cardListId, cardDataId, value, color, columnItemData) {
     cardItem.id = cardDataId;
     cardItem.draggable = true;
     cardItem.style.background = color;
-    cardItem.style.borderColor = color;
+    cardItem.style.borderColor = color === '#ffffff' ? '#36a4a4' : color;
 
     // создаём span, где будет находиться название карточки
     const cardItemName = document.createElement('span')
