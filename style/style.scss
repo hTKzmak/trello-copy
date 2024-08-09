@@ -63,6 +63,11 @@ $grey-font-color: #6a6a6a;
     cursor: pointer;
 }
 
+// изменение прозрачности выбранной колонки и карточки (для перемещения) (.sortable-chosen является предустановленным классом SelectedJS)
+.sortable-chosen {
+    opacity: 0.5;
+}
+
 body {
     font-family: "Roboto", sans-serif;
     font-size: 18px;
@@ -214,7 +219,7 @@ body {
                 .column__item__core {
                     @include itemStyle(250px, 250px);
 
-                    cursor: move;
+                    // cursor: move;
                     background-color: transparent;
                     color: whitesmoke;
                     text-align: left;
@@ -307,7 +312,7 @@ body {
 
                                 padding: 8px 14px;
 
-                                span{
+                                span {
                                     mix-blend-mode: difference;
                                 }
 

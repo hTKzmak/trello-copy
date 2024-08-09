@@ -8,4 +8,10 @@ const columnElements = columnsListElement.querySelectorAll(`.column__item`);
 Sortable.create(columnsListElement, {
     animation: 100, // скорость анимации
     handle: '.column__header', // перетаскиваем колонку, удерживая выбранный нами элемент (в нашем случае это .column__header)
+
+    // вызов функции при изменении положений колонок
+    onChange: function () {
+        console.log('Данные обновились')
+    }
 });
+

@@ -297,7 +297,7 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
 
     // Функционал отображения и исчезновения окна для ПК
     menuWindow.addEventListener('mouseleave', (evt) => {
-        if(colorChoosen !== true){
+        if (colorChoosen !== true) {
             menuWindow.remove();
         }
     });
@@ -530,7 +530,7 @@ function createColumnItem(columnItemData) {
     const columnItem = document.createElement('li');
     columnItem.className = 'column__item';
     columnItem.id = columnItemData.id;
-    columnItem.draggable = true;
+    // columnItem.draggable = true;
 
     // создание содержания всей инвормации самой колонки
     const columnItemCore = document.createElement('div');
@@ -806,6 +806,18 @@ function addingCard(cardListId, cardDataId, value, color, columnItemData) {
     if (value) {
         cardsList.appendChild(cardItem);
     }
+
+
+    const cardsListEl = document.querySelectorAll('.cards__list')
+
+    cardsListEl.forEach(elem => {
+        Sortable.create(elem, {
+            group: 'cards',
+            animation: 100
+        });
+    })
+
+
 }
 
 // получение значения поле ввода TinyMCE
