@@ -7,7 +7,7 @@ let columnsData = [];
 
 // choosenColor отвечает за исчезновение окна после нажатия на кнопку изменения цвета (если false, то окно исчезает, если true, то не исчезает)
 let colorChoosen = false;
-console.log(colorChoosen)
+console.log(`Значение colorChoosen: ${colorChoosen}`)
 
 
 // Функция для скрытия формы заполнения
@@ -197,7 +197,7 @@ function addColorButton(window, card, columnItemData) {
     // изменение значеня colorChoosen (чтобы окно не исчезло)
     colorButton.addEventListener('click', () => {
         colorChoosen = true;
-        console.log(colorChoosen)
+        console.log(`Значение colorChoosen: ${colorChoosen}`)
     })
 
     // функционал изменения цвета
@@ -205,7 +205,7 @@ function addColorButton(window, card, columnItemData) {
 
         // изменение значеня colorChoosen
         colorChoosen = false;
-        console.log(colorChoosen)
+        console.log(`Значение colorChoosen: ${colorChoosen}`)
 
         const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
         // Выводим выбранное значение цвета в консоль
