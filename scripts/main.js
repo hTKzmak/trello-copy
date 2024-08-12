@@ -810,10 +810,16 @@ function addingCard(cardListId, cardDataId, value, color, columnItemData) {
 
     const cardsListEl = document.querySelectorAll('.cards__list')
 
+
     cardsListEl.forEach(elem => {
         Sortable.create(elem, {
             group: 'cards',
-            animation: 100
+            animation: 100,
+            delay: 100,
+
+            onChange: function () {
+                console.log('Данные карточек обновились')
+            }
         });
     })
 
