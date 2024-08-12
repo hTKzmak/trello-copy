@@ -214,6 +214,8 @@ body {
             .column__item {
                 position: relative;
 
+                user-select: none;
+
                 height: 100%;
 
                 .column__item__core {
@@ -293,9 +295,7 @@ body {
                             overflow-y: auto;
                             overflow-x: hidden;
 
-                            // max-height: 370px;
-                            // max-height: 75vh;
-                            max-height: 65vh;
+                            max-height: 70vh;
 
                             .card__item {
                                 position: relative;
@@ -319,10 +319,6 @@ body {
                                 .card__button {
                                     @include btnStyle();
                                     display: none;
-
-                                    // img {
-                                    //     width: 16px;
-                                    // }
 
                                     .menu-icon {
                                         display: flex;
@@ -352,9 +348,13 @@ body {
                                 }
                             }
 
-                            // @media screen and (max-height: 1200px) {
-                            //     max-height: 70vh;
-                            // }
+                            @media screen and (max-height: 780px) {
+                                max-height: 65vh;
+                            }
+
+                            @media screen and (max-height: 780px) {
+                                max-height: 65vh;
+                            }
 
                         }
 

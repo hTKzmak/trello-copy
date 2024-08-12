@@ -774,7 +774,7 @@ function addingCard(cardListId, cardDataId, value, color, columnItemData) {
     const cardItem = document.createElement('li');
     cardItem.className = 'card__item';
     cardItem.id = cardDataId;
-    cardItem.draggable = true;
+    // cardItem.draggable = true;
     cardItem.style.background = color;
     cardItem.style.borderColor = color === '#ffffff' ? '#36a4a4' : color;
 
@@ -808,14 +808,14 @@ function addingCard(cardListId, cardDataId, value, color, columnItemData) {
     }
 
 
+    // Фукционал Drag and Drop с библиотекой SortableJS для карточек
     const cardsListEl = document.querySelectorAll('.cards__list')
-
 
     cardsListEl.forEach(elem => {
         Sortable.create(elem, {
             group: 'cards',
             animation: 100,
-            delay: 100,
+            delay: 70,
 
             onChange: function () {
                 console.log('Данные карточек обновились')

@@ -119,6 +119,9 @@ body .content__list .columns__list {
 }
 body .content__list .columns__list .column__item {
   position: relative;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   height: 100%;
 }
 body .content__list .columns__list .column__item .column__item__core {
@@ -187,7 +190,7 @@ body .content__list .columns__list .column__item .column__item__core .column__co
   padding: 5px 0;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 65vh;
+  max-height: 70vh;
 }
 body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item {
   position: relative;
@@ -233,6 +236,16 @@ body .content__list .columns__list .column__item .column__item__core .column__co
 }
 body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item:hover .card__button {
   display: block;
+}
+@media screen and (max-height: 780px) {
+  body .content__list .columns__list .column__item .column__item__core .column__content .cards__list {
+    max-height: 65vh;
+  }
+}
+@media screen and (max-height: 780px) {
+  body .content__list .columns__list .column__item .column__item__core .column__content .cards__list {
+    max-height: 65vh;
+  }
 }
 body .content__list .columns__list .column__item .column__item__core .column__content .add__cards__button {
   background-color: #36a4a4;
