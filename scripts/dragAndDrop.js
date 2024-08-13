@@ -9,6 +9,7 @@ const columnElements = columnsListElement.querySelectorAll(`.column__item`);
 // https://github.com/SortableJS/Sortable
 
 Sortable.create(columnsListElement, {
+    gropup: 'selected',
     animation: 100, // скорость анимации
     handle: '.column__header', // перетаскиваем колонку, удерживая выбранный нами элемент (в нашем случае это .column__header)
     delay: 50, // время в миллисекундах, чтобы определить, когда должна начаться сортировка
@@ -16,5 +17,7 @@ Sortable.create(columnsListElement, {
     // вызов функции при изменении положений колонок
     onChange: function () {
         console.log('Данные колонок обновились')
-    }
+    },
+
 });
+

@@ -761,6 +761,31 @@ form.addEventListener('submit', (e) => {
         // скрываем формы заполнения
         hideForm();
     }
+
+
+    // Фукционал Drag and Drop с библиотекой SortableJS для карточек
+    // Он будет отслеживать перемещение карточек и добавлять сами карточки в пустые колонки после их создания
+    const cardsListEl = document.querySelectorAll('.cards__list')
+
+    cardsListEl.forEach(elem => {
+        Sortable.create(elem, {
+            group: 'selected',
+            animation: 100,
+            delay: 50,
+
+            onChange: function () {
+                console.log('Данные карточек обновились')
+            },
+
+            // с помощью onUnchoose можно реализовать перемещение карточек в самый конец списка, если мы перемещаем в низ колонки
+            onUnchoose: function (evt) {
+                if(evt.explicitOriginalTarget.className === 'column__item' && window.innerWidth > 1200){
+                    evt.explicitOriginalTarget.querySelector('ul').appendChild(evt.item)
+                }
+            },
+
+        });
+    })
 });
 
 
@@ -806,23 +831,6 @@ function addingCard(cardListId, cardDataId, value, color, columnItemData) {
     if (value) {
         cardsList.appendChild(cardItem);
     }
-
-
-    // Фукционал Drag and Drop с библиотекой SortableJS для карточек
-    const cardsListEl = document.querySelectorAll('.cards__list')
-
-    cardsListEl.forEach(elem => {
-        Sortable.create(elem, {
-            group: 'cards',
-            animation: 100,
-            delay: 70,
-
-            onChange: function () {
-                console.log('Данные карточек обновились')
-            }
-        });
-    })
-
 
 }
 
