@@ -220,7 +220,7 @@ function addColorButton(window, card, columnItemData) {
         `
 
     // изменение значеня colorChoosen (чтобы окно не исчезло)
-    colorButton.addEventListener('click', () => {
+    colorButton.addEventListener('input', () => {
         colorChoosen = true;
         console.log(`Значение colorChoosen: ${colorChoosen}`)
     })
