@@ -830,13 +830,6 @@ form.addEventListener('submit', (e) => {
                 console.log('Данные карточек обновились')
             },
 
-            // с помощью onUnchoose можно реализовать перемещение карточек в самый конец списка, если мы перемещаем в низ колонки
-            onUnchoose: function (evt) {
-                if (evt.explicitOriginalTarget.className === 'column__item' && window.innerWidth > 1200) {
-                    evt.explicitOriginalTarget.querySelector('ul').appendChild(evt.item)
-                }
-            },
-
         });
     })
 });
