@@ -312,10 +312,6 @@ body {
 
                                 padding: 8px 14px;
 
-                                span {
-                                    mix-blend-mode: difference;
-                                }
-
                                 .card__button {
                                     @include btnStyle();
                                     display: none;

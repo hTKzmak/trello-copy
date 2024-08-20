@@ -202,9 +202,6 @@ body .content__list .columns__list .column__item .column__item__core .column__co
   border-radius: 4px;
   padding: 8px 14px;
 }
-body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item span {
-  mix-blend-mode: difference;
-}
 body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item .card__button {
   position: absolute;
   top: 13px;
