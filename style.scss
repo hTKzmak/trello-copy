@@ -51,10 +51,10 @@ $grey-font-color: #6a6a6a;
 
 @mixin btnStyle {
     position: absolute;
-    top: 13px;
+    top: 5px;
     right: 5px;
 
-    padding: 5px 8px;
+    padding: 3px 5px;
     border-radius: 100px;
     border: none;
 
@@ -315,21 +315,25 @@ body {
                                 .card__button {
                                     @include btnStyle();
                                     display: none;
+                                    background-color: #fcfcfc;
 
                                     .menu-icon {
                                         display: flex;
                                         gap: 4px;
+                                        padding-top: 10px;
+                                        padding-bottom: 10px;
+
 
                                         .circle {
-                                            width: 5px;
-                                            height: 5px;
+                                            width: 4px;
+                                            height: 4px;
                                             background-color: $main-color;
                                             border-radius: 100px;
                                         }
                                     }
 
                                     &:hover {
-                                        background-color: #f0f0f0c1;
+                                        background-color: #d3d3d3;
                                     }
 
                                     @media screen and (max-width: 1200px) {
@@ -454,7 +458,8 @@ form {
     flex-direction: column;
     gap: 10px;
 
-    width: auto;
+    // width: auto;
+    width: 155px;
 
     padding: 8px;
 
@@ -485,7 +490,10 @@ form {
 
         padding: 8px;
 
-        width: 143px;
+        width: auto;
+
+        outline: none;
+
         border: none;
         border-radius: 4px;
 

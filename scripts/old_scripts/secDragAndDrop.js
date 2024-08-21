@@ -12,23 +12,25 @@ const dragCard = (evt) => {
 
     // Проверяем если событие dragover произошёл на действительном/не в пустом goals__ist или card__item 
     if (activeElement && (evt.target.classList.contains('cards__list') || evt.target.classList.contains('card__item'))) {
-        const currentElement = evt.target;
+        // const currentElement = evt.target;
 
-        // проверка на наличие подзадач в goals__list
-        if (currentElement.classList.contains('cards__list') && currentElement.children.length === 0) {
-            currentElement.appendChild(activeElement);
-        } else {
-            const isMoveable = activeElement !== currentElement && currentElement.classList.contains('card__item');
+        // // проверка на наличие подзадач в goals__list
+        // if (currentElement.classList.contains('cards__list') && currentElement.children.length === 0) {
+        //     currentElement.appendChild(activeElement);
+        // } else {
+        //     const isMoveable = activeElement !== currentElement && currentElement.classList.contains('card__item');
 
-            if (!isMoveable) {
-                return;
-            }
+        //     if (!isMoveable) {
+        //         return;
+        //     }
 
-            const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
+        //     const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
 
-            // Ставим перетаскиваемую нами подзадачу туда, куда нам надо
-            currentElement.parentElement.insertBefore(activeElement, nextElement);
-        }
+        //     // Ставим перетаскиваемую нами подзадачу туда, куда нам надо
+        //     currentElement.parentElement.insertBefore(activeElement, nextElement);
+        // }
+        
+        console.log('Для этого есть SortableJS :)')
     }
     // Проверяем если событие dragover произошёл на column__item
     else if (activeElement && (evt.target.classList.contains('column__item'))) {

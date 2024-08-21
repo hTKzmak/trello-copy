@@ -5,10 +5,12 @@ const form = document.querySelector('form');
 // Массив для хранения данных колонок
 let columnsData = [];
 
-// choosenColor отвечает за исчезновение окна после нажатия на кнопку изменения цвета (если false, то окно исчезает, если true, то не исчезает)
+// choosenColor отвечает за исчезновение меню после нажатия на кнопку изменения цвета (если false, то окно исчезает, если true, то не исчезает)
 let colorChoosen = false;
 console.log(`Значение colorChoosen: ${colorChoosen}`)
 
+
+// Отображение и исчезновение формы заполнения для создания колонки
 
 // Функция для скрытия формы заполнения
 function hideForm() {
@@ -16,14 +18,6 @@ function hideForm() {
     addColumnButton.querySelector('span').style.display = 'block';
     document.querySelector('#add_column_value').value = "";
 }
-
-
-// document.addEventListener('touchstart', (evt) => {
-//     const touch = evt.touches[0];
-
-//     console.log(touch)
-// })
-
 
 // Функция для отображения формы заполнения
 function showForm() {
@@ -47,6 +41,9 @@ function showForm() {
 
 
 }
+
+
+// Работа с сортировкой 
 
 // фукнция для сортровки карточек выбранной нами колонки
 function sortFunctionality(type, column) {
@@ -184,6 +181,8 @@ function addSortButton(window, column) {
 }
 
 
+// Работа с изменением цвета карточки
+
 // изменение HEX цвета в RGB для отслеживания яркости цвета
 function hexToRgb(hex) {
     // Убираем символ #
@@ -200,37 +199,46 @@ function hexToRgb(hex) {
 
 // Функция по добавлению кнопки изменения цвета выбранной нами карточки
 function addColorButton(window, card, columnItemData) {
-    // кнопка для перекраски карточки
-    const colorButton = document.createElement('button');
-    colorButton.className = 'buttonStyle';
-    colorButton.innerHTML = 'Изменить цвет';
 
-    // Создаем элемент input типа color
+    // Создаем элемент input типа text (для библиотеки coloris)
     const colorPicker = document.createElement('input');
-    // colorPicker.type = 'color';
+    colorPicker.type = 'text'
+    colorPicker.className = 'buttonStyle'
+    colorPicker.id = 'coloris'
+    colorPicker.value = 'Изменить цвет'
     colorPicker.setAttribute('data-coloris', '')
-    colorPicker.value = '#FFFFFF';
-    colorPicker.style = `
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        width: 100%;
-        cursor: pointer;
-        `
 
-    // изменение значеня colorChoosen (чтобы окно не исчезло)
-    colorButton.addEventListener('click', () => {
+    Coloris({
+        el: '#coloris',
+        defaultColor: '#FFFFFF',
+        theme: 'default',
+        swatchesOnly: true,
+        swatches: [
+            '#264653',
+            '#2a9d8f',
+            '#e9c46a',
+            'rgb(244,162,97)',
+            '#e76f51',
+            '#d62828',
+            'navy',
+            '#07b',
+            '#0096c7',
+            '#00b4d880',
+            'rgba(0,119,182,0.8)'
+        ],
+        onChange: () => {
+            colorPicker.value = 'Изменить цвет'
+        }
+    });
+
+    // изменение значеня colorChoosen (чтобы меню не исчезло)
+    colorPicker.addEventListener('click', () => {
         colorChoosen = true;
         console.log(`Значение colorChoosen: ${colorChoosen}`)
     })
 
     // функционал изменения цвета
     colorPicker.addEventListener('input', (e) => {
-
-        // изменение значеня colorChoosen
-        colorChoosen = false;
-        console.log(`Значение colorChoosen: ${colorChoosen}`)
 
         const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
         // Выводим выбранное значение цвета в консоль
@@ -249,13 +257,12 @@ function addColorButton(window, card, columnItemData) {
         window.remove();
     })
 
-
-    // добавляем сам input в кнопку, делая его невидимым
-    colorButton.appendChild(colorPicker)
-
-    // добавляем в окно эту кнопку
-    window.appendChild(colorButton);
+    // добавляем в окно этот input
+    window.appendChild(colorPicker);
 }
+
+
+// Работа с окном меню
 
 // Функция по отображению меню
 function addMenuWindow(button, item, place, type, input, columnItemData) {
@@ -272,7 +279,8 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     // Изменение колонки/карточки
     changeButton.addEventListener('click', () => {
         if (type === 'column') {
-            changeColumn(item, input, columnItemData);
+            // changeColumn(item, input, columnItemData);
+            testChange(item, input, columnItemData)
             button.style.display = 'none'
             menuWindow.remove();
         }
@@ -321,14 +329,20 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
         const touch = evt.touches[0];
 
         // evt.target.type !== 'text' не позволит исчезнуть редактору цвета (я без понятия почему так это работает)
-        if (touch.target.className !== 'window__elem' && touch.target.className !== 'buttonStyle' && evt.target.type !== 'text') {
+        if (touch.target.className !== 'buttonStyle') {
             menuWindow.remove();
         }
     })
 
     // Функционал отображения и исчезновения окна для ПК
-    menuWindow.addEventListener('mouseleave', (evt) => {
-        if (colorChoosen !== true) {
+    menuWindow.addEventListener('mouseleave', () => {
+        // menuWindow.remove();
+
+        // если значение colorChoosen является false, то убираем окно (для нормального отображения и меню и выбора цвета)
+        if (type === 'card' && !colorChoosen) {
+            menuWindow.remove();
+        }
+        else if (type === 'column'){
             menuWindow.remove();
         }
     });
@@ -336,16 +350,17 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     // нужно определить позицию выбранной нами карточки, чтобы расположить его рядом с самой карточкой
     // Добавляем само меню для выбранного нами места (то есть, place)
     document.addEventListener('click', (event) => {
-        if (type === 'card' && event.target.className !== 'buttonStyle' && event.target.type !== 'color') {
+        if (type === 'card' && event.target.className !== 'buttonStyle') {
             menuWindow.style.top = (event.clientY - 45) + 'px'
             menuWindow.style.left = (event.clientX - 110) + 'px'
         }
-        // }, {once: true})
-    })
+    }, { once: 'true' })
 
     place.appendChild(menuWindow);
-
 }
+
+
+// Работа с модальным окном для карточек 
 
 // Функция для создания модального окна только для выбранной нами карточки
 function addWindowModal(cardItem, columnItemData) {
@@ -554,6 +569,7 @@ function addWindowModal(cardItem, columnItemData) {
 
 
 
+// Работа с колонками
 
 // функция по созданию колонки
 function createColumnItem(columnItemData) {
@@ -669,7 +685,8 @@ function createColumnItem(columnItemData) {
         let cardData = {
             id: Date.now(),
             data: formatUTC,
-            color: null,
+            // color: null,
+            color: '#ffffff',
             value: cardsButtonInput.value,
             description: null,
         };
@@ -711,31 +728,77 @@ function deleteColumn(columnItem) {
     }
 }
 
-// функция для изменения колонки
-function changeColumn(columnItem, input, columnItemData) {
+
+// Почему функция saveNewName() в функции changeColumn() срабатывает несколько раз после событий keydown и blur, тем самым имеются проблемы с предупреждением 
+// function changeColumn(columnItem, input, columnItemData) {
+//     // Исчезновение названия колонки и отображение поля ввода
+//     columnItem.querySelector('.column__header').childNodes[0].style.display = 'none';
+
+//     // добавляем название колонки с данных в сам input (для этого используется columnItemData) 
+//     input.value = columnItemData.value;
+//     input.style.display = 'block';
+//     input.focus(); // Устанавливаем фокус на input
+
+//     // Находим индекс самой колонки
+//     const index = columnsData.findIndex(elem => elem.id == columnItem.id);
+
+//     console.log(input.value)
+
+//     // Функция для сохранения нового значения
+//     const saveNewName = () => {
+//         let newName = input.value;
+
+//         if (index !== -1 && newName) {
+//             columnsData[index].value = newName;
+//             console.log(columnsData);
+//             document.getElementById(columnItem.id).querySelector('.column__header span').innerHTML = newName;
+//         }
+
+//         // Скрываем input и показываем span и button
+//         columnItem.querySelector('.column__header').childNodes[0].style.display = 'block';
+//         input.style.display = 'none';
+//         columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
+//     };
+
+//     input.addEventListener('keydown', (event) => {
+//         if (event.code === 'Enter') {
+//             // console.log(columnsData.find(e => e.value === input.value))
+//             saveNewName()
+//         }
+//     });
+
+//     input.addEventListener('blur', () => {
+//         // if(columnsData.find(e => e.value === input.value)){
+//         //     saveNewName()
+//         // }
+//         // else{
+//         //     alert('Колонка с таким названием уже есть. Введите другое название')
+//         //     columnItem.querySelector('.column__header').childNodes[0].style.display = 'block';
+//         //     input.style.display = 'none';
+//         //     columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
+//         // }
+//         // console.log(columnsData.find(e => e.value === input.value))
+//         saveNewName()
+//     });
+// }
+
+
+function testChange(columnItem, input, columnItemData) {
     // Исчезновение названия колонки и отображение поля ввода
     columnItem.querySelector('.column__header').childNodes[0].style.display = 'none';
-
     // добавляем название колонки с данных в сам input (для этого используется columnItemData) 
-    input.value = columnItemData.value
+    input.value = columnItemData.value;
     input.style.display = 'block';
-    input.focus(); // Устанавливаем фокус на input
 
     // Находим индекс самой колонки
     const index = columnsData.findIndex(elem => elem.id == columnItem.id);
 
-    // Функция для сохранения нового значения
     const saveNewName = () => {
         let newName = input.value;
-
-        if (index !== -1) {
-            if (newName) {
-                columnsData[index].value = newName;
-                console.log(columnsData);
-                document.getElementById(columnItem.id).querySelector('.column__header span').innerHTML = newName;
-            } else {
-                console.log(columnsData);
-            }
+        if (index !== -1 && newName) {
+            columnsData[index].value = newName;
+            console.log(columnsData);
+            document.getElementById(columnItem.id).querySelector('.column__header span').innerHTML = newName;
         }
 
         // Скрываем input и показываем span и button
@@ -744,30 +807,49 @@ function changeColumn(columnItem, input, columnItemData) {
         columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
     };
 
-    // Удаляем предыдущие обработчики, если они существуют
-    input.removeEventListener('keydown', saveNewName);
-    input.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            // // временный вариант проверки на уникальность названия карточки
-            // if (columnsData.find(e => e.value === input.value)) {
-            //     alert('Колонка с таким названием уже есть. Введите другое название')
-            // }
-            // else {
-            saveNewName();
-            // }
-        }
-    });
+    // 1. Если поставить обоим alert, то в keydown он будет выводиться несколько раз навсегда
+    // Значит надо будет заменить на своё окно, а не использоватьб alert
 
-    // Обработчик события blur для input
+    // 2. Если обоим поставить {once: true}, то событие keydown не будет работать впринципе 
+
+    // 3. То, что есть 2 события и одна и та же функция, не является проблемой повторения выполнения функции 
+
+    // Вопрос: почему не работает once у события keydown?
+
+    // пока уберу событие keyup, так как он не работает
+    // document.addEventListener('keyup', (event) => {
+    //     if (event.code === 'Enter') {
+    //         // if (columnsData.find(e => e.value === input.value)) {
+    //         //     console.log('same name')
+
+    //         //     // Скрываем input и показываем span и button
+    //         //     columnItem.querySelector('.column__header').childNodes[0].style.display = 'block';
+    //         //     input.style.display = 'none';
+    //         //     columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
+    //         // }
+    //         // else {
+    //         //     saveNewName()
+    //         // }
+    //         console.log('lol')
+    //     }
+    // }, { once: true });
+
     input.addEventListener('blur', () => {
-        // // временный вариант проверки на уникальность названия карточки
-        // if (columnsData.find(e => e.value === input.value)) {
-        //     alert('Колонка с таким названием уже есть. Введите другое название')
-        // }
-        // else {
-        saveNewName();
-        // }
-    });
+        if (columnsData.find(e => e.value === input.value)) {
+            // console.log('same name')
+            alert('same name')
+
+            // Скрываем input и показываем span и button
+            columnItem.querySelector('.column__header').childNodes[0].style.display = 'block';
+            input.style.display = 'none';
+            columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
+        }
+        else {
+            saveNewName()
+        }
+    }, { once: true })
+
+    console.log(input)
 }
 
 // Функция для добавления колонки на страницу
@@ -836,6 +918,9 @@ form.addEventListener('submit', (e) => {
 
 
 
+// Работа с карточками
+
+
 // Функция по добавлению карточки
 function addingCard(cardListId, cardDataId, value, color, columnItemData) {
     // находим id списка карточек 
@@ -852,6 +937,13 @@ function addingCard(cardListId, cardDataId, value, color, columnItemData) {
     // создаём span, где будет находиться название карточки
     const cardItemName = document.createElement('span')
     cardItemName.innerHTML = value;
+
+    // Изменяем цвет текста в зависимости от яркости фона
+    console.log(color)
+    const rgb = hexToRgb(color);
+    const brightness = (rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114);
+    cardItemName.style.color = (brightness > 186 ? 'black' : 'white');
+
 
     // создаём кнопку для отображения модального окна для карточки
     const cardMenuButton = document.createElement('button');
