@@ -5,9 +5,9 @@ const form = document.querySelector('form');
 // Массив для хранения данных колонок
 let columnsData = [];
 
-// choosenColor отвечает за исчезновение меню после нажатия на кнопку изменения цвета (если false, то окно исчезает, если true, то не исчезает)
-let colorChoosen = false;
-console.log(`Значение colorChoosen: ${colorChoosen}`)
+document.querySelector('.cancel').addEventListener('click', () => {
+    document.body.click();
+})
 
 
 // Отображение и исчезновение формы заполнения для создания колонки
@@ -210,32 +210,20 @@ function addColorButton(window, card, columnItemData) {
 
     Coloris({
         el: '#coloris',
-        defaultColor: '#FFFFFF',
+        parent: window,
+
+        defaultColor: '#ffffff',
+
         theme: 'default',
-        swatchesOnly: true,
-        swatches: [
-            '#264653',
-            '#2a9d8f',
-            '#e9c46a',
-            'rgb(244,162,97)',
-            '#e76f51',
-            '#d62828',
-            'navy',
-            '#07b',
-            '#0096c7',
-            '#00b4d880',
-            'rgba(0,119,182,0.8)'
-        ],
+        themeMode: 'light',
+
+        // closeButton: true,
+        // clearButton: true,
+
         onChange: () => {
             colorPicker.value = 'Изменить цвет'
         }
     });
-
-    // изменение значеня colorChoosen (чтобы меню не исчезло)
-    colorPicker.addEventListener('click', () => {
-        colorChoosen = true;
-        console.log(`Значение colorChoosen: ${colorChoosen}`)
-    })
 
     // функционал изменения цвета
     colorPicker.addEventListener('input', (e) => {
@@ -254,7 +242,7 @@ function addColorButton(window, card, columnItemData) {
         columnItemData.cards[index].color = e.target.value;
         console.log(columnItemData.cards[index])
 
-        window.remove();
+        // window.remove();
     })
 
     // добавляем в окно этот input
@@ -327,24 +315,16 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     // Функционал отображения и исчезновения окна для смартфонов/планшетов
     document.addEventListener('touchstart', (evt) => {
         const touch = evt.touches[0];
+        const targetElement = touch.target;
 
-        // evt.target.type !== 'text' не позволит исчезнуть редактору цвета (я без понятия почему так это работает)
-        if (touch.target.className !== 'buttonStyle') {
+        // // Проверяем, является ли целевой элемент частью menuWindow
+        if (!menuWindow.contains(targetElement) && targetElement.className !== 'buttonStyle') {
             menuWindow.remove();
         }
-    })
-
+    });
     // Функционал отображения и исчезновения окна для ПК
     menuWindow.addEventListener('mouseleave', () => {
-        // menuWindow.remove();
-
-        // если значение colorChoosen является false, то убираем окно (для нормального отображения и меню и выбора цвета)
-        if (type === 'card' && !colorChoosen) {
-            menuWindow.remove();
-        }
-        else if (type === 'column'){
-            menuWindow.remove();
-        }
+        menuWindow.remove();
     });
 
     // нужно определить позицию выбранной нами карточки, чтобы расположить его рядом с самой карточкой
@@ -640,6 +620,7 @@ function createColumnItem(columnItemData) {
         <input type="text" id="add_card_value" placeholder="Введите название">
         <div class="form-options">
             <button id="submit" type="submit">Добавить</button>
+            <i class="cancel"><img src="./icons/close.svg" alt="#"></i>
         </div>
     </form>
     `;

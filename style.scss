@@ -420,17 +420,31 @@ form {
 
         color: $grey-font-color;
         font-size: 16px;
+
+        text-indent: .5rem;
     }
 
     .form-options {
         display: flex;
         gap: 10px;
 
-        #cancel {
-            font-size: 14px;
-            padding: 7px;
+        .cancel {
+            width: 30px;
+            height: 30px;
+            
+            background: #f3f3f3;
+            
+            border-radius: 5px;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             cursor: pointer;
+
+            img{
+                width: 16px;
+            }
         }
 
         #submit {
