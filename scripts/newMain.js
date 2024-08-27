@@ -7,16 +7,44 @@ let columnsData = [];
 
 
 // Функции для работы с формой создания колонки
-function toggleForm(show) {
-    form.style.display = show ? 'grid' : 'none';
-    addColumnButton.querySelector('span').style.display = show ? 'none' : 'block';
-    if (show) {
-        form.children[0].focus();
-    }
-    else {
-        document.querySelector('#add_column_value').value = "";
-    }
+document.querySelector('.cancel').addEventListener('click', () => {
+    document.body.click();
+})
+
+
+// Отображение и исчезновение формы заполнения для создания колонки
+
+// Функция для скрытия формы заполнения
+function hideForm() {
+    form.style.display = 'none';
+    addColumnButton.querySelector('span').style.display = 'block';
+    document.querySelector('#add_column_value').value = "";
 }
+
+// Функция для отображения формы заполнения
+function showForm() {
+    form.style.display = 'grid';
+    addColumnButton.querySelector('span').style.display = 'none';
+    form.children[0].focus() // устанавливаем фокус на поле ввода
+
+    // Функционал отображения и исчезновения окна
+    document.addEventListener('touchstart', (evt) => {
+        const touch = evt.touches[0];
+
+        if (touch.target.className !== 'form-options' && touch.target.id !== 'add_column_value' && touch.target.id !== 'submit') {
+            hideForm();
+        }
+    })
+
+    document.addEventListener('click', (evt) => {
+        if (evt.target.className !== 'form-options' && evt.target.id !== 'add_column_value' && evt.target.id !== 'submit' && evt.target.className !== 'add_column' && evt.target.id !== 'column_btn_title') {
+            hideForm();
+        }
+    })
+
+
+}
+
 
 // Событие для отображения и исчезновения формы заполнения (для колонок)
 addColumnButton.addEventListener('click', (evt) => {
@@ -24,10 +52,10 @@ addColumnButton.addEventListener('click', (evt) => {
     const ids = ['add_column_value', 'submit', 'column_btn_title'];
 
     if (!classes.includes(evt.target.className) && !ids.includes(evt.target.id)) {
-        toggleForm(false);
+        hideForm();
     }
     else {
-        toggleForm(true)
+        showForm(true)
     }
 
     console.log('проверка работоспособности')
@@ -57,7 +85,7 @@ form.addEventListener('submit', (e) => {
         addColumnItemToPage(columnItem);
 
         // скрываем формы заполнения
-        toggleForm(false);
+        hideForm();
     }
 
     // Фукционал Drag and Drop с библиотекой SortableJS для карточек
@@ -168,15 +196,18 @@ function createColorButton(container, card, columnItemData) {
             colorPicker.value = 'Изменить цвет';
             updateCardColor(document.getElementById(card.id), color);
             const index = columnItemData.cards.findIndex(elem => elem.id === card.id);
-            if (index !== -1) columnItemData.cards[index].color = color;
+            if (index !== -1) {
+                columnItemData.cards[index].color = color;
+            }
         }
     });
+
 
     container.appendChild(colorPicker);
 }
 
 // Функция для создания меню с опциями
-function createMenuWindow(button, item, place, type, input, columnItemData) {
+function createMenuWindow(button, item, container, type, input, columnItemData) {
     const menuWindow = document.createElement('div');
     menuWindow.className = 'window__elem';
 
@@ -238,7 +269,7 @@ function createMenuWindow(button, item, place, type, input, columnItemData) {
     });
 
     menuWindow.addEventListener('mouseleave', () => menuWindow.remove());
-    place.appendChild(menuWindow);
+    container.appendChild(menuWindow);
 
     document.addEventListener('click', (event) => {
         if (type === 'card' && event.target.className !== 'buttonStyle') {
@@ -297,6 +328,10 @@ function addWindowModal(cardItem, columnItemData) {
     cardNameInput.value = columnItemData.cards[index].value;
     cardNameInput.placeholder = 'Введите название карточки';
 
+    cardNameInput.addEventListener('input', () => {
+        cardNameInput.id = cardNameInput.value ? '' : 'empty';
+    })
+
     // икнока наличия описания
     const descIcon = document.createElement('span')
     descIcon.innerHTML = '<img src="./icons/description.svg" title="У этой карточки есть описание" alt="#" style="width: 15px; height: 15px;">';
@@ -326,7 +361,11 @@ function addWindowModal(cardItem, columnItemData) {
         }
         else {
             cardItem.style.paddingBottom = '8px';
-            document.getElementById(cardItem.id).children[2].remove() 
+
+            console.log(document.getElementById(cardItem.id).children[2])
+            if (document.getElementById(cardItem.id).children[2]) {
+                document.getElementById(cardItem.id).children[2].remove()
+            }
         }
 
         modalWindowContainer.remove();
@@ -466,10 +505,43 @@ function createAddCardButton(columnData, cardsList) {
     const cardsButtonForm = addCardButton.querySelector('form');
     const cardsButtonInput = cardsButtonForm.querySelector('input');
 
+
+    // Добавление карточки
+    addCardButton.addEventListener('click', () => {
+        cardsButtonSpan.style.display = 'none'
+        cardsButtonForm.style.display = 'flex'
+
+        // Функционал отображения и исчезновения окна
+        document.addEventListener('touchstart', (evt) => {
+            cardsButtonInput.focus(); // устанавливаем focus для ввода текста
+
+            const touch = evt.touches[0];
+
+            if (touch.target.className !== 'form-options' && touch.target.id !== 'add_card_value' && touch.target.id !== 'submit') {
+                cardsButtonSpan.style.display = 'block';
+                cardsButtonForm.style.display = 'none';
+                cardsButtonInput.value = '';
+            }
+        })
+
+        document.addEventListener('click', (evt) => {
+            cardsButtonInput.focus(); // устанавливаем focus для ввода текста
+
+            if (evt.target.className !== 'form-options' && evt.target.id !== 'add_card_value' && evt.target.id !== 'submit' && evt.target.className !== 'add_card' && evt.target.id !== 'card_btn_title') {
+                cardsButtonSpan.style.display = 'block';
+                cardsButtonForm.style.display = 'none';
+                cardsButtonInput.value = '';
+            }
+        })
+
+    });
+
+
     // отображение формы заполнения и исчезновение span
     addCardButton.addEventListener('click', () => {
         cardsButtonSpan.style.display = 'none';
         cardsButtonForm.style.display = 'flex';
+        cardsButtonInput.focus();
     });
 
     cardsButtonForm.addEventListener('submit', (event) => {
@@ -503,9 +575,7 @@ function addCard(cardsList, input, columnData) {
         console.log(columnData)
     }
 
-
     input.value = '';
-    // toggleCardForm(cardsList.previousElementSibling, cardsList.parentElement.querySelector('form'), input);
 }
 
 // Функция для создания кнопки меню
@@ -568,7 +638,7 @@ function addColumnItemToPage(columnItem) {
 }
 
 // Обработчик для кнопки добавления колонки
-addColumnButton.addEventListener('click', () => toggleForm(true));
+addColumnButton.addEventListener('click', () => showForm());
 
 // Обработчик для формы добавления колонки
 form.addEventListener('submit', (event) => {
@@ -589,7 +659,7 @@ form.addEventListener('submit', (event) => {
     const columnItem = createColumnItem(columnData);
     addColumnItemToPage(columnItem);
 
-    toggleForm(false);
+    hideForm();
     initializeSortable(cardsList);
 });
 

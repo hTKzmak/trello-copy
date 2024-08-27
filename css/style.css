@@ -221,7 +221,7 @@ body .content__list .columns__list .column__item .column__item__core .column__co
   border: none;
   background-color: transparent;
   cursor: pointer;
-  display: none;
+  display: block;
   background-color: #fcfcfc;
 }
 body .content__list .columns__list .column__item .column__item__core .column__content .cards__list .card__item .menu__button .menu-icon {

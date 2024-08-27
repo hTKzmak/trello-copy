@@ -326,7 +326,7 @@ body {
 
                                 .menu__button {
                                     @include btnStyle();
-                                    display: none;
+                                    display: block;
                                     background-color: #fcfcfc;
 
                                     .menu-icon {
