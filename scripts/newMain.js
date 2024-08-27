@@ -195,7 +195,7 @@ function createColorButton(container, card, columnItemData) {
         onChange: (color) => {
             colorPicker.value = 'Изменить цвет';
             updateCardColor(document.getElementById(card.id), color);
-            const index = columnItemData.cards.findIndex(elem => elem.id === card.id);
+            const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
             if (index !== -1) {
                 columnItemData.cards[index].color = color;
             }
