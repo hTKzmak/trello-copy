@@ -23,6 +23,7 @@ function hideForm() {
 function showForm() {
     form.style.display = 'grid';
     addColumnButton.querySelector('span').style.display = 'none';
+    form.children[0].focus() // устанавливаем фокус на поле ввода
 
     // Функционал отображения и исчезновения окна
     document.addEventListener('touchstart', (evt) => {
@@ -267,8 +268,7 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
     // Изменение колонки/карточки
     changeButton.addEventListener('click', () => {
         if (type === 'column') {
-            // changeColumn(item, input, columnItemData);
-            testChange(item, input, columnItemData)
+            changeColumn(item, input, columnItemData);
             button.style.display = 'none'
             menuWindow.remove();
         }
@@ -338,6 +338,8 @@ function addMenuWindow(button, item, place, type, input, columnItemData) {
 
     place.appendChild(menuWindow);
 }
+
+
 
 
 // Работа с модальным окном для карточек 
@@ -558,7 +560,6 @@ function createColumnItem(columnItemData) {
     const columnItem = document.createElement('li');
     columnItem.className = 'column__item';
     columnItem.id = columnItemData.id;
-    // columnItem.draggable = true;
 
     // создание содержания всей инвормации самой колонки
     const columnItemCore = document.createElement('div');
@@ -637,6 +638,8 @@ function createColumnItem(columnItemData) {
 
         // Функционал отображения и исчезновения окна
         document.addEventListener('touchstart', (evt) => {
+            cardsButtonInput.focus(); // устанавливаем focus для ввода текста
+
             const touch = evt.touches[0];
 
             if (touch.target.className !== 'form-options' && touch.target.id !== 'add_card_value' && touch.target.id !== 'submit') {
@@ -647,6 +650,8 @@ function createColumnItem(columnItemData) {
         })
 
         document.addEventListener('click', (evt) => {
+            cardsButtonInput.focus(); // устанавливаем focus для ввода текста
+
             if (evt.target.className !== 'form-options' && evt.target.id !== 'add_card_value' && evt.target.id !== 'submit' && evt.target.className !== 'add_card' && evt.target.id !== 'card_btn_title') {
                 cardsButtonSpan.style.display = 'block';
                 cardsButtonForm.style.display = 'none';
@@ -711,71 +716,24 @@ function deleteColumn(columnItem) {
 
 
 // Почему функция saveNewName() в функции changeColumn() срабатывает несколько раз после событий keydown и blur, тем самым имеются проблемы с предупреждением 
-// function changeColumn(columnItem, input, columnItemData) {
-//     // Исчезновение названия колонки и отображение поля ввода
-//     columnItem.querySelector('.column__header').childNodes[0].style.display = 'none';
-
-//     // добавляем название колонки с данных в сам input (для этого используется columnItemData) 
-//     input.value = columnItemData.value;
-//     input.style.display = 'block';
-//     input.focus(); // Устанавливаем фокус на input
-
-//     // Находим индекс самой колонки
-//     const index = columnsData.findIndex(elem => elem.id == columnItem.id);
-
-//     console.log(input.value)
-
-//     // Функция для сохранения нового значения
-//     const saveNewName = () => {
-//         let newName = input.value;
-
-//         if (index !== -1 && newName) {
-//             columnsData[index].value = newName;
-//             console.log(columnsData);
-//             document.getElementById(columnItem.id).querySelector('.column__header span').innerHTML = newName;
-//         }
-
-//         // Скрываем input и показываем span и button
-//         columnItem.querySelector('.column__header').childNodes[0].style.display = 'block';
-//         input.style.display = 'none';
-//         columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
-//     };
-
-//     input.addEventListener('keydown', (event) => {
-//         if (event.code === 'Enter') {
-//             // console.log(columnsData.find(e => e.value === input.value))
-//             saveNewName()
-//         }
-//     });
-
-//     input.addEventListener('blur', () => {
-//         // if(columnsData.find(e => e.value === input.value)){
-//         //     saveNewName()
-//         // }
-//         // else{
-//         //     alert('Колонка с таким названием уже есть. Введите другое название')
-//         //     columnItem.querySelector('.column__header').childNodes[0].style.display = 'block';
-//         //     input.style.display = 'none';
-//         //     columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
-//         // }
-//         // console.log(columnsData.find(e => e.value === input.value))
-//         saveNewName()
-//     });
-// }
-
-
-function testChange(columnItem, input, columnItemData) {
+function changeColumn(columnItem, input, columnItemData) {
     // Исчезновение названия колонки и отображение поля ввода
     columnItem.querySelector('.column__header').childNodes[0].style.display = 'none';
+
     // добавляем название колонки с данных в сам input (для этого используется columnItemData) 
     input.value = columnItemData.value;
     input.style.display = 'block';
+    input.focus(); // Устанавливаем фокус на input
 
     // Находим индекс самой колонки
     const index = columnsData.findIndex(elem => elem.id == columnItem.id);
 
+    console.log(input.value)
+
+    // Функция для сохранения нового значения
     const saveNewName = () => {
         let newName = input.value;
+
         if (index !== -1 && newName) {
             columnsData[index].value = newName;
             console.log(columnsData);
@@ -788,49 +746,15 @@ function testChange(columnItem, input, columnItemData) {
         columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
     };
 
-    // 1. Если поставить обоим alert, то в keydown он будет выводиться несколько раз навсегда
-    // Значит надо будет заменить на своё окно, а не использоватьб alert
-
-    // 2. Если обоим поставить {once: true}, то событие keydown не будет работать впринципе 
-
-    // 3. То, что есть 2 события и одна и та же функция, не является проблемой повторения выполнения функции 
-
-    // Вопрос: почему не работает once у события keydown?
-
-    // пока уберу событие keyup, так как он не работает
-    // document.addEventListener('keyup', (event) => {
-    //     if (event.code === 'Enter') {
-    //         // if (columnsData.find(e => e.value === input.value)) {
-    //         //     console.log('same name')
-
-    //         //     // Скрываем input и показываем span и button
-    //         //     columnItem.querySelector('.column__header').childNodes[0].style.display = 'block';
-    //         //     input.style.display = 'none';
-    //         //     columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
-    //         // }
-    //         // else {
-    //         //     saveNewName()
-    //         // }
-    //         console.log('lol')
-    //     }
-    // }, { once: true });
-
-    input.addEventListener('blur', () => {
-        if (columnsData.find(e => e.value === input.value)) {
-            // console.log('same name')
-            alert('same name')
-
-            // Скрываем input и показываем span и button
-            columnItem.querySelector('.column__header').childNodes[0].style.display = 'block';
-            input.style.display = 'none';
-            columnItem.querySelector('.column__header').childNodes[2].style.display = 'block';
-        }
-        else {
+    input.addEventListener('keydown', (event) => {
+        if (event.code === 'Enter') {
             saveNewName()
         }
-    }, { once: true })
+    });
 
-    console.log(input)
+    input.addEventListener('blur', () => {
+        saveNewName()
+    });
 }
 
 // Функция для добавления колонки на страницу

@@ -6,6 +6,15 @@ $font-color: #fff;
 $goal-font-color: #6c757d;
 $grey-font-color: #6a6a6a;
 
+@keyframes showDarkBG {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 @mixin itemStyle($width, $maxWidth) {
     transition: background-color 0.5s;
     margin-bottom: 10px;
@@ -83,6 +92,9 @@ body {
     position: relative;
 
     .modalWindow_container {
+        animation-name: showDarkBG;
+        animation-duration: 0.5s;
+
         // display: none;
         display: flex;
 
@@ -312,7 +324,7 @@ body {
 
                                 padding: 8px 14px;
 
-                                .card__button {
+                                .menu__button {
                                     @include btnStyle();
                                     display: none;
                                     background-color: #fcfcfc;
@@ -322,7 +334,6 @@ body {
                                         gap: 4px;
                                         padding-top: 10px;
                                         padding-bottom: 10px;
-
 
                                         .circle {
                                             width: 4px;
@@ -355,7 +366,6 @@ body {
                             @media screen and (max-height: 780px) {
                                 max-height: 65vh;
                             }
-
                         }
 
                         .add__cards__button {
@@ -421,7 +431,7 @@ form {
         color: $grey-font-color;
         font-size: 16px;
 
-        text-indent: .5rem;
+        text-indent: 0.5rem;
     }
 
     .form-options {
@@ -431,18 +441,18 @@ form {
         .cancel {
             width: 30px;
             height: 30px;
-            
+
             background: #f3f3f3;
-            
+
             border-radius: 5px;
-            
+
             display: flex;
             align-items: center;
             justify-content: center;
 
             cursor: pointer;
 
-            img{
+            img {
                 width: 16px;
             }
         }
