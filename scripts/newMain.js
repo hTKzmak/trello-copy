@@ -5,7 +5,6 @@ const form = document.querySelector('form');
 // Массив для хранения данных колонок и карточек
 let columnsData = [];
 
-
 // Функции для работы с формой создания колонки
 document.querySelector('.cancel').addEventListener('click', () => {
     document.body.click();
@@ -68,6 +67,18 @@ form.addEventListener('submit', (e) => {
     // находим #add_column_value и смотрим у него значение
     let inputValue = form.querySelector('#add_column_value').value;
 
+    // Проверяем, существует ли колонка с таким названием
+    const existingColumn = columnsData.some(elem => elem.value === inputValue);
+    if (existingColumn) {
+        // Если колонка с таким названием уже существует, выводим сообщение
+        alert('Такая колонка уже существует! Пожалуйста, выберите другое название.');
+
+        // скрываем формы заполнения
+        hideForm();
+
+        return; // Прерываем выполнение функции
+    }
+
     let columnItemData = {
         id: Date.now(),
         value: inputValue,
@@ -76,7 +87,6 @@ form.addEventListener('submit', (e) => {
 
     // добавляем колонку в случае если название не пустое
     if (inputValue) {
-
         // добавляем данные о колонке в columnsData
         columnsData.push(columnItemData);
 
@@ -86,24 +96,27 @@ form.addEventListener('submit', (e) => {
 
         // скрываем формы заполнения
         hideForm();
+
+        // Функционал Drag and Drop с библиотекой SortableJS для карточек
+        const cardsListEl = document.querySelectorAll('.cards__list');
+
+        cardsListEl.forEach(elem => {
+            Sortable.create(elem, {
+                group: 'selected',
+                animation: 100,
+                delay: window.innerWidth <= 900 ? 50 : 0,
+
+                onChange: function () {
+                    console.log('Данные карточек обновились');
+                },
+            });
+        });
+    }
+    else {
+        // если название пустое, то выводит это сообщение
+        alert('Название пустое')
     }
 
-    // Фукционал Drag and Drop с библиотекой SortableJS для карточек
-    // Он будет отслеживать перемещение карточек и добавлять сами карточки в пустые колонки после их создания
-    const cardsListEl = document.querySelectorAll('.cards__list')
-
-    cardsListEl.forEach(elem => {
-        Sortable.create(elem, {
-            group: 'selected',
-            animation: 100,
-            delay: window.innerWidth <= 900 ? 50 : 0,
-
-            onChange: function () {
-                console.log('Данные карточек обновились')
-            },
-
-        });
-    })
 });
 
 
@@ -186,16 +199,19 @@ function createColorButton(container, card, columnItemData) {
     colorPicker.value = 'Изменить цвет';
     colorPicker.setAttribute('data-coloris', '');
 
+    colorPicker.addEventListener('click', () => {
+    })
+
     Coloris({
         el: '#coloris',
         parent: container,
-        defaultColor: '#ffffff',
         theme: 'default',
         themeMode: 'light',
         onChange: (color) => {
             colorPicker.value = 'Изменить цвет';
             updateCardColor(document.getElementById(card.id), color);
             const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
+
             if (index !== -1) {
                 columnItemData.cards[index].color = color;
             }
@@ -268,7 +284,10 @@ function createMenuWindow(button, item, container, type, input, columnItemData) 
         }
     });
 
-    menuWindow.addEventListener('mouseleave', () => menuWindow.remove());
+    menuWindow.addEventListener('mouseleave', () => {
+        menuWindow.remove()
+    });
+
     container.appendChild(menuWindow);
 
     document.addEventListener('click', (event) => {
@@ -412,7 +431,14 @@ function addWindowModal(cardItem, columnItemData) {
     tinymce.init({
         selector: '#card_description',
         plugins: 'lists emoticons',
+        statusbar: false,
+        promotion: false,
+        menubar: true,
+        language: 'ru',
         toolbar: 'fontfamily fontsize | bold italic underline | alignleft aligncenter alignright alignjustify | emoticons | backcolor forecolor removeformat | bullist numlist outdent indent | undo redo',
+        mobile: {
+            toolbar_mode: 'floating'
+        },
         setup: editor => editor.on('init', () => {
             editor.setContent(columnItemData.cards[index].description || '');
         })
@@ -589,7 +615,7 @@ function createMenuButton() {
             <div class="circle"></div>
         </div>
     `;
-    console.log('sndad')
+    console.log('Создание меню')
     return menuButton;
 }
 
@@ -614,18 +640,33 @@ function changeColumn(button, columnItem, input, columnData) {
 
     const saveNewName = () => {
         const newName = input.value.trim();
+
+        // Проверяем, существует ли колонка с таким названием
+        const exists = columnsData.some(column => column.value === newName);
+
+        // если название имеется и не совпадает со старым
         if (newName && newName !== columnData.value) {
+            if (exists) {
+                // Если название уже существует, выводим сообщение
+                alert('Такая колонка уже существует! Пожалуйста, выберите другое название.');
+                input.value = columnData.value; // Возвращаем старое значение
+                return; // Прерываем выполнение функции
+            }
+
             columnData.value = newName;
             columnTitle.innerHTML = newName;
             console.log(columnsData);
         }
+
         columnTitle.style.display = 'block';
         button.style.display = 'block';
         input.style.display = 'none';
     };
 
     input.addEventListener('keydown', (event) => {
-        if (event.code === 'Enter') saveNewName();
+        if (event.code === 'Enter') {
+            saveNewName();
+        }
     });
 
     input.addEventListener('blur', saveNewName);
@@ -639,29 +680,6 @@ function addColumnItemToPage(columnItem) {
 
 // Обработчик для кнопки добавления колонки
 addColumnButton.addEventListener('click', () => showForm());
-
-// Обработчик для формы добавления колонки
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    // Метод trim() удаляет пробелы с обоих концов строки.
-    const inputValue = form.querySelector('#add_column_value').value.trim();
-
-    if (!inputValue) return;
-
-    const columnData = {
-        id: Date.now(),
-        value: inputValue,
-        cards: []
-    };
-
-    columnsData.push(columnData);
-
-    const columnItem = createColumnItem(columnData);
-    addColumnItemToPage(columnItem);
-
-    hideForm();
-    initializeSortable(cardsList);
-});
 
 // Инициализация SortableJS для карточек
 function initializeSortable(cardsList) {
