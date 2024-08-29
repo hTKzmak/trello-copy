@@ -192,74 +192,35 @@ function updateCardColor(card, color) {
 }
 
 // Функция для создания кнопки изменения цвета
-function createColorButton(container, card, columnItemData) {
+function OLD_FUNCTION_createColorButton(container, card, columnItemData) {
+     const colorPicker = document.createElement('input');
+     colorPicker.type = 'text';
+     colorPicker.className = 'buttonStyle';
+     colorPicker.value = 'Изменить цвет';
+     colorPicker.setAttribute('data-coloris', '');
 
-    const button = document.createElement('button');
-    button.className = 'buttonStyle';
-    button.innerHTML = 'Изменить цвет';
+     colorPicker.addEventListener('click', () => {
+     })
 
-    const colorPicker = document.createElement('input');
-    colorPicker.type = 'color';
-    colorPicker.className = 'buttonStyle';
-    colorPicker.setAttribute('data-coloris', '');
-    colorPicker.style = `
-        position: absolute;
-        width: 100%;
-        left: 0;
-        top: 0;
-        opacity: 0;
-    `
+     Coloris({
+         el: '#coloris',
+         parent: container,
+         theme: 'default',
+         themeMode: 'light',
+         onChange: (color) => {
+             colorPicker.value = 'Изменить цвет';
+             updateCardColor(document.getElementById(card.id), color);
+             const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
 
-    colorPicker.addEventListener('input', (e) => {
-        console.log(e.target.value)
-        updateCardColor(document.getElementById(card.id), e.target.value);
-        const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
-
-        if (index !== -1) {
-            columnItemData.cards[index].color = e.target.value;
-        }
-    })
-
-    button.addEventListener('click', () => {
-        colorPicker.click();
-    });
+             if (index !== -1) {
+                 columnItemData.cards[index].color = color;
+             }
+         }
+     });
 
 
-    button.appendChild(colorPicker)
-
-    container.appendChild(button);
+     container.appendChild(colorPicker);
 }
-
-// // Функция для создания кнопки изменения цвета
-// function OLD_FUNCTION_createColorButton(container, card, columnItemData) {
-//     const colorPicker = document.createElement('input');
-//     colorPicker.type = 'text';
-//     colorPicker.className = 'buttonStyle';
-//     colorPicker.value = 'Изменить цвет';
-//     colorPicker.setAttribute('data-coloris', '');
-
-//     colorPicker.addEventListener('click', () => {
-//     })
-
-//     Coloris({
-//         el: '#coloris',
-//         parent: container,
-//         theme: 'default',
-//         themeMode: 'light',
-//         onChange: (color) => {
-//             colorPicker.value = 'Изменить цвет';
-//             updateCardColor(document.getElementById(card.id), color);
-//             const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
-
-//             if (index !== -1) {
-//                 columnItemData.cards[index].color = color;
-//             }
-//         }
-//     });
-
-
-//     container.appendChild(colorPicker);
-// }
 
 
 
