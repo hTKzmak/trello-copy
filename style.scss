@@ -6,15 +6,6 @@ $font-color: #fff;
 $goal-font-color: #6c757d;
 $grey-font-color: #6a6a6a;
 
-@keyframes showDarkBG {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
 @mixin itemStyle($width, $maxWidth) {
     transition: background-color 0.5s;
     margin-bottom: 10px;
@@ -92,10 +83,9 @@ body {
     position: relative;
 
     .modalWindow_container {
-        animation-name: showDarkBG;
-        animation-duration: 0.5s;
-
-        // display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        
         display: flex;
 
         height: 100vh;
@@ -113,6 +103,9 @@ body {
         z-index: 1;
 
         .window {
+            animation-name: showDarkBG;
+            animation-duration: 1s;
+
             position: relative;
 
             background-color: #fff;

@@ -67,6 +67,18 @@ form.addEventListener('submit', (e) => {
     // находим #add_column_value и смотрим у него значение
     let inputValue = form.querySelector('#add_column_value').value;
 
+    // Проверяем, существует ли колонка с таким названием
+    const existingColumn = columnsData.some(elem => elem.value === inputValue);
+    if (existingColumn) {
+        // Если колонка с таким названием уже существует, выводим сообщение
+        alert('Такая колонка уже существует! Пожалуйста, выберите другое название.');
+
+        // скрываем формы заполнения
+        hideForm();
+
+        return; // Прерываем выполнение функции
+    }
+
     let columnItemData = {
         id: Date.now(),
         value: inputValue,
@@ -181,33 +193,33 @@ function updateCardColor(card, color) {
 
 // Функция для создания кнопки изменения цвета
 function createColorButton(container, card, columnItemData) {
-    const colorPicker = document.createElement('input');
-    colorPicker.type = 'text';
-    colorPicker.className = 'buttonStyle';
-    colorPicker.value = 'Изменить цвет';
-    colorPicker.setAttribute('data-coloris', '');
+     const colorPicker = document.createElement('input');
+     colorPicker.type = 'text';
+     colorPicker.className = 'buttonStyle';
+     colorPicker.value = 'Изменить цвет';
+     colorPicker.setAttribute('data-coloris', '');
 
-    colorPicker.addEventListener('click', () => {
-    })
+     colorPicker.addEventListener('click', () => {
+     })
 
-    Coloris({
-        el: '#coloris',
-        parent: container,
-        theme: 'default',
-        themeMode: 'light',
-        onChange: (color) => {
-            colorPicker.value = 'Изменить цвет';
-            updateCardColor(document.getElementById(card.id), color);
-            const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
+     Coloris({
+         el: '#coloris',
+         parent: container,
+         theme: 'default',
+         themeMode: 'light',
+         onChange: (color) => {
+             colorPicker.value = 'Изменить цвет';
+             updateCardColor(document.getElementById(card.id), color);
+             const index = columnItemData.cards.findIndex(elem => elem.id == card.id);
 
-            if (index !== -1) {
-                columnItemData.cards[index].color = color;
-            }
-        }
-    });
+             if (index !== -1) {
+                 columnItemData.cards[index].color = color;
+             }
+         }
+     });
 
 
-    container.appendChild(colorPicker);
+     container.appendChild(colorPicker);
 }
 
 
@@ -230,11 +242,7 @@ function createMenuWindow(button, item, container, type, input, columnItemData) 
             changeColumn(button, item, input, columnItemData)
         }
         else {
-            addWindowModal(item, columnItemData);
-
-            setTimeout(() => {
-                document.querySelector('.modalWindow_container').style.opacity = 1;
-            }, 300)
+            addWindowModal(item, columnItemData)
         }
         menuWindow.remove();
     });
@@ -366,8 +374,6 @@ function addWindowModal(cardItem, columnItemData) {
         document.getElementById(cardItem.id).querySelector('span').innerHTML = cardNameInput.value;
 
         getDescValue(columnItemData, index);
-
-        console.log(`Длина описания: ${columnItemData.cards[index].description.length}`)
 
         if (columnItemData.cards[index].description !== '') {
             cardItem.style.paddingBottom = '30px';
@@ -637,8 +643,18 @@ function changeColumn(button, columnItem, input, columnData) {
     const saveNewName = () => {
         const newName = input.value.trim();
 
+        // Проверяем, существует ли колонка с таким названием
+        const exists = columnsData.some(column => column.value === newName);
+
         // если название имеется и не совпадает со старым
         if (newName && newName !== columnData.value) {
+            if (exists) {
+                // Если название уже существует, выводим сообщение
+                alert('Такая колонка уже существует! Пожалуйста, выберите другое название.');
+                input.value = columnData.value; // Возвращаем старое значение
+                return; // Прерываем выполнение функции
+            }
+
             columnData.value = newName;
             columnTitle.innerHTML = newName;
             console.log(columnsData);
